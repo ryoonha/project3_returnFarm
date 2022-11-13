@@ -37,30 +37,38 @@ webServer.listen(PORT, () => console.log(` Server is running on ${PORT}`));
 // * ------------ socket ------------ *
 
 let users = [];
+let messages = [];
 
 // socket.이벤트 - client 전송
 // io.이벤트 - server 전송
 
+// socket.on("connection", (data) => {
+//   console.log(data);
+//   console.log(`${socket.id} user just connected!`);
+//   io.on("connection");
+// });
+
 io.on("connection", (socket) => {
   // 소켓 연결 알림
   console.log(`${socket.id} user just connected!`);
-
   //Listens when a new user joins the server
   socket.on("newUser", (data) => {
-    //Adds the new user to the list of users
+    // users.push(data.userData.id); 스토리지 사용
+    // io.emit("newUserResponse", users);
+
     users.push(data);
-    // console.log(users);
-    //Sends the list of users to the client
     io.emit("newUserResponse", users);
+  });
+
+  socket.on("message", (data) => {
+    io.emit("messageResponse", data);
   });
 
   // 소켓 연결 해제
   socket.on("disconnect", () => {
     console.log("🔥: A user disconnected");
-    //Updates the list of users when a user disconnects from the server
     users = users.filter((user) => user.socketID !== socket.id);
-    // console.log(users);
-    //Sends the list of users to the client
+    // 유저 이탈 시 채팅 참가 목록에서 제외 코드 작성하기
     io.emit("newUserResponse", users);
     socket.disconnect();
   });
