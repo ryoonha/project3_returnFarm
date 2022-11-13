@@ -30,10 +30,10 @@ const Tile = ({ indexX, indexY, num }) => {
       onPointerOut={(e) => {
         setSelect(new Color(1, 1, 1));
       }}
-      onClick={(e) => {
-        const { x, y, z } = e.object.position;
-        setDemo(true);
-      }}
+      // onClick={(e) => {
+      //   const { x, y, z } = e.object.position;
+      //   setDemo(true);
+      // }}
     >
       <planeGeometry attach="geometry" args={[5, 5]} />
       <meshBasicMaterial
