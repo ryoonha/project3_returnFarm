@@ -3,6 +3,7 @@ import { createSlice, current } from "@reduxjs/toolkit";
 const stateSlice = createSlice({
   name: "stateSlice",
   initialState: {
+    userTest: null,
     tileSelect: false,
     pos: [null, null],
     oPos: {},
@@ -31,8 +32,11 @@ const stateSlice = createSlice({
         state.openState = null;
       }
     },
+    userSaveF: (state, action) => {
+      state.userTest = action.payload.user;
+    },
   },
 });
 
 export default stateSlice;
-export const { handleSelect, opneControl } = stateSlice.actions;
+export const { handleSelect, opneControl, userSaveF } = stateSlice.actions;
