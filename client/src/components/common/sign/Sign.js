@@ -1,5 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import {
+  disconnectSocket,
+  initSocketConnection,
+  socket,
+} from "../../../libs/socketio";
+import { userSaveF } from "../../../stores/reducers/stateSlice";
 
 const SignContainer = styled.div`
   position: relative;
@@ -63,22 +70,83 @@ const SignContainer = styled.div`
   }
 `;
 
-const Sign = () => {
+const Sign = ({ setLoginCheck }) => {
+  const dispatch = useDispatch();
+  const [userData, setUseData] = useState({
+    id: "",
+    password: "",
+    nickName: "",
+    account: "",
+  });
+
+  const userSave = () => {
+    dispatch(userSaveF({ user: userData.id }));
+    socket.emit("newUser", userData.id);
+
+    // 스토리지 사용
+    // localStorage.setItem(
+    //   "userData",
+    //   JSON.stringify({
+    //     id: userData.id,
+    //     nickName: userData.nickName,
+    //     account: userData.account,
+    //   })
+    // );
+    // socket.emit("newUser", { userData, socketID: socket.id });
+
+    setUseData({
+      id: "",
+      password: "",
+      nickName: "",
+      account: "",
+    });
+  };
+
+  // socket.emit("newUser", { userName, socketID: socket.id });
+
   return (
     <SignContainer>
       <div className="signHeader">return Farm !</div>
       <div className="signBox cc">
         <div className="signInput cc">
           아이디
-          <input type="text" placeholder="아이디를 입력하세요!" />
+          <input
+            type="text"
+            placeholder="아이디를 입력하세요!"
+            value={userData.id}
+            onChange={(e) => {
+              setUseData({ ...userData, id: e.target.value });
+            }}
+          />
         </div>
         <div className="signInput cc">
           비밀번호
-          <input type="password" placeholder="비밀번호를 입력하세요!" />
+          <input
+            type="password"
+            placeholder="비밀번호를 입력하세요!"
+            value={userData.password}
+            onChange={(e) =>
+              setUseData({ ...userData, password: e.target.value })
+            }
+          />
         </div>
         <div className="signButton cc">
-          <button>로그인</button>
-          <button>회원가입</button>
+          <button
+            onClick={(e) => {
+              if (userData.id.length > 0) {
+                setLoginCheck(initSocketConnection());
+                setTimeout(() => {
+                  e.preventDefault();
+                  userSave();
+                }, 500);
+              } else {
+                alert("아이디 입력하세요");
+              }
+            }}
+          >
+            로그인
+          </button>
+          <button onClick={() => disconnectSocket()}>회원가입</button>
         </div>
       </div>
     </SignContainer>

@@ -1,6 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { socket } from "../../../libs/socketio";
 
 const ChattingBox = styled.div`
   position: fixed;
@@ -28,6 +30,12 @@ const ChattingBox = styled.div`
       :focus {
         outline: 0px;
       }
+    }
+    button {
+      position: absolute;
+      bottom: 0px;
+      right: 0px;
+      /* margin: auto; */
     }
   }
   .chatUserListBox {
@@ -57,26 +65,52 @@ const ChattingBox = styled.div`
   }
 `;
 
-const Chatting = () => {
+const Chatting = ({ users, messages }) => {
   // 채팅은 서버에서 받아 바로바로 표시
-
+  const [message, setMessage] = useState("");
   const [toggle, setToggle] = useState(false);
+
+  // 임시로 아이디 사용, 스토리지 사용
+  //const { id } = JSON.parse(localStorage.userData);
+
+  const { userTest } = useSelector((state) => state.state);
+
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+    if (message.trim() && userTest) {
+      socket.emit("message", {
+        name: userTest,
+        text: message,
+        id: `${socket.id}${Math.random()}`,
+        socketID: socket.id,
+      });
+    }
+    setMessage("");
+  };
 
   return (
     <ChattingBox toggle={toggle}>
-      <div className="chatting">asdasd</div>
+      <div className="chatting">
+        {messages.map((msgData, index) => (
+          <div key={index}>
+            <div>이름:{msgData.name}</div>
+            <div>내용:{msgData.text}</div>
+          </div>
+        ))}
+      </div>
       <div className="chatInputBox">
-        <input />
+        <input
+          placeholder="메세지 입력"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+        />
+        <button onClick={handleSendMessage}>전송</button>
       </div>
       <div className="chatUserListBox">
         <div className="chatUserList">
-          <div>곽규명</div>
-          <div>냥냥고</div>
-          <div>냥냥고</div>
-          <div>냥냥고</div>
-          <div>냥냥고</div>
-          <div>냥냥고</div>
-          <div>냥냥고</div>
+          {users.map((user, index) => (
+            <div key={index}>{user}</div>
+          ))}
         </div>
         <div className="chatUserHide cc" onClick={() => setToggle(!toggle)}>
           <FontAwesomeIcon icon="fa-solid fa-chevron-right" />

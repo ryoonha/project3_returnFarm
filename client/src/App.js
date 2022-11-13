@@ -4,11 +4,21 @@ import "./App.css";
 import Index from "./components/canvas/Canvas";
 import Interface from "./components/common/Interface";
 import Sign from "./components/common/sign/Sign";
+import { disconnectSocket, socket } from "./libs/socketio";
 
 function App() {
-  const [loginCheck, setLoginCheck] = useState(true);
+  const [loginCheck, setLoginCheck] = useState(false);
+  if (localStorage.userData) {
+    console.log(localStorage);
+    console.log(JSON.parse(localStorage.userData));
+  }
+  useEffect(() => {
+    localStorage.clear();
+    return () => {
+      disconnectSocket();
+    };
+  }, []);
 
-  useEffect(() => {}, []);
   return (
     <>
       {loginCheck ? (
@@ -17,7 +27,7 @@ function App() {
           <Index />
         </>
       ) : (
-        <Sign />
+        <Sign setLoginCheck={setLoginCheck} />
       )}
     </>
   );
