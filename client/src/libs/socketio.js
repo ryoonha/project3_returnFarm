@@ -1,10 +1,16 @@
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { io } from "socket.io-client";
+import {
+  handleCharacter,
+  handleChat,
+  handleUser,
+} from "../stores/reducers/socketSlice";
 
 export let socket = io("http://localhost:4000", { transports: ["websocket"] });
 
 export const initSocketConnection = async () => {
   if (socket.connected) return true;
-  //socket.emit("newUser", { userName, socketID: socket.id });
   socket.connect();
   return true;
 };
@@ -14,6 +20,25 @@ export const disconnectSocket = () => {
     return false;
   }
   socket.disconnect();
-  //socket = undefined;
   return false;
+};
+
+export const SocketIo = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    socket.on("newUserResponse", (data) => {
+      let nameArray = [];
+      for (let i = 0; i < data.length; i++) {
+        nameArray.push([data[i].name, data[i].id]);
+      }
+      dispatch(handleUser({ userArray: nameArray }));
+      dispatch(handleCharacter({ characterData: data }));
+    });
+  }, [socket]);
+
+  useEffect(() => {
+    socket.on("messageResponse", (data) => {
+      dispatch(handleChat({ chat: data }));
+    });
+  }, [socket]);
 };
