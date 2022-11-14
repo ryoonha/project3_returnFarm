@@ -17,11 +17,8 @@
     "ipfs-http-client": "^59.0.0",
     "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.5-lts.1",
-<<<<<<< HEAD
-=======
     "mysql2": "^2.3.3",
     "sequelize": "^6.25.5",
->>>>>>> solo
     "socket.io": "^4.5.3",
     "web3": "^1.8.0"
   },
