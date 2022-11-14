@@ -4,7 +4,7 @@ import Ground from "./ground/Ground";
 import Camera from "./setting/Camera";
 import { Provider } from "react-redux";
 import store from "../../stores/store";
-import { Character } from "../character/Character";
+import Character from "../character/Character";
 
 const Index = () => {
   return (
@@ -17,14 +17,12 @@ const Index = () => {
       }}
     >
       <Provider store={store}>
-        <Suspense>
-          <ambientLight />
-          <pointLight position={[5, 5, 5]} />
-          {/* <Html></Html> */}
-          <Character />
-          <Ground />
-          <Camera />
-        </Suspense>
+        <ambientLight />
+        <pointLight position={[5, 5, 5]} />
+        {/* <Html></Html> */}
+        <Character />
+        <Ground />
+        <Camera />
       </Provider>
     </Canvas>
   );
