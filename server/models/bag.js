@@ -1,26 +1,23 @@
 const Sequelize = require("sequelize");
 
-module.exports = class Inventory extends Sequelize.Model {
+module.exports = class Bag extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
-        user_idx: {
-          type: Sequelize.INTEGER,
+        address: {
+          type: Sequelize.STRING(100),
           allowNull: false,
         },
         item: {
-          type: Sequelize.STRING(20),
-        },
-        quantity: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.JSON,
         },
       },
       {
         sequelize,
         timestamps: false,
         underscored: false,
-        modelName: "Inventory",
-        tableName: "inventories",
+        modelName: "Bag",
+        tableName: "bag",
         paranoid: false,
         charset: "utf8mb4",
         collate: "utf8mb4_general_ci",

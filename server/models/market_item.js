@@ -1,37 +1,24 @@
 const Sequelize = require("sequelize");
 
-module.exports = class User extends Sequelize.Model {
+module.exports = class Market_item extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
         // 시퀄라이즈는 id 자동 생성 (auto_increament)
-        user_id: {
+        item_name: {
           type: Sequelize.STRING(20),
           allowNull: false, //NOT NULL
-          unique: true, // 중복 비허용
         },
-        user_pwd: {
+        item_count: {
           type: Sequelize.STRING(20),
           allowNull: false,
         },
-        user_nick: {
-          type: Sequelize.STRING(20),
+        selling_price: {
+          type: Sequelize.INTEGER,
           allowNull: false,
-          unique: true,
-        },
-        user_pfp: {
-          type: Sequelize.TEXT,
         },
         address: {
           type: Sequelize.STRING(100),
-          unique: true,
-        },
-        private_key: {
-          type: Sequelize.STRING(100),
-          unique: true,
-        },
-        token_amount: {
-          type: Sequelize.INTEGER,
         },
         createdAt: {
           type: "TIMESTAMP",
@@ -45,8 +32,8 @@ module.exports = class User extends Sequelize.Model {
         createdAt: true,
         updatedAt: false,
         underscored: true,
-        modelName: "User", // 모델명
-        tableName: "users", // 테이블명
+        modelName: "Market_item", // 모델명
+        tableName: "market_item", // 테이블명
         paranoid: false, // x : deletedAt 자동 생성
         charset: "utf8", // 한글 입력 설정
         collate: "utf8_general_ci",

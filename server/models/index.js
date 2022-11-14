@@ -7,7 +7,10 @@ const config = require("../config/settings")[env];
 
 //? 모델 모듈
 const User = require("./user");
-const Inventory = require("./inventory");
+const Bag = require("./bag");
+const Rand = require("./rand");
+const Market_item = require("./market_item");
+const Market_nft = require("./market_nft");
 
 const db = {};
 const sequelize = new Sequelize(
@@ -20,11 +23,17 @@ const sequelize = new Sequelize(
 //? db객체에 모델 정보들 넣음
 db.sequelize = sequelize;
 db.User = User;
-db.Inventory = Inventory;
+db.Bag = Bag;
+db.Rand = Rand;
+db.Market_item = Market_item;
+db.Market_nft = Market_nft;
 
 //? 모델 - 테이블 연결
 User.init(sequelize);
-Inventory.init(sequelize);
+Bag.init(sequelize);
+Rand.init(sequelize);
+Market_item.init(sequelize);
+Market_nft.init(sequelize);
 
 //? 모델 관계 설정
 // User.associate(db);
