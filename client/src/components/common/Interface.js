@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { socket } from "../../libs/socketio";
 import Chatting from "./chatting/Chatting";
 import Exchange from "./exchange/Exchange";
 import HotkeyBox from "./hotkeyBox/HotkeyBox";
@@ -21,26 +20,12 @@ const InterfaceBox = styled.div`
 const Interface = () => {
   const dispatch = useDispatch();
   const select = useSelector((state) => state.state.openState);
-  const [users, setUsers] = useState([]);
-  const [messages, setMessages] = useState([]);
-
-  useEffect(() => {
-    socket.on("newUserResponse", (data) => {
-      setUsers(data);
-    });
-  }, [socket, users]);
-
-  useEffect(() => {
-    socket.on("messageResponse", (data) => setMessages([...messages, data]));
-  }, [socket, messages]);
 
   return (
     <InterfaceBox>
       {select === "Status" ? <Status dispatch={dispatch} /> : null}
       {select === "Exchange" ? <Exchange dispatch={dispatch} /> : null}
-      {select === "Chatting" ? (
-        <Chatting dispatch={dispatch} users={users} messages={messages} />
-      ) : null}
+      {select === "Chatting" ? <Chatting dispatch={dispatch} /> : null}
       {select === "Inventory" ? <Inventory dispatch={dispatch} /> : null}
       <MenuBox dispatch={dispatch} />
       <HotkeyBox dispatch={dispatch} />

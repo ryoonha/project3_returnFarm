@@ -1,5 +1,4 @@
 import dotenv from "dotenv";
-// dotenv.config() 내에 아무것도 명시해주지 않으면 루트에 있는 .env 파일을 찾아 적용한다.
 dotenv.config();
 import express from "express";
 import { Server } from "socket.io";
@@ -9,6 +8,15 @@ import { sequelize } from "./models/index";
 
 // 서버 4000, 클라이언트 3000
 const PORT = process.env.PORT || 4000;
+
+sequelize
+  .sync({ force: false }) //기존데이터유지
+  .then(() => {
+    console.log("데이터 베이스 연결 성공");
+  })
+  .catch((err) => {
+    console.error(err);
+  });
 
 const app = express();
 app.use(express());
@@ -50,27 +58,57 @@ webServer.listen(PORT, () => console.log(` Server is running on ${PORT}`));
 // * ------------ socket ------------ *
 
 let users = [];
-let messages = [];
+let initCharacter = {
+  x: 0,
+  y: 0,
+  id: null,
+  name: "",
+};
+
+function userJoin(socket, userName) {
+  let character = initCharacter;
+  character.id = socket.id;
+  character.name = userName;
+  users.push(character);
+  return character;
+}
 
 // socket.이벤트 - client 전송
 // io.이벤트 - server 전송
-
-// socket.on("connection", (data) => {
-//   console.log(data);
-//   console.log(`${socket.id} user just connected!`);
-//   io.on("connection");
-// });
 
 io.on("connection", (socket) => {
   // 소켓 연결 알림
   console.log(`${socket.id} user just connected!`);
   //Listens when a new user joins the server
-  socket.on("newUser", (data) => {
-    // users.push(data.userData.id); 스토리지 사용
-    // io.emit("newUserResponse", users);
 
-    users.push(data);
+  socket.on("newUser", (userName) => {
+    let newCharacter = userJoin(socket, userName);
+    for (var i = 0; i < users.length; i++) {
+      let character = users[i];
+      io.emit("join_user", {
+        id: character.id,
+        name: character.name,
+        x: character.x,
+        y: character.y,
+      });
+    }
+    socket.broadcast.emit("join_user", {
+      id: socket.id,
+      name: newCharacter.name,
+      x: newCharacter.x,
+      y: newCharacter.y,
+    });
+
     io.emit("newUserResponse", users);
+  });
+
+  socket.on("send_location", function (data) {
+    socket.broadcast.emit("update_state", {
+      id: data.id,
+      id: data.name,
+      x: data.x,
+      y: data.y,
+    });
   });
 
   socket.on("message", (data) => {
@@ -85,4 +123,4 @@ io.on("connection", (socket) => {
     io.emit("newUserResponse", users);
     socket.disconnect();
   });
-})
+});

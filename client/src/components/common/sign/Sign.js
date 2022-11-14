@@ -83,17 +83,6 @@ const Sign = ({ setLoginCheck }) => {
     dispatch(userSaveF({ user: userData.id }));
     socket.emit("newUser", userData.id);
 
-    // 스토리지 사용
-    // localStorage.setItem(
-    //   "userData",
-    //   JSON.stringify({
-    //     id: userData.id,
-    //     nickName: userData.nickName,
-    //     account: userData.account,
-    //   })
-    // );
-    // socket.emit("newUser", { userData, socketID: socket.id });
-
     setUseData({
       id: "",
       password: "",
@@ -101,8 +90,6 @@ const Sign = ({ setLoginCheck }) => {
       account: "",
     });
   };
-
-  // socket.emit("newUser", { userName, socketID: socket.id });
 
   return (
     <SignContainer>
