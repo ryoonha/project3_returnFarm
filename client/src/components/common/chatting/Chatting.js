@@ -65,10 +65,12 @@ const ChattingBox = styled.div`
   }
 `;
 
-const Chatting = ({ users, messages }) => {
+const Chatting = () => {
   // 채팅은 서버에서 받아 바로바로 표시
   const [message, setMessage] = useState("");
   const [toggle, setToggle] = useState(false);
+
+  const { userList, chatList } = useSelector((state) => state.socket);
 
   // 임시로 아이디 사용, 스토리지 사용
   //const { id } = JSON.parse(localStorage.userData);
@@ -91,7 +93,7 @@ const Chatting = ({ users, messages }) => {
   return (
     <ChattingBox toggle={toggle}>
       <div className="chatting">
-        {messages.map((msgData, index) => (
+        {chatList.map((msgData, index) => (
           <div key={index}>
             <div>이름:{msgData.name}</div>
             <div>내용:{msgData.text}</div>
@@ -108,8 +110,8 @@ const Chatting = ({ users, messages }) => {
       </div>
       <div className="chatUserListBox">
         <div className="chatUserList">
-          {users.map((user, index) => (
-            <div key={index}>{user}</div>
+          {userList.map((user, index) => (
+            <div key={index}>{user[0]}</div>
           ))}
         </div>
         <div className="chatUserHide cc" onClick={() => setToggle(!toggle)}>
