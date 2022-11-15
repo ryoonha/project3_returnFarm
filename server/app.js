@@ -4,23 +4,31 @@ import express from "express";
 import { Server } from "socket.io";
 import { createServer } from "http";
 import cors from "cors";
-import { sequelize } from "./models/index";
+// import { sequelize } from "./models/index";
+import signRouter from "./router/sign.js";
+import userRouter from "./router/user.js";
+import transctionRouter from "./router/transction";
+import nftRouter from "./router/nft.js";
+import gameRouter from "./router/game.js";
+
+const app = express();
+app.use(express());
 
 // 서버 4000, 클라이언트 3000
 const PORT = process.env.PORT || 4000;
 
-sequelize
-  .sync({ force: false }) //기존데이터유지
-  .then(() => {
-    console.log("데이터 베이스 연결 성공");
-  })
-  .catch((err) => {
-    console.error(err);
-  });
+// * ------------ data base ------------ *
 
-const app = express();
-app.use(express());
-app.use(cors());
+// sequelize
+//   .sync({ force: false }) //기존데이터유지
+//   .then(() => {
+//     console.log("데이터 베이스 연결 성공");
+//   })
+//   .catch((err) => {
+//     console.error(err);
+//   });
+
+// * ------------ server 및 router ------------ *
 
 // 서버 생성
 const webServer = createServer(app);
@@ -30,6 +38,13 @@ const io = new Server(webServer, {
     origin: "http://localhost:3000",
   },
 });
+
+// 경로(라우터) 및 에러 처리
+app.use("/sign", signRouter);
+app.use("/user", userRouter);
+app.use("/transction", transctionRouter);
+app.use("/nft", nftRouter);
+app.use("/game", gameRouter);
 
 app.get("/", (req, res) => {
   res.sendStatus(200);
