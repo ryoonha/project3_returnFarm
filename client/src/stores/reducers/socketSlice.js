@@ -6,19 +6,25 @@ const socketSlice = createSlice({
     userList: [],
     characterList: [],
     chatList: [],
+
+    chaSelect: "",
   },
   reducers: {
     handleUser: (state, action) => {
       state.userList = action.payload.userArray;
     },
     handleCharacter: (state, action) => {
-      state.characterList.push(action.payload.characterData);
+      state.characterList = action.payload.characterData;
     },
     handleChat: (state, action) => {
       state.chatList.push(action.payload.chat);
+    },
+    handleChaSelect: (state, action) => {
+      state.chaSelect = action.payload.select;
     },
   },
 });
 
 export default socketSlice;
-export const { handleUser, handleCharacter, handleChat } = socketSlice.actions;
+export const { handleUser, handleCharacter, handleChat, handleChaSelect } =
+  socketSlice.actions;
