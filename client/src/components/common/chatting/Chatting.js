@@ -15,37 +15,57 @@ const ChattingBox = styled.div`
   .chatting {
     width: 100%;
     height: 250px;
-    background-color: rgb(240, 248, 255);
+    background-color: rgba(255, 255, 255, 0.829);
   }
   .chatInputBox {
+    position: relative;
     width: 100%;
     height: 50px;
-    background-color: yellow;
+    background-color: rgb(255, 255, 255);
+    //transform: translateY(-10px);
 
     input {
       width: 100%;
       height: 100%;
       padding-left: 10px;
       border: 0px;
+      background-color: rgb(235, 244, 255);
+      border-radius: 30px;
+
       :focus {
         outline: 0px;
       }
     }
     button {
       position: absolute;
-      bottom: 0px;
-      right: 0px;
+      top: 50%;
+      right: 10px;
+      width: 35px;
+      height: 35px;
+      border: 0px;
+      border-radius: 50%;
+      background-color: rgb(94, 94, 255);
+      transform: translateY(-50%) rotate(10deg);
+      color: white;
+      font-size: 18px;
+      transition: 0.2s;
       /* margin: auto; */
+      :hover {
+        background-color: rgb(51, 51, 255);
+        transform: translateY(-50%) rotate(20deg);
+      }
     }
   }
   .chatUserListBox {
     position: absolute;
     top: 0px;
     right: ${(props) => (props.toggle ? "-101px" : "0px")};
+
     height: 100%;
     transition: 0.2s;
     z-index: -10;
     .chatUserList {
+      display: ${(props) => (props.toggle ? "block" : "none")};
       width: 100px;
       height: 100%;
       background-color: rgb(255, 251, 228);
@@ -106,7 +126,9 @@ const Chatting = () => {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <button onClick={handleSendMessage}>전송</button>
+        <button onClick={handleSendMessage} className="cc">
+          <FontAwesomeIcon icon="fa-regular fa-paper-plane" />
+        </button>
       </div>
       <div className="chatUserListBox">
         <div className="chatUserList">

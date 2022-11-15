@@ -49,47 +49,68 @@ webServer.listen(PORT, () => console.log(` Server is running on ${PORT}`));
 // * ------------ socket ------------ *
 
 let users = [];
-let initCharacter = {
-  x: 0,
-  y: 0,
-  id: null,
-  name: "",
+class Character {
+  constructor() {
+    this.x = 0;
+    this.y = 0;
+    this.id = null;
+    this.nickName = "";
+    this.characterSelect = null;
+  }
+}
+const characterSelect = {
+  man: false,
+  woman: false,
+  Ybot: false,
+  Xbot: false,
 };
 
-function userJoin(socket, userName) {
-  let character = initCharacter;
-  character.id = socket.id;
-  character.name = userName;
+let characterArr = [];
+let userSocketIds = [];
+
+function userJoin(id, nickName, select) {
+  let character = new Character();
+  character.id = id;
+  character.nickName = nickName;
+  character.characterSelect = select;
   users.push(character);
-  return character;
 }
 
 // socket.이벤트 - client 전송
 // io.이벤트 - server 전송
-
 io.on("connection", (socket) => {
   // 소켓 연결 알림
-  console.log(`${socket.id} user just connected!`);
+  console.log(`${socket.id} 유저가 소켓에 연결되었습니다!`);
+  socket.emit("characterSelect", characterSelect);
   //Listens when a new user joins the server
+  // userSocketIds.push(socket.id);
+  // console.log(userSocketIds);
+  socket.on("loginUser", (userinfo) => {
+    const [nickName, select] = userinfo;
+    console.log(characterSelect[select]);
+    console.log(nickName);
+    userJoin(socket.id, nickName, select);
+    characterSelect[select] = true;
+    console.log(userinfo);
 
-  socket.on("newUser", (userName) => {
-    let newCharacter = userJoin(socket, userName);
-    for (var i = 0; i < users.length; i++) {
-      let character = users[i];
-      io.emit("join_user", {
-        id: character.id,
-        name: character.name,
-        x: character.x,
-        y: character.y,
-      });
-    }
-    socket.broadcast.emit("join_user", {
-      id: socket.id,
-      name: newCharacter.name,
-      x: newCharacter.x,
-      y: newCharacter.y,
-    });
+    // for (var i = 0; i < users.length; i++) {
+    //   let character = users[i];
+    //   characterArr.push({
+    //     id: character.id,
+    //     name: character.name,
+    //     x: character.x,
+    //     y: character.y,
+    //   });
+    // }
 
+    // 남들에게 오브젝트로 넘겨주기 때문에 오류 발생!
+    // io.emit("join_user", characterArr);
+    // socket.broadcast.emit("join_user", {
+    //   id: socket.id,
+    //   name: newCharacter.name,
+    //   x: newCharacter.x,
+    //   y: newCharacter.y,
+    // });
     io.emit("newUserResponse", users);
   });
 
