@@ -4,8 +4,8 @@ const rpcURL = "https://goerli.infura.io/v3/b03f802e554f441786b51c437837bfe4"
 const web3 = new Web3(rpcURL);
 const db=require('../sequelize/models');
 
-const contract721ABI =require("../abi/erc721abi.json");
-const contract20ABI =require("../abi/erc20abi.json");
+const contract721ABI =require("../../smartContract/abi/erc721abi.json");
+const contract20ABI =require("../../smartContract/abi/erc20abi.json");
 
 const contract721Address = "0x75f5fecAC06f1036bF06483c37DcD0881dFE16B5"
 const contract20Address = "0x2e31c765e77457BBa686B4831627d929f56F3024"

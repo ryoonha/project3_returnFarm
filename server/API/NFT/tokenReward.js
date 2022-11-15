@@ -2,7 +2,7 @@ require("dotenv").config();
 const Web3 = require("web3");
 const rpcURL = "https://goerli.infura.io/v3/b03f802e554f441786b51c437837bfe4"  //API KEY 교체!!
 const web3 = new Web3(rpcURL);
-const contractABI =require("../abi/erc20abi.json");
+const contractABI =require("../../smartContract/abi/erc20abi.json");
 const privateKey = "06e62f2d492e32a888379a37f6a32c3c2efa0f586e712434a1387313419e20a8"
 
 const tokenReward = async (req, res) => {
