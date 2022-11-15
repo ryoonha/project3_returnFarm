@@ -4,29 +4,30 @@ import express from "express";
 import { Server } from "socket.io";
 import { createServer } from "http";
 import cors from "cors";
-// import { sequelize } from "./models/index";
+import { sequelize } from "./models/index";
 import signRouter from "./router/sign.js";
 import userRouter from "./router/user.js";
 import transctionRouter from "./router/transction";
 import nftRouter from "./router/nft.js";
 import gameRouter from "./router/game.js";
 
-const app = express();
-app.use(express());
-
 // 서버 4000, 클라이언트 3000
 const PORT = process.env.PORT || 4000;
 
 // * ------------ data base ------------ *
 
-// sequelize
-//   .sync({ force: false }) //기존데이터유지
-//   .then(() => {
-//     console.log("데이터 베이스 연결 성공");
-//   })
-//   .catch((err) => {
-//     console.error(err);
-//   });
+sequelize
+  .sync({ force: false }) //기존데이터유지
+  .then(() => {
+    console.log("데이터 베이스 연결 성공");
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+const app = express();
+app.use(express());
+app.use(cors());
 
 // * ------------ server 및 router ------------ *
 
