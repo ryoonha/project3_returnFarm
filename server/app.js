@@ -64,57 +64,15 @@ webServer.listen(PORT, () => console.log(` Server is running on ${PORT}`));
 // * ------------ socket ------------ *
 
 let users = [];
-let initCharacter = {
-  x: 0,
-  y: 0,
-  id: null,
-  name: "",
-};
-
-function userJoin(socket, userName) {
-  let character = initCharacter;
-  character.id = socket.id;
-  character.name = userName;
-  users.push(character);
-  return character;
-}
 
 // socket.이벤트 - client 전송
 // io.이벤트 - server 전송
-
 io.on("connection", (socket) => {
   // 소켓 연결 알림
-  console.log(`${socket.id} user just connected!`);
-  //Listens when a new user joins the server
-
-  socket.on("newUser", (userName) => {
-    let newCharacter = userJoin(socket, userName);
-    for (var i = 0; i < users.length; i++) {
-      let character = users[i];
-      io.emit("join_user", {
-        id: character.id,
-        name: character.name,
-        x: character.x,
-        y: character.y,
-      });
-    }
-    socket.broadcast.emit("join_user", {
-      id: socket.id,
-      name: newCharacter.name,
-      x: newCharacter.x,
-      y: newCharacter.y,
-    });
-
+  console.log(`${socket.id} 유저가 소켓에 연결되었습니다!`);
+  socket.on("loginUser", (nickName) => {
+    users.push(nickName);
     io.emit("newUserResponse", users);
-  });
-
-  socket.on("send_location", function (data) {
-    socket.broadcast.emit("update_state", {
-      id: data.id,
-      id: data.name,
-      x: data.x,
-      y: data.y,
-    });
   });
 
   socket.on("message", (data) => {
