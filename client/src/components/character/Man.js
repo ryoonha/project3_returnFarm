@@ -4,7 +4,7 @@ import { useFrame } from "@react-three/fiber";
 import { useSelector } from "react-redux";
 import Control from "./Control";
 
-export function Man({ data, userId, userTest }) {
+export function Man() {
   const group = useRef();
   const { nodes, materials, animations } = useGLTF(
     `/models/character/man.gltf`
@@ -15,34 +15,28 @@ export function Man({ data, userId, userTest }) {
   const { actions, names } = useAnimations(animations, group);
 
   const { up, right, down, left } = useSelector((state) => state.character);
-  console.log(nodes);
-  console.log(userId);
-  console.log(userTest);
-  console.log(data.nickName === userId[0]);
   useFrame(() => {
-    if (userTest === data.nickName) {
-      if (group.current && (up || right || down || left)) {
-        if (up && left) {
-          group.current.position.z += 0.1;
-          group.current.position.x += 0.1;
-        } else if (up && right) {
-          group.current.position.z += 0.1;
-          group.current.position.x -= 0.1;
-        } else if (down && left) {
-          group.current.position.z -= 0.1;
-          group.current.position.x += 0.1;
-        } else if (down && right) {
-          group.current.position.z -= 0.1;
-          group.current.position.x -= 0.1;
-        } else if (up) {
-          group.current.position.z += 0.1;
-        } else if (right) {
-          group.current.position.x -= 0.1;
-        } else if (down) {
-          group.current.position.z -= 0.1;
-        } else if (left) {
-          group.current.position.x += 0.1;
-        }
+    if (group.current && (up || right || down || left)) {
+      if (up && left) {
+        group.current.position.z += 0.1;
+        group.current.position.x += 0.1;
+      } else if (up && right) {
+        group.current.position.z += 0.1;
+        group.current.position.x -= 0.1;
+      } else if (down && left) {
+        group.current.position.z -= 0.1;
+        group.current.position.x += 0.1;
+      } else if (down && right) {
+        group.current.position.z -= 0.1;
+        group.current.position.x -= 0.1;
+      } else if (up) {
+        group.current.position.z += 0.1;
+      } else if (right) {
+        group.current.position.x -= 0.1;
+      } else if (down) {
+        group.current.position.z -= 0.1;
+      } else if (left) {
+        group.current.position.x += 0.1;
       }
     }
   });
@@ -65,7 +59,7 @@ export function Man({ data, userId, userTest }) {
   }, [actions]);
   return (
     <group ref={group} dispose={null}>
-      <Html>{data.nickName}</Html>
+      {/* <Html>{data.nickName}</Html> */}
       <Control />
       <group name="Scene">
         <group name="Armature" rotation={[Math.PI / 2, 0, 0]} scale={0.01}>

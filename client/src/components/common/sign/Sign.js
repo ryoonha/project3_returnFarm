@@ -7,7 +7,6 @@ import {
   socket,
 } from "../../../libs/socketio";
 import { userSaveF } from "../../../stores/reducers/stateSlice";
-import { handleChaSelect } from "../../../stores/reducers/socketSlice";
 
 const SignContainer = styled.div`
   position: relative;
@@ -79,17 +78,10 @@ const Sign = ({ setLoginCheck }) => {
     nickName: "",
     account: "",
   });
-  const [chaSelect, setChaSelect] = useState(null);
-  const [cha, setCha] = useState({
-    man: false,
-    woman: false,
-    Ybot: false,
-    Xbot: false,
-  });
 
   const userSave = () => {
     dispatch(userSaveF({ user: userData.id }));
-    socket.emit("loginUser", [userData.id, chaSelect]);
+    socket.emit("loginUser", userData.id);
 
     setUseData({
       id: "",
@@ -98,13 +90,6 @@ const Sign = ({ setLoginCheck }) => {
       account: "",
     });
   };
-
-  useEffect(() => {
-    socket.on("characterSelect", (selectData) => {
-      setCha(selectData);
-    });
-    return;
-  }, [socket]);
 
   return (
     <SignContainer>
@@ -151,45 +136,6 @@ const Sign = ({ setLoginCheck }) => {
           <button onClick={() => disconnectSocket()}>회원가입</button>
         </div>
       </div>
-      <div className="cc">
-        {!cha.man ? (
-          <button
-            onClick={() => {
-              setChaSelect("man");
-            }}
-          >
-            man
-          </button>
-        ) : null}
-        {!cha.woman ? (
-          <button
-            onClick={() => {
-              setChaSelect("woman");
-            }}
-          >
-            woman
-          </button>
-        ) : null}
-        {!cha.Ybot ? (
-          <button
-            onClick={() => {
-              setChaSelect("Ybot");
-            }}
-          >
-            Ybot
-          </button>
-        ) : null}
-        {!cha.Xbot ? (
-          <button
-            onClick={() => {
-              setChaSelect("Xbot");
-            }}
-          >
-            Xbot
-          </button>
-        ) : null}
-      </div>
-      <div className="cc">{chaSelect}</div>
     </SignContainer>
   );
 };

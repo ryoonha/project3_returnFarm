@@ -4,23 +4,14 @@ const socketSlice = createSlice({
   name: "socketSlice",
   initialState: {
     userList: [],
-    characterList: [],
     chatList: [],
-
-    chaSelect: "",
   },
   reducers: {
     handleUser: (state, action) => {
-      state.userList = action.payload.userArray;
-    },
-    handleCharacter: (state, action) => {
-      state.characterList = action.payload.characterData;
+      state.userList = action.payload.user;
     },
     handleChat: (state, action) => {
       state.chatList.push(action.payload.chat);
-    },
-    handleChaSelect: (state, action) => {
-      state.chaSelect = action.payload.select;
     },
   },
 });

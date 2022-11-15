@@ -28,13 +28,7 @@ export const SocketIo = () => {
   useEffect(() => {
     socket.on("newUserResponse", (data) => {
       console.log(data);
-      let nameArray = [];
-      for (let i = 0; i < data.length; i++) {
-        nameArray.push([data[i].nickName, data[i].id]);
-      }
-      console.log(nameArray);
-      dispatch(handleUser({ userArray: nameArray }));
-      dispatch(handleCharacter({ characterData: data }));
+      dispatch(handleUser({ user: data }));
     });
   }, [socket]);
 
