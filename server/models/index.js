@@ -1,23 +1,23 @@
-// import dorenv from 'dotenv';
+// import dorenv from "dotenv";
 // dotenv.config();
 // const env = process.env;
-const Sequelize = require("sequelize");
+import Sequelize from "sequelize";
 const env = process.env.NODE_ENV || "development";
-const config = require("../config/settings")[env];
+import { development } from "../config/settings";
 
 //? 모델 모듈
-const User = require("./user");
-const Bag = require("./bag");
-const Rand = require("./rand");
-const Market_item = require("./market_item");
-const Market_nft = require("./market_nft");
+import User from "./user";
+import Bag from "./bag";
+import Rand from "./rand";
+import Market_item from "./market_item";
+import Market_nft from "./market_nft";
 
 const db = {};
 const sequelize = new Sequelize(
-  config.database,
-  config.username,
-  config.password,
-  config
+  development.database,
+  development.username,
+  development.password,
+  development
 );
 
 //? db객체에 모델 정보들 넣음
@@ -38,7 +38,5 @@ Market_nft.init(sequelize);
 //? 모델 관계 설정
 // User.associate(db);
 // Inventory.associate(db);
-
-
 
 module.exports = { db, sequelize };

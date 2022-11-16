@@ -1,11 +1,13 @@
-const router = require("express").Router();
+import { Router } from "express";
 
-const sign = require("./sign");
-const user = require("./user");
-const transaction = require("./transction");
+import sign from "./sign";
+import user from "./user";
+import transaction from "./transction";
+import game from "./game";
 
-router.use("/sign", sign);
-router.use("/user", user);
-router.use("/transaction", transaction);
+Router.use("/sign", sign);
+Router.use("/user", user);
+Router.use("/transaction", transaction);
+Router.use("/game", game);
 
-module.exports = router;
+module.exports = Router;

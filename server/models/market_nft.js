@@ -1,4 +1,4 @@
-const Sequelize = require("sequelize");
+import Sequelize from "sequelize";
 
 module.exports = class Market_nft extends Sequelize.Model {
   static init(sequelize) {

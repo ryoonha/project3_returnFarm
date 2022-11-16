@@ -1,8 +1,9 @@
 import express from "express";
 import * as userController from "../controller/user.js";
-const db = require("../db_Process/user");
+import db from "../db_Process/user";
 
 const router = express.Router();
+console.log(router);
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));

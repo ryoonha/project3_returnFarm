@@ -1,4 +1,4 @@
-const Sequelize = require("sequelize");
+import Sequelize from "sequelize";
 
 module.exports = class Rand extends Sequelize.Model {
   static init(sequelize) {
