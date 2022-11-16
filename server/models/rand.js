@@ -7,6 +7,7 @@ module.exports = class Rand extends Sequelize.Model {
         address: {
           type: Sequelize.STRING(100),
           allowNull: false,
+          unique: true,
         },
         tile: {
           type: Sequelize.JSON,

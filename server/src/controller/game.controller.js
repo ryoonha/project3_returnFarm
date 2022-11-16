@@ -1,12 +1,16 @@
 import { tokenValidation } from "../middleware/validation";
+import db from "../db_Process/game";
 
 const getBag = async (req, res, next) => {
-  const tokenData = tokenValidation();
+  // const tokenData = tokenValidation();
   // --> db 프로세스 코드 넣기
-
+  // const dbResult = db.getGameBag(tokenData.address);
+  const dbResult = await db.getGameBag(req.body.address);
+  console.log(dbResult);
   // 토큰에 데이터가 있고 DB에서 가방 조회가 성공적이라면
-  if ("DB" && tokenData) {
-    res.status(200).send("가방 정보 객체");
+  if (dbResult) {
+    //&& tokenData
+    res.status(200).send(dbResult);
   } else {
     res.status(400).send({ message: "가방 정보를 불러오는데 실패했어.." });
   }
@@ -21,6 +25,7 @@ const updateBag = async (req, res, next) => {
   } else {
     // bag을 db로 넘겨줌
     // --> db 프로세스 코드 넣기
+    db.putGameBag(bag);
 
     if ("db true?") {
       // db 작업이 성공적이라면
@@ -51,9 +56,11 @@ const createRand = async (req, res, next) => {
     res.status(400).send({ message: "오류가 발생했습니다!" });
   } else {
     // --> DB 프로세스 함수 작성
+    const dbResult = await db.randCreate(address);
+    console.log(dbResult, "🟡");
 
-    if ("db 데이터가 true") {
-      res.status(200).send("땅 정보 객체");
+    if (dbResult) {
+      res.status(200).send(dbResult);
     } else {
       res.status(400).send({ message: "오류가 발생했습니다!" });
     }
