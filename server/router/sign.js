@@ -1,45 +1,36 @@
 import express from "express";
-import { validationResult, body } from "express-validator";
-import * as signController from "../controller/sign.js";
-
+// import { userRegister } from "../models/user";
+const db = require("../db_Process/sign");
 const router = express.Router();
 
-/*
-const validate = (req, res, next) => {
-  const errors = validationResult(req);
-  if (errors.isEmpty()) {
-    return next();
-  }
-  return res.status(400);
-};
+router.use(express.json());
+router.use(express.urlencoded({ extended: true }));
 
-// 회원가입, 로그인 유효성 검사
-const signValidate = [
-  body("user_id").trim().notEmpty(),
-  body("user_pwd")
-    .trim()
-    .notEmpty()
-    .isLength({ min: 5 })
-    .withMessage("password should be at least 5 characters"),
-  validate,
-];
-*/
-
-// router.post("/register", signController.register);
-
-// router.post("/login", signController.login);
-
-// router 연결 확인
+// 회원가입
 router.post("/register", (req, res) => {
-  console.log("🔎"); // 🔎
+  console.log("🥕🥕🥕🥕🥕🥕");
+  console.log(req.body);
+  console.log(db);
+  const { user_id, user_pwd, user_nick } = req.body;
+  const user = db.userRegister(user_id, user_pwd, user_nick);
+  // if (!user) {
+  //   return res.status(401).json({ message: "Invalid user or password" });
+  // }
+  // // 비밀번호도 만들 예정
+  // // token도 만들 예정
+  // res.status(201).json({ message: "Welcome to the retun Farm; 🥕" });
 });
 
 router.post("/login", (req, res) => {
-  console.log("🌟"); // 🌟
+  console.log("🥕🥕🥕🥕🥕🥕");
+  const { user_id, user_pwd } = req.body;
+  db.userLogin(user_id, user_pwd);
+  // res.sendStatus(201); // 회원가입 완료, DB 유저 중복 확인 -> signController에서
 });
 
 router.get("/logout", (req, res) => {
   res.sendStatus(200); //ok
 });
 
-export default router;
+// export default router;
+module.exports = router;

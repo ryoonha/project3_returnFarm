@@ -55,30 +55,3 @@ module.exports = class User extends Sequelize.Model {
     );
   }
 };
-
-// export async function findByUserId(user_id) {
-//   return User.findOne({ user_id });
-// }
-
-// export async function findByUserPwd(user_pwd) {
-//   return User.findOne({ user_pwd });
-// }
-
-// // 인자로 뭘 받는지 모르겠음
-// export async function createUser(user_id, user_pwd, user_nick) {
-//   const created = [];
-//   User.push(created);
-//   return created;
-// }
-
-// // export default User;
-
-// let kim = [
-//   {
-//     user_id: "kim",
-//     user_pwd: "abc",
-//     user_nick: "ryoon",
-//   },
-// ];
-
-// console.log(createUser("kim", "abc", "ryoon"));

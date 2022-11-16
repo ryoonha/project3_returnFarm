@@ -39,4 +39,6 @@ Market_nft.init(sequelize);
 // User.associate(db);
 // Inventory.associate(db);
 
+
+
 module.exports = { db, sequelize };

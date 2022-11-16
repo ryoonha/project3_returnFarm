@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import {
@@ -81,7 +81,7 @@ const Sign = ({ setLoginCheck }) => {
 
   const userSave = () => {
     dispatch(userSaveF({ user: userData.id }));
-    socket.emit("newUser", userData.id);
+    socket.emit("loginUser", userData.id);
 
     setUseData({
       id: "",
