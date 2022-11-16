@@ -5,7 +5,7 @@ import { Server } from "socket.io";
 import { createServer } from "http";
 import cors from "cors";
 import { sequelize } from "./models/index";
-
+const router = require("./router");
 // 서버 4000, 클라이언트 3000
 const PORT = process.env.PORT || 4000;
 
@@ -21,6 +21,7 @@ sequelize
 const app = express();
 app.use(express());
 app.use(cors());
+app.use("/", router);
 
 sequelize
   .sync({ force: false }) //기존데이터유지
