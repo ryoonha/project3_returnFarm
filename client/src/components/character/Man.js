@@ -1,42 +1,60 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useGLTF, useAnimations, Html } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { useSelector } from "react-redux";
 import Control from "./Control";
+import { Vector3 } from "three";
 
 export function Man() {
-  const group = useRef();
+  const [vec] = useState(() => new Vector3());
+  const model = useRef();
+  const { camera } = useThree();
+  console.log(camera);
   const { nodes, materials, animations } = useGLTF(
     `/models/character/man.gltf`
   );
   // 하나의 모델 여러 번 사용하기.. 아직 해결 못함 ㅠㅠ
   // const copiedScene = useMemo(() => scene.clone(), [scene]);
 
-  const { actions, names } = useAnimations(animations, group);
+  const { actions, names } = useAnimations(animations, model);
 
+  const deg2rad = (degrees) => degrees * (Math.PI / 180);
   const { up, right, down, left } = useSelector((state) => state.character);
   useFrame(() => {
-    if (group.current && (up || right || down || left)) {
+    if (model.current) {
+      const { x, y, z } = model.current.position;
+      camera.lookAt(x, y, z + 5);
+      camera.position.lerp(vec.set(x, y + 10, z - 10), 0.1);
+    }
+    if (model.current && (up || right || down || left)) {
       if (up && left) {
-        group.current.position.z += 0.1;
-        group.current.position.x += 0.1;
+        model.current.position.z += 0.1;
+        model.current.position.x += 0.1;
+        model.current.rotation.y = deg2rad(45);
       } else if (up && right) {
-        group.current.position.z += 0.1;
-        group.current.position.x -= 0.1;
+        model.current.position.z += 0.1;
+        model.current.position.x -= 0.1;
+        model.current.rotation.y = deg2rad(315);
       } else if (down && left) {
-        group.current.position.z -= 0.1;
-        group.current.position.x += 0.1;
+        model.current.position.z -= 0.1;
+        model.current.position.x += 0.1;
+        model.current.rotation.y = deg2rad(135);
       } else if (down && right) {
-        group.current.position.z -= 0.1;
-        group.current.position.x -= 0.1;
+        model.current.position.z -= 0.1;
+        model.current.position.x -= 0.1;
+        model.current.rotation.y = deg2rad(225);
       } else if (up) {
-        group.current.position.z += 0.1;
+        model.current.position.z += 0.1;
+        model.current.rotation.y = deg2rad(0);
       } else if (right) {
-        group.current.position.x -= 0.1;
+        model.current.position.x -= 0.1;
+        model.current.rotation.y = deg2rad(270);
       } else if (down) {
-        group.current.position.z -= 0.1;
+        model.current.position.z -= 0.1;
+        model.current.rotation.y = deg2rad(180);
       } else if (left) {
-        group.current.position.x += 0.1;
+        model.current.position.x += 0.1;
+        model.current.rotation.y = deg2rad(90);
       }
     }
   });
@@ -57,8 +75,9 @@ export function Man() {
       actions.idle.play();
     }
   }, [actions]);
+
   return (
-    <group ref={group} dispose={null}>
+    <group ref={model} dispose={null}>
       {/* <Html>{data.nickName}</Html> */}
       <Control />
       <group name="Scene">

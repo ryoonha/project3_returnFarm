@@ -5,6 +5,7 @@ import Camera from "./setting/Camera";
 import { Provider } from "react-redux";
 import store from "../../stores/store";
 import Character from "../character/Character";
+import { BulletinBoard } from "./object/BulletinBoard";
 
 const Index = () => {
   return (
@@ -23,6 +24,7 @@ const Index = () => {
         <Character />
         <Ground />
         <Camera />
+        <BulletinBoard />
       </Provider>
     </Canvas>
   );
