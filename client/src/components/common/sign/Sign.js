@@ -7,6 +7,7 @@ import {
   socket,
 } from "../../../libs/socketio";
 import { userSaveF } from "../../../stores/reducers/stateSlice";
+import axios from "axios";
 
 const SignContainer = styled.div`
   position: relative;
@@ -91,6 +92,19 @@ const Sign = ({ setLoginCheck }) => {
     });
   };
 
+  const test = () => {
+    axios
+      .put(
+        "http://localhost:4000/game/rand",
+        { user_id: "kkm", user_pwd: 123, user_nick: "냥냥고" },
+        {
+          "Content-Type": "application/json",
+          withCredentials: true,
+        }
+      )
+      .then((e) => console.log(e));
+  };
+
   return (
     <SignContainer>
       <div className="signHeader">return Farm !</div>
@@ -134,6 +148,7 @@ const Sign = ({ setLoginCheck }) => {
             로그인
           </button>
           <button onClick={() => disconnectSocket()}>회원가입</button>
+          <button onClick={() => test()}>테스트</button>
         </div>
       </div>
     </SignContainer>

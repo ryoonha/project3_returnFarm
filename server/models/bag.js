@@ -1,4 +1,4 @@
-const Sequelize = require("sequelize");
+import Sequelize from "sequelize";
 
 module.exports = class Bag extends Sequelize.Model {
   static init(sequelize) {
