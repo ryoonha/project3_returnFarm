@@ -1,16 +1,12 @@
 import express from "express";
 // import { userRegister } from "../models/user";
-const db = require("../db_Process/sign");
-const router = express.Router();
+import db from "../db_Process/sign";
 
-router.use(express.json());
-router.use(express.urlencoded({ extended: true }));
+const router = express.Router();
 
 // 회원가입
 router.post("/register", (req, res) => {
   console.log("🥕🥕🥕🥕🥕🥕");
-  console.log(req.body);
-  console.log(db);
   const { user_id, user_pwd, user_nick } = req.body;
   const user = db.userRegister(user_id, user_pwd, user_nick);
   // if (!user) {
@@ -32,5 +28,5 @@ router.get("/logout", (req, res) => {
   res.sendStatus(200); //ok
 });
 
-// export default router;
-module.exports = router;
+// module.exports = router;
+export default router;

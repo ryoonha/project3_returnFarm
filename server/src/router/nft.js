@@ -23,4 +23,9 @@ router.post("/buy", (req, res) => {
   console.log("🥕"); //🥕
 });
 
+// NFT 판매 등록
+router.post("/sell", (req, res) => {
+  console.log("🥕🥕"); //🥕🥕
+});
+
 export default router;

@@ -1,4 +1,8 @@
+<<<<<<< HEAD:server/db_Process/sign.js
 import User from "../models/user";
+=======
+import User from "../../models/user";
+>>>>>>> b6f401a39c3099dcd59d947bd1d612e09f174843:server/src/db_Process/sign.js
 
 exports.userRegister = async (user_id, user_pwd, user_nick) => {
   try {

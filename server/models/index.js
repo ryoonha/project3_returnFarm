@@ -1,8 +1,4 @@
-// import dorenv from "dotenv";
-// dotenv.config();
-// const env = process.env;
 import Sequelize from "sequelize";
-const env = process.env.NODE_ENV || "development";
 import { development } from "../config/settings";
 
 //? 모델 모듈

@@ -1,4 +1,4 @@
-const Market_item = require("../models/market_item");
+import Market_item from "../../models/market_item";
 
 exports.transantionSell = async (
   item_name,

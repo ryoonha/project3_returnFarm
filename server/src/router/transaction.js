@@ -1,11 +1,12 @@
 import express from "express";
 // import * as transController from "../controller/transction.js";
+<<<<<<< HEAD:server/router/transction.js
+=======
+// const db = require("../db_Process/transaction");
+>>>>>>> b6f401a39c3099dcd59d947bd1d612e09f174843:server/src/router/transaction.js
 import db from "../db_Process/transaction";
 
 const router = express.Router();
-
-router.use(express.json());
-router.use(express.urlencoded({ extended: true }));
 
 // 아이템 판매 등록
 router.post("/sell", (req, res) => {
@@ -32,13 +33,14 @@ router.post("/exchange", (req, res) => {
 });
 
 // // 아이템 구매
-// router.post("/buy", (req, res) => {
-//   const { item_name, item_count, selling_price, address } = req.body;
-//   // if (??) {
-//   res.sendStatus(400).json({ message: "구매 실패, 1분 후 다시 시도해주세요." });
-//   // } else {
-//   res.sendStatus(200).json;
-//   // }
-// });
+router.post("/buy", (req, res) => {
+  const { item_name, item_count, selling_price, address } = req.body;
+  // if (??) {
+  res.sendStatus(400).json({ message: "구매 실패, 1분 후 다시 시도해주세요." });
+  // } else {
+  res.sendStatus(200).json;
+  // }
+});
 
-module.exports = router;
+// module.exports = router;
+export default router;
