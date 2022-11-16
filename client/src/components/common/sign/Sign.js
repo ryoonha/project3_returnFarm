@@ -105,6 +105,16 @@ const Sign = ({ setLoginCheck }) => {
       .then((e) => console.log(e));
   };
 
+  // 토큰을 서버로 보낼 때
+  // axios
+  //     .get("https://localhost:4000/accesstokenrequest", {
+  //       // "Content-type": "application/json",
+  //       headers: {
+  //         Authorization: "Bearer " + accessToken,
+  //       },
+  //       withCredentials: true,
+  //     })
+
   return (
     <SignContainer>
       <div className="signHeader">return Farm !</div>
