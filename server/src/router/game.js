@@ -7,7 +7,7 @@ const router = express.Router();
 
 // 가방 조회
 router.post("/bag", (req, res) => {
-  console.log("🥕🥕");
+  console.log("🥕POST game/bag🥕");
   const { address } = req.body;
   db.gameBag(address);
 });
