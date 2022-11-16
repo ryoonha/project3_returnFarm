@@ -1,4 +1,5 @@
 import Market_item from "../../models/market_item";
+import Bag from "../../models/bag";
 
 exports.transantionSell = async (
   item_name,
@@ -11,15 +12,21 @@ exports.transantionSell = async (
     item_count,
     selling_price,
     address,
-  }).then((e) => e.dataValues);
+  })
+    .then((e) => true)
+    .catch((err) => false);
   console.log("✅", result);
+  return result;
 };
 
+//🧡item_name, item_count 아닌, 배열리스트로 받아서 UPDATE예정
 exports.transantionExchange = async (item_name, item_count, address) => {
-  const result = await Market_item.findOne({
-    where: {
-      address: address,
-    },
-    attributes: ["item_name", "item_count", "address"],
-  }).then((e) => console.log(e.dataValues));
+  const arr = [{ [item_name]: item_count }];//🧡테스트중
+  const result = await Bag.findOne({
+    where: { address: address },
+  }).then((bagData) => {
+    if (bagData) {
+      bagData.update({ item: arr }).then((e) => console.log(e.dataValues));
+    }
+  });
 };

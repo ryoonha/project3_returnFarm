@@ -18,12 +18,16 @@ exports.userLogin = async (user_id, user_pwd) => {
       user_id: user_id,
       user_pwd: user_pwd,
     },
+    attributes: [
+      "user_id",
+      "user_nick",
+      "user_pfp",
+      "address",
+      "token_amount",
+      "created_at",
+    ],
   })
-    .then((e) => {
-      const { user_id, user_nick, user_pfp, address, token_amount, createdAt } =
-        e.dataValues;
-      return { user_id, user_nick, user_pfp, address, token_amount, createdAt };
-    })
+    .then((e) =>e.dataValues)
     .catch((err) => {
       return "아이디나 비번이 일치하지 않습니다";
     });
