@@ -1,16 +1,11 @@
 import jwt from "jsonwebtoken";
-import * as userRepo from "../models/user.js";
 import dotenv from "dotenv";
 dotenv.config();
-
-console.log(userRepo.user_id);
+import newUser from "../dbcontrol/userDB";
 
 export async function register(req, res) {
   const { user_id, user_pwd, user_nick } = req.body;
-  const userRegister = userRepo.create({ user_id, user_pwd, user_nick });
-  let user1 = userRegister("abc", 123, "kim");
-  console.log(user1);
-
+  console.log();
   // db에서 user_id 찾는다 -> 같은 id 있다면, 이미 가입된 유저
   // const createdId = userRepo.findByUserId(user_id);
   // if (createdId) {
@@ -20,21 +15,25 @@ export async function register(req, res) {
   // res.status(201);
 } // 유저 생성 함수가 이외에 따롱 있는가?
 
-const jwtSecetKey = process.env.JWT_SECRET; // 확인 ㅇㅋ
+var user1 = userRegister(ryoon, 123, ha);
+console.log(user1);
+
+const jwtSecetKey = process.env.JWT_SECRET;
 // console.log(jwtSecretKey);
 
+// jwt, address와 id는 db에서 가져와서 jwt에 넣는다
 function jwtToken(id, address) {
   return jwt.sign({ id, address }, jwtSecetKey, {
     expiresIn: "1d",
   });
 }
 const testToken = jwtToken();
-console.log(testToken);
+// console.log(testToken);
 
 export async function login(req, res) {
   // user_id, user_pwd 받으면 -> 아이디, 비번 확인(db에 있는지)
   const { user_id, user_pwd } = req.body;
-  const createdUser = await User.findByUserId(user_id);
+  const createdUser = await newUser.findByUserId(user_id);
   if (!createdUser) {
     return res.status(401).json({ message: "Invalid User" });
   }
