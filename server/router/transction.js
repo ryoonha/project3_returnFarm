@@ -32,7 +32,7 @@ router.post("/exchange", (req, res) => {
 });
 
 // // 아이템 구매
-// router.post("/sell", (req, res) => {
+// router.post("/buy", (req, res) => {
 //   const { item_name, item_count, selling_price, address } = req.body;
 //   // if (??) {
 //   res.sendStatus(400).json({ message: "구매 실패, 1분 후 다시 시도해주세요." });

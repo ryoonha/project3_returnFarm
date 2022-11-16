@@ -1,7 +1,5 @@
 import express from "express";
 import * as gameController from "../controller/game.js";
-import Bag from "../data/bag.js";
-import Rand from "../data/rand.js";
 
 const router = express.Router();
 
@@ -9,38 +7,34 @@ const router = express.Router();
 
 // 가방 조회
 router.get("/bag", (req, res) => {
-  res.sendStatus(200).json(Bag);
+  res.sendStatus(200).json(Bag); // ok
 });
 
 // 가방 생성
 router.post("/bag", (req, res) => {
-  const { user_id, address } = req.body;
-  res.sendStatus(201).json(Bag);
+  console.log("🔥"); // 🔥"
 });
 
 // 가방 속 아이템 수정, 삭제
-router.update("/bag", (req, res) => {
-  const [{ ...bag }] = req.body;
-  res.sendStatus(200);
+router.put("/bag", (req, res) => {
+  console.log("✨"); // ✨
 });
 
 // * ---------- 땅  ---------- *
 
 // 땅 조회
 router.get("/rand", (req, res) => {
-  res.sendStatus(200).json(Rand); // 땅 데이터
+  res.sendStatus(200).json(Rand); // ok
 });
 
 // 땅 생성
 router.post("/rand", (req, res) => {
-  const { address } = req.body;
-  res.sendStatus(201).json(Rand); // 땅 데이터
+  console.log("😱"); // 😱
 });
 
 // 땅 상호작용, 수정
-router.update("/rand", (req, res) => {
-  const [{ ...rand }] = req.body;
-  res.sendStatus(200);
+router.put("/rand", (req, res) => {
+  console.log("🤩"); // 🤩
 });
 
 export default router;

@@ -29,8 +29,7 @@ router.post("/login", (req, res) => {
 });
 
 router.get("/logout", (req, res) => {
-  res.sendStatus(200);
-  // res.session.destroy(); 가 필요한지는 공부 필요x
+  res.sendStatus(200); //ok
 });
 
 // export default router;
