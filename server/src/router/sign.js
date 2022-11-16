@@ -1,32 +1,15 @@
 import express from "express";
-// import { userRegister } from "../models/user";
-import db from "../db_Process/sign";
+// express의 내부 동작에 컨트롤러 함수가 Promise reject를 한 경우 동기 함수의 에러와 동일하게 처리
+// import {} from "express-async-errors";
+import * as sign from "../controller/sign";
+import { isAuth } from "../middleware/auth";
 
 const router = express.Router();
 
-// 회원가입
-router.post("/register", (req, res) => {
-  console.log("🥕🥕🥕🥕🥕🥕");
-  const { user_id, user_pwd, user_nick } = req.body;
-  const user = db.userRegister(user_id, user_pwd, user_nick);
-  // if (!user) {
-  //   return res.status(401).json({ message: "Invalid user or password" });
-  // }
-  // // 비밀번호도 만들 예정
-  // // token도 만들 예정
-  // res.status(201).json({ message: "Welcome to the retun Farm; 🥕" });
-});
+router.post("/register", sign.register); // 회원가입 성공
 
-router.post("/login", (req, res) => {
-  console.log("🥕🥕🥕🥕🥕🥕");
-  const { user_id, user_pwd } = req.body;
-  db.userLogin(user_id, user_pwd);
-  // res.sendStatus(201); // 회원가입 완료, DB 유저 중복 확인 -> signController에서
-});
+router.post("/login", isAuth, sign.login); // 로그인 성공
 
-router.get("/logout", (req, res) => {
-  res.sendStatus(200); //ok
-});
+router.get("/logout", isAuth, sign.logout);
 
-// module.exports = router;
 export default router;

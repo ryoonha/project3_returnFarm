@@ -9,8 +9,8 @@ exports.userRegister = async (user_id, user_pwd, user_nick) => {
     });
   } catch (err) {
     console.log("🎉", err.errors[0].message);
+    return result;
   }
-  return result;
 };
 exports.userLogin = async (user_id, user_pwd) => {
   const result = await User.findOne({
@@ -31,6 +31,6 @@ exports.userLogin = async (user_id, user_pwd) => {
     .catch((err) => {
       return "아이디나 비번이 일치하지 않습니다";
     });
-  console.log("✅", result);
+  console.log(":white_check_mark:", result);
   return result;
 };
