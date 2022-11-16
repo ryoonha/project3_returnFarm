@@ -1,6 +1,10 @@
 import express from "express";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 // import { userRegister } from "../models/user";
-const db = require("../db_Process/sign");
+const db = require("../db_Process/sign"); // login, register 함수
+const User = require("../models/user");
 const router = express.Router();
 
 router.use(express.json());
@@ -24,13 +28,41 @@ router.post("/register", (req, res) => {
 router.post("/login", (req, res) => {
   console.log("🥕🥕🥕🥕🥕🥕");
   const { user_id, user_pwd } = req.body;
-  db.userLogin(user_id, user_pwd);
-  // res.sendStatus(201); // 회원가입 완료, DB 유저 중복 확인 -> signController에서
+  const loginIdPassword = db.userLogin(user_id, user_pwd); // <- 추가
+  const token = jwtToken(loginIdPassword); // <- 추가
+  const loginedUserNick = db.user_nick; // <- 추가
+  res.status(200).json({ token, message: `Welcome, ${loginedUserNick}!` }); // <- 추가
 });
 
 router.get("/logout", (req, res) => {
   res.sendStatus(200); //ok
 });
+
+const jwtSecetKey = process.env.JWT_SECRET;
+// console.log(jwtSecetKey); 키값 확인
+// const testToken = jwtToken();
+// console.log(testToken); 발행 확인
+
+// jwt(nick, address, token_amout, create_at) 담아서 보낸다
+
+async function test() {
+  const callUserInfo = await User.findOne({
+    where: { user_id: "kim", user_pwd: "123!" },
+  });
+  const userInfo = callUserInfo.dataValues;
+  console.log(userInfo);
+}
+test();
+
+function jwtToken(user_id, address, user_nick, token_amout, create_at) {
+  return jwt.sign(
+    { id: user_id, address, user_nick, token_amout, create_at },
+    jwtSecetKey,
+    {
+      expiresIn: "1d",
+    }
+  );
+}
 
 // export default router;
 module.exports = router;

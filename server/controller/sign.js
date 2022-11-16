@@ -30,6 +30,7 @@ function jwtToken(id, address) {
 const testToken = jwtToken();
 // console.log(testToken);
 
+// login 로직만 있어서, router->sing.js에서 일단 로그인 시 jwt 발행되는지 확인하기로
 export async function login(req, res) {
   // user_id, user_pwd 받으면 -> 아이디, 비번 확인(db에 있는지)
   const { user_id, user_pwd } = req.body;

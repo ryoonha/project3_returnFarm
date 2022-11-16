@@ -20,8 +20,6 @@ sequelize
     console.error(err);
   });
 
-console.clear();
-
 const app = express();
 app.use(express());
 app.use(cors());
