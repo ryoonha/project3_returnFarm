@@ -3,18 +3,13 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 // import { userRegister } from "../models/user";
-const db = require("../db_Process/sign"); // login, register 함수
 const User = require("../models/user");
 const router = express.Router();
-
-router.use(express.json());
-router.use(express.urlencoded({ extended: true }));
+import db from "../db_Process/sign";
 
 // 회원가입
 router.post("/register", (req, res) => {
   console.log("🥕🥕🥕🥕🥕🥕");
-  console.log(req.body);
-  console.log(db);
   const { user_id, user_pwd, user_nick } = req.body;
   const user = db.userRegister(user_id, user_pwd, user_nick);
   // if (!user) {
@@ -63,6 +58,4 @@ function jwtToken(user_id, address, user_nick, token_amout, create_at) {
     }
   );
 }
-
-// export default router;
-module.exports = router;
+export default router;

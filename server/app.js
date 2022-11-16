@@ -5,8 +5,8 @@ import { Server } from "socket.io";
 import { createServer } from "http";
 import cors from "cors";
 import { sequelize } from "./models/index";
-const router = require("./router");
-// 서버 4000, 클라이언트 3000
+import router from "./src/router";
+
 const PORT = process.env.PORT || 4000;
 
 // * ------------ data base ------------ *
@@ -21,18 +21,18 @@ sequelize
   });
 
 const app = express();
-app.use(express());
-app.use(cors());
-app.use("/", router);
+const corsOption = {
+  origin: "http://localhost:3000",
+  methods: "POST,PUT,DELETE,GET",
+  credentials: true,
+  optionsSuccessStatus: 200,
+};
 
-sequelize
-  .sync({ force: false }) //기존데이터유지
-  .then(() => {
-    console.log("데이터 베이스 연결 성공");
-  })
-  .catch((err) => {
-    console.error(err);
-  });
+app.use(cors(corsOption));
+app.use(express());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use("/", router);
 
 // * ------------ server 및 router ------------ *
 
@@ -44,13 +44,6 @@ const io = new Server(webServer, {
     origin: "http://localhost:3000",
   },
 });
-
-// 경로(라우터) 및 에러 처리
-// app.use("/sign", signRouter);
-// app.use("/user", userRouter);
-// app.use("/transction", transctionRouter);
-// app.use("/nft", nftRouter);
-// app.use("/game", gameRouter);
 
 app.get("/", (req, res) => {
   res.sendStatus(200);

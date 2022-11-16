@@ -1,17 +1,17 @@
 import express from "express";
-import * as gameController from "../controller/game.js";
+// import db from "../db_Process/game";
 
 const router = express.Router();
 
 // * ---------- 가방  ---------- *
 
 // 가방 조회
-router.get("/bag", (req, res) => {
-  res.sendStatus(200).json(Bag); // ok
+router.post("/bag", (req, res) => {
+  console.log("🥕🥕");
 });
 
 // 가방 생성
-router.post("/bag", (req, res) => {
+router.post("/bagCreate", (req, res) => {
   console.log("🔥"); // 🔥"
 });
 
@@ -23,12 +23,12 @@ router.put("/bag", (req, res) => {
 // * ---------- 땅  ---------- *
 
 // 땅 조회
-router.get("/rand", (req, res) => {
+router.post("/rand", (req, res) => {
   res.sendStatus(200).json(Rand); // ok
 });
 
 // 땅 생성
-router.post("/rand", (req, res) => {
+router.post("/randCreate", (req, res) => {
   console.log("😱"); // 😱
 });
 
