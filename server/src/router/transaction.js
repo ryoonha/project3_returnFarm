@@ -1,9 +1,6 @@
 import express from "express";
 // import * as transController from "../controller/transction.js";
-<<<<<<< HEAD:server/router/transction.js
-=======
 // const db = require("../db_Process/transaction");
->>>>>>> b6f401a39c3099dcd59d947bd1d612e09f174843:server/src/router/transaction.js
 import db from "../db_Process/transaction";
 
 const router = express.Router();

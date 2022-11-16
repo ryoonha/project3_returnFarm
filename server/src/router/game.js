@@ -1,5 +1,5 @@
 import express from "express";
-// import db from "../db_Process/game";
+import db from "../db_Process/game";
 
 const router = express.Router();
 
@@ -8,11 +8,15 @@ const router = express.Router();
 // 가방 조회
 router.post("/bag", (req, res) => {
   console.log("🥕🥕");
+  const { address } = req.body;
+  db.gameBag(address);
 });
 
 // 가방 생성
 router.post("/bagCreate", (req, res) => {
   console.log("🔥"); // 🔥"
+  const { address } = req.body;
+  db.gameBagcreate(address);
 });
 
 // 가방 속 아이템 수정, 삭제
