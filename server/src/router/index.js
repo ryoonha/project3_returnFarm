@@ -5,7 +5,7 @@ const router = express.Router();
 import sign from "./sign";
 import user from "./user";
 import transaction from "./transaction";
-import game from "./game";
+import game from "./game.router";
 import nft from "./nft";
 
 router.use("/sign", sign);
