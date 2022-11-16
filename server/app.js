@@ -48,11 +48,11 @@ const io = new Server(webServer, {
 });
 
 // 경로(라우터) 및 에러 처리
-app.use("/sign", signRouter);
-app.use("/user", userRouter);
-app.use("/transction", transctionRouter);
-app.use("/nft", nftRouter);
-app.use("/game", gameRouter);
+// app.use("/sign", signRouter);
+// app.use("/user", userRouter);
+// app.use("/transction", transctionRouter);
+// app.use("/nft", nftRouter);
+// app.use("/game", gameRouter);
 
 app.get("/", (req, res) => {
   res.sendStatus(200);
