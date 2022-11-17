@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { animated } from "react-spring";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useDivMove from "../../../hooks/useDivMove";
 import { BasicBox } from "../../../libs/cssFrame";
+import DragDrop from "./DragDrop";
 
 const StatusBox = styled(BasicBox)`
   left: 50px;
@@ -30,6 +31,7 @@ const StatusBox = styled(BasicBox)`
         font-size: 100px;
       }
       .statusUserProfile {
+        margin-top: ${(props) => (props.fileData ? "10px" : "0px")};
         text-align: center;
       }
     }
@@ -44,6 +46,9 @@ const StatusBox = styled(BasicBox)`
 
 const Status = () => {
   const [x, y, bindDivPos] = useDivMove();
+  const [fileData, setFileData] = useState(null); // 이미지 데이터
+  const [nftName, setNftName] = useState(""); // nft 이름
+  const [imgURL, setImgURL] = useState(null); //imgURL base64
 
   return (
     <animated.div
@@ -52,16 +57,22 @@ const Status = () => {
         y,
       }}
     >
-      <StatusBox>
+      <StatusBox fileData={fileData}>
         <div className="header" {...bindDivPos()}>
           Status
         </div>
         <div className="statusBody">
           <div className="statusUserBox">
-            <div className="statusImgBox cc">
+            {/* <div className="statusImgBox cc">
               <FontAwesomeIcon icon="fa-solid fa-address-card" />
-              {/* <img src="" alt="프로필 사진" /> */}
-            </div>
+              <img src="" alt="프로필 사진" />
+            </div> */}
+            <DragDrop
+              setFileData={setFileData}
+              fileData={fileData}
+              imgURL={imgURL}
+              setImageUrl={setImgURL}
+            />
             <div className="statusUserProfile">
               <div className="userNickName">kkm</div>
               <div className="userTimeData">2001.11.28</div>
