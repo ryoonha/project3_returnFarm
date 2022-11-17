@@ -6,9 +6,9 @@ import { isAuth } from "../middleware/auth";
 
 const router = express.Router();
 
-router.post("/register", sign.register); // 회원가입 성공
+router.post("/register", sign.register);
 
-router.post("/login", isAuth, sign.login); // 로그인 성공
+router.post("/login", sign.login);
 
 router.get("/logout", isAuth, sign.logout);
 

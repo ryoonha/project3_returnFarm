@@ -12,6 +12,7 @@ exports.userRegister = async (user_id, user_pwd, user_nick) => {
     return result;
   }
 };
+
 exports.userLogin = async (user_id, user_pwd) => {
   const result = await User.findOne({
     where: {

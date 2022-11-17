@@ -12,7 +12,7 @@ function createJwt(id) {
   // 토큰 생성
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "3h" });
 }
-const token = createJwt(id);
+export const token = createJwt(id);
 // console.log(token);
 
 // ----------------------* sign API *----------------------
