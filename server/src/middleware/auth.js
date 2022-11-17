@@ -31,11 +31,11 @@ export async function isAuth(req, res, next) {
     req.user = user; // 이 유저는 계속 이 토큰 사용
     req.token = token;
 
-    console.log(req.user, "⚡️");
-    console.log(user, "🔥");
+    // console.log(req.user, "⚡️");
+    // console.log(user, "🔥");
 
-    console.log(req.token, "🍍");
-    console.log(token, "🍉");
+    // console.log(req.token, "🍍");
+    // console.log(token, "🍉");
 
     next();
   });
