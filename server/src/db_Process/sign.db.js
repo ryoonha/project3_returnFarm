@@ -1,16 +1,16 @@
 import User from "../../models/user";
 
 exports.userRegister = async (user_id, user_pwd, user_nick) => {
-  try {
-    const result = await User.create({
-      user_id,
-      user_pwd,
-      user_nick,
+  const result = await User.create({
+    user_id,
+    user_pwd,
+    user_nick,
+  })
+    .then((e) => e.dataValues)
+    .catch((err) => {
+      return [false, err.errors[0].message];
     });
-  } catch (err) {
-    console.log("🎉", err.errors[0].message);
-    return result;
-  }
+  return result;
 };
 
 exports.userLogin = async (user_id, user_pwd) => {
@@ -31,8 +31,7 @@ exports.userLogin = async (user_id, user_pwd) => {
   })
     .then((e) => e.dataValues)
     .catch((err) => {
-      return "아이디나 비번이 일치하지 않습니다";
+      return false; //아이디나 비번이 일치하지 않습니다
     });
-  console.log(":white_check_mark:", result);
   return result;
 };
