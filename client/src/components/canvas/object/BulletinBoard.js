@@ -14,8 +14,9 @@ export function BulletinBoard() {
       rotation={[0, (180 * Math.PI) / 180, 0]}
       scale={0.04}
     >
-      {arr.map((item, index) => (
+      {/* {arr.map((item, index) => (
         <Html
+          key={index}
           transform
           occlude
           onOcclude={set}
@@ -41,7 +42,7 @@ export function BulletinBoard() {
             alt=""
           />
         </Html>
-      ))}
+      ))} */}
       <group rotation={[-Math.PI / 2, 0, 0]}>
         <group rotation={[Math.PI / 2, 0, 0]}>
           <mesh

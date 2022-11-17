@@ -1,8 +1,8 @@
-import React, { memo } from "react";
-import { useThree } from "@react-three/fiber";
+import React, { memo, useState } from "react";
+import { useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 
-const Camera = () => {
+const Camera = ({ ttt, canvas }) => {
   const { camera } = useThree();
 
   camera.position.set(0, 100, 0);

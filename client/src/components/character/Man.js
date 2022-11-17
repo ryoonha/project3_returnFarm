@@ -9,7 +9,7 @@ export function Man() {
   const [vec] = useState(() => new Vector3());
   const model = useRef();
   const { camera } = useThree();
-  console.log(camera);
+  // console.log(camera);
   const { nodes, materials, animations } = useGLTF(
     `/models/character/man.gltf`
   );
