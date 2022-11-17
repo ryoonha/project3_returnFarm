@@ -1,7 +1,7 @@
 import Market_item from "../../models/market_item";
 import Bag from "../../models/bag";
 
-exports.transantionSell = async (
+const transantionSell = async (
   item_name,
   item_count,
   selling_price,
@@ -20,8 +20,8 @@ exports.transantionSell = async (
 };
 
 //🧡item_name, item_count 아닌, 배열리스트로 받아서 UPDATE예정
-exports.transantionExchange = async (item_name, item_count, address) => {
-  const arr = [{ [item_name]: item_count }];//🧡테스트중
+const transantionExchange = async (item_name, item_count, address) => {
+  const arr = [{ [item_name]: item_count }]; //🧡테스트중
   const result = await Bag.findOne({
     where: { address: address },
   }).then((bagData) => {
@@ -30,3 +30,5 @@ exports.transantionExchange = async (item_name, item_count, address) => {
     }
   });
 };
+
+export { transantionSell, transantionExchange };
