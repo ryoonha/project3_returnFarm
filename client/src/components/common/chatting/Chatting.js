@@ -156,6 +156,7 @@ const ChattingBox = styled.div`
     }
   }
 `;
+
 let save = 0;
 const Chatting = () => {
   const chatRef = useRef();
@@ -194,6 +195,7 @@ const Chatting = () => {
       const eh = clientHeight + scrollTop;
       const isScroll = save <= eh;
       save = chatRef.current.scrollHeight;
+      console.log(scrollTop);
       if (isScroll) {
         chatRef.current.scrollTop = chatRef.current.scrollHeight;
       }
