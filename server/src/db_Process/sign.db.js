@@ -14,7 +14,7 @@ exports.userRegister = async (user_id, user_pwd, user_nick) => {
 };
 
 exports.userLogin = async (user_id, user_pwd) => {
-  console.log("🎉", "유저로그인테스트");
+  console.log(user_id, user_pwd, "🌟");
   const result = await User.findOne({
     where: {
       user_id: user_id,

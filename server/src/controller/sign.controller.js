@@ -12,7 +12,7 @@ function createJwt(id) {
   // 토큰 생성
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "3h" });
 }
-const token = createJwt(id);
+export const token = createJwt(id);
 // console.log(token);
 
 // ----------------------* sign API *----------------------
@@ -36,7 +36,6 @@ export async function login(req, res) {
   console.log(req.body, "🌽");
   const logined = await db.userLogin(user_id, user_pwd);
   // 없는 정보로 로그인 한다면
-  console.log(logined, "🥦");
   if (!logined) {
     return res.status(401).json({ message: "회원가입을먼저해주세요" });
   }

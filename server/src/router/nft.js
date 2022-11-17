@@ -4,28 +4,18 @@ import * as nftController from "../controller/nft.js";
 const router = express.Router();
 
 // NFT 생성
-router.post("/create", (req, res) => {
-  console.log("🎉"); // 🎉
-});
+router.post("/create");
 
 // NFT 전송
-router.post("/exchange", (req, res) => {
-  console.log("🥦"); // 🥦
-});
+router.post("/exchange");
 
 // NFT 조회
-router.post("/myList", (req, res) => {
-  console.log("🍅"); // 🍅
-});
+router.post("/myList");
 
 // NFT 구매
-router.post("/buy", (req, res) => {
-  console.log("🥕"); //🥕
-});
+router.post("/buy");
 
 // NFT 판매 등록
-router.post("/sell", (req, res) => {
-  console.log("🥕🥕"); //🥕🥕
-});
+router.post("/sell");
 
 export default router;
