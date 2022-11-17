@@ -2,8 +2,8 @@ import express from "express";
 
 const router = express.Router();
 
-import sign from "./sign";
-import user from "./user";
+import sign from "./sign.router";
+import user from "./user.router";
 import transaction from "./transaction";
 import game from "./game.router";
 import nft from "./nft";
