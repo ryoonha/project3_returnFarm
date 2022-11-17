@@ -1,4 +1,3 @@
-import * as db from "../db_Process/user.js";
 import { tokenValidation } from "../middleware/validation";
 import User from "../../models/user";
 

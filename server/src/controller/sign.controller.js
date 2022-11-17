@@ -3,30 +3,20 @@ import {} from "express-async-errors";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
-import db from "../db_Process/sign.db";
-
-// ----------------------* JWT token *----------------------
-
-const id = db.userLogin.user_id;
-function createJwt(id) {
-  // 토큰 생성
-  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "3h" });
-}
-export const token = createJwt(id);
-// console.log(token);
+import { accessToken } from "../middleware/validation";
+import { userRegister, userLogin } from "../db_Process/sign.db";
 
 // ----------------------* sign API *----------------------
 
 export async function register(req, res) {
   const { user_id, user_pwd, user_nick } = req.body;
   console.log(req.body, "🌟");
-  const dbResult = await db.userRegister(user_id, user_pwd, user_nick);
+  const dbResult = await userRegister(user_id, user_pwd, user_nick);
   console.log(dbResult, "🚧");
   const [bool, msg] = dbResult;
   if (!bool) {
     res.status(409).json({ massage: msg }); // 이미 가입한 유저
   } else {
-    console.log(token, "🕵🏻‍♂️");
     res.status(201).json({ message: "🎉 SUCCESS!" });
   }
 }
@@ -34,13 +24,13 @@ export async function register(req, res) {
 export async function login(req, res) {
   const { user_id, user_pwd } = req.body;
   console.log(req.body, "🌽");
-  const logined = await db.userLogin(user_id, user_pwd);
+  const logined = await userLogin(user_id, user_pwd);
   // 없는 정보로 로그인 한다면
   if (!logined) {
     return res.status(401).json({ message: "회원가입을먼저해주세요" });
   }
   // const token = createJwt(user_id); // 생성한 토큰 발급, 토큰은 보안을 위해 메세지에 포함시키지 않음
-  console.log(token, "🚨");
+  const token = accessToken(user_id);
   res.status(200).json({ token, message: `Welcome ${logined.user_nick}🥕` });
 }
 

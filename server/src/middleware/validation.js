@@ -17,4 +17,14 @@ const tokenValidation = (req, res, next) => {
   }
 };
 
-export { tokenValidation };
+const accessToken = async (data, next) => {
+  const token = jwt.sign({ data }, process.env.JWT_SECRET, {
+    expiresIn: "1h",
+    issuer: "return Farm;",
+  });
+  return token;
+};
+
+const refreshToken = async (data, next) => {};
+
+export { accessToken, tokenValidation };
