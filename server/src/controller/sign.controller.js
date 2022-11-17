@@ -3,7 +3,7 @@ import {} from "express-async-errors";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
-import db from "../db_Process/sign";
+import db from "../db_Process/sign.db";
 
 // ----------------------* JWT token *----------------------
 
@@ -12,7 +12,7 @@ function createJwt(id) {
   // 토큰 생성
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "3h" });
 }
-const token = createJwt(id);
+export const token = createJwt(id);
 // console.log(token);
 
 // ----------------------* sign API *----------------------
@@ -20,29 +20,28 @@ const token = createJwt(id);
 export async function register(req, res) {
   const { user_id, user_pwd, user_nick } = req.body;
   console.log(req.body, "🌟");
-  const OLD = await db.userRegister(user_id, user_pwd, user_nick);
-  // console.log(OLD, "🚧");
-  if (OLD) {
-    return res.status(409); // 이미 가입한 유저
+  const dbResult = await db.userRegister(user_id, user_pwd, user_nick);
+  console.log(dbResult, "🚧");
+  const [bool, msg] = dbResult;
+  if (!bool) {
+    res.status(409).json({ massage: msg }); // 이미 가입한 유저
+  } else {
+    console.log(token, "🕵🏻‍♂️");
+    res.status(201).json({ message: "🎉 SUCCESS!" });
   }
-  db.userRegister(user_id, user_pwd, user_nick);
-  console.log(token, "🕵🏻‍♂️");
-  res.status(201).json({ message: "🎉 SUCCESS!" });
 }
 
 export async function login(req, res) {
   const { user_id, user_pwd } = req.body;
-  // console.log(req.body, "🌽");
+  console.log(req.body, "🌽");
   const logined = await db.userLogin(user_id, user_pwd);
   // 없는 정보로 로그인 한다면
-  console.log(logined, "🥦");
   if (!logined) {
-    return res.status(401);
+    return res.status(401).json({ message: "회원가입을먼저해주세요" });
   }
-  db.userLogin(user_id, user_pwd); // 로그인
   // const token = createJwt(user_id); // 생성한 토큰 발급, 토큰은 보안을 위해 메세지에 포함시키지 않음
   console.log(token, "🚨");
-  res.status(200).json({ message: `Welcome ${logined.user_nick}🥕` });
+  res.status(200).json({ token, message: `Welcome ${logined.user_nick}🥕` });
 }
 
 export async function logout(req, res) {
