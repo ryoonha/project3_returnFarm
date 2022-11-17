@@ -2,9 +2,9 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 
-const accessToken = async (data) => {
-  return jwt.sign({ data }, process.env.JWT_SECRET, {
-    expiresIn: "1h",
+const generateAccessToken = async (data) => {
+  return jwt.sign({ data }, process.env.ACCESS_SECRET, {
+    expiresIn: "10",
     issuer: "return Farm;",
   });
 };
@@ -24,12 +24,10 @@ const tokenValidation = (req, res, next) => {
   }
 };
 
-// accessToken이 같다면 refreshToken 발급해서 전달
-const refreshToken = async (data) => {
-  return jwt.sign({ data }, process.env.JWT_SECRET, {
+const generateRefreshToken = async (data) => {
+  return jwt.sign({ data }, process.env.REFRESH_SECRET, {
     expiresIn: "1d",
-    issuer: "return Farm;",
   });
 };
 
-export { accessToken, tokenValidation, refreshToken };
+export { generateAccessToken, tokenValidation, generateRefreshToken };
