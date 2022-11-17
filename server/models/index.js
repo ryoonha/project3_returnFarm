@@ -2,11 +2,11 @@ import Sequelize from "sequelize";
 import { development } from "../config/settings";
 
 //? 모델 모듈
-const User = require("./user");
-const Bag = require("./bag");
-const Rand = require("./rand");
-const Market_item = require("./market_item");
-const Market_nft = require("./market_nft");
+import User from "./user";
+import Bag from "./bag";
+import Rand from "./rand";
+import Market_item from "./market_item";
+import Market_nft from "./market_nft";
 
 const db = {};
 const sequelize = new Sequelize(
