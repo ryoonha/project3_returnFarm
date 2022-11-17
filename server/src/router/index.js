@@ -2,7 +2,7 @@ import express from "express";
 
 const router = express.Router();
 
-import sign from "./sign";
+import sign from "./sign.router";
 import user from "./user";
 import transaction from "./transaction";
 import game from "./game.router";

@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import db from "../db_Process/sign";
+import db from "../db_Process/sign.db";
 import dotenv from "dotenv";
 dotenv.config();
 
