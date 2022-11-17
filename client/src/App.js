@@ -10,6 +10,24 @@ import { disconnectSocket, SocketIo } from "./libs/socketio";
 function App() {
   const [loginCheck, setLoginCheck] = useState(false);
 
+  const item = {
+    item_name: "사과",
+    item_count: "1",
+    quality: "1",
+    time: "2022/11/17/05/23",
+  };
+  console.log(item);
+  console.log(JSON.stringify(item));
+
+  const tile = {
+    seed: null,
+    add: [],
+    estimated_time: "2022/11/17/05/23",
+  };
+  console.log(tile);
+  console.log(JSON.stringify(tile));
+  console.log(JSON.parse(JSON.stringify(tile)));
+
   useEffect(() => {
     localStorage.clear();
     return () => {
