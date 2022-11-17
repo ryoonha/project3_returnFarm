@@ -65,11 +65,28 @@ exports.randCreate = async (address) => {
 };
 
 exports.getGameRand = async (address) => {
-  console.log("디비프로세스의 :", address);
   const result = await Rand.findOne({
     where: {
       address: address,
     },
   }).then((e) => e.dataValues.tile);
+  return result;
+};
+
+exports.putGameRand = async (address, rand) => {
+  // const randArraytest = [
+  //   //테스트를위한 더미데이터 (rand와 address를 받을예정 )
+  //   { seed: "아보카도", add: [], estimated_time: "2022/11/17/13/20" },
+  //   { seed: "파인애플", add: [], estimated_time: "2022/11/17/13/20" },
+  // ];
+  const result = await Rand.findOne({
+    where: {
+      address: address,
+    },
+  })
+    .then((user) => {
+      return user.update({ tile: rand });
+    })
+    .then((e) => e.dataValues.tile);
   return result;
 };

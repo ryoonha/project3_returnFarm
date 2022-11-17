@@ -40,7 +40,6 @@ const getRand = async (req, res, next) => {
   const { address } = req.body;
   const dbResult = await db.getGameRand(address);
   // 토큰에 데이터가 있고 DB에서 땅 조회가 성공적이라면
-  console.log(dbResult);
   if (dbResult) {
     //&& tokenData //🟠db테스트중
     res.status(200).send(dbResult);
@@ -68,18 +67,19 @@ const createRand = async (req, res, next) => {
 };
 
 const updateRand = async (req, res, next) => {
-  const { bag } = req.body;
-  // bag은 배열로 들어옴
-  // bag이 없다면
-  if (!bag) {
+  const { rand } = req.body;
+  // rand는 배열로 들어옴
+  // rand가 없다면
+  if (!rand) {
     res.status(400).send({ message: "다시 시도해 주세요!" });
   } else {
-    // bag을 db로 넘겨줌
+    // rand와 address를 db로 넘겨줌
     // --> db 프로세스 코드 넣기
+    const dbResult = await db.putGameRand(address, rand);
 
-    if ("db true?") {
+    if (dbResult) {
       // db 작업이 성공적이라면
-      res.status(200).send({ message: null });
+      res.status(200).send(dbResult);
     } else {
       res.status(400).send({ message: "다시 시도해 주세요!" });
     }
