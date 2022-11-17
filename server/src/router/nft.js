@@ -4,7 +4,7 @@ import * as nftController from "../controller/nft.js";
 const router = express.Router();
 
 // NFT 생성
-router.post("/create", upload.single("image"));
+router.post("/create");
 
 // NFT 전송
 router.post("/exchange");
