@@ -2,6 +2,13 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 
+const accessToken = async (data) => {
+  return jwt.sign({ data }, process.env.JWT_SECRET, {
+    expiresIn: "1h",
+    issuer: "return Farm;",
+  });
+};
+
 const tokenValidation = (req, res, next) => {
   if (!req.headers.authorization) {
     res.status(401).send({ status: false, message: "다시 로그인해 주세요!" });
@@ -17,14 +24,12 @@ const tokenValidation = (req, res, next) => {
   }
 };
 
-const accessToken = async (data, next) => {
-  const token = jwt.sign({ data }, process.env.JWT_SECRET, {
-    expiresIn: "1h",
+// accessToken이 같다면 refreshToken 발급해서 전달
+const refreshToken = async (data) => {
+  return jwt.sign({ data }, process.env.JWT_SECRET, {
+    expiresIn: "1d",
     issuer: "return Farm;",
   });
-  return token;
 };
 
-const refreshToken = async (data, next) => {};
-
-export { accessToken, tokenValidation };
+export { accessToken, tokenValidation, refreshToken };

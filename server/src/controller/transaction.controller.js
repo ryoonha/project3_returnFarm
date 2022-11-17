@@ -3,7 +3,6 @@ import {
   transantionSell,
   transantionExchange,
 } from "../db_Process/transaction.db";
-// bag, market db나 db_process 필요
 
 const sell = async (req, res, next) => {
   // const tokenData = tokenValidation();
@@ -24,12 +23,10 @@ const sell = async (req, res, next) => {
   }
 }; // 포스트맨 true 출력
 
-// 아이템 전송
 const exchange = async (req, res, next) => {
   // const tokenData = tokenValidation();
   // --> db 프로세스 코드 넣기
   const { item_name, item_count, address } = req.body;
-  console.log("🍖");
   const dbResult = await transantionExchange(item_name, item_count, address);
   if (dbResult) {
     //&& tokenData

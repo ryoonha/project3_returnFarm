@@ -23,14 +23,12 @@ export async function register(req, res) {
 
 export async function login(req, res) {
   const { user_id, user_pwd } = req.body;
-  console.log(req.body, "🌽");
   const logined = await userLogin(user_id, user_pwd);
   // 없는 정보로 로그인 한다면
   if (!logined) {
     return res.status(401).json({ message: "회원가입을먼저해주세요" });
   }
-  // const token = createJwt(user_id); // 생성한 토큰 발급, 토큰은 보안을 위해 메세지에 포함시키지 않음
-  const token = accessToken(user_id);
+  const token = await accessToken(user_id);
   res.status(200).json({ token, message: `Welcome ${logined.user_nick}🥕` });
 }
 
