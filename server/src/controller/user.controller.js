@@ -19,6 +19,7 @@ export const getMyinfo = async (req, res, next) => {
 
   // const myInfo = db.userInfo(tokenData.address);
   const myInfo = await User.findOne({ where: { user_id: req.body.user_id } });
+  // console.log(myInfo, "🍋");
 
   // 토큰에 데이터가 있고 DB에서 유저 조회가 성공적이라면
   if (myInfo) {
