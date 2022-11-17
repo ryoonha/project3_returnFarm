@@ -27,14 +27,6 @@ exports.getGameBag = async (address) => {
     }
   })
     .then((e) => e[0].dataValues.item)
-    .catch((e) =>
-      Bag.create({
-        address: address,
-        item: welcomGift,
-      }).then((e) => {
-        return e.dataValues.item;
-      })
-    );
   return result;
 };
 
