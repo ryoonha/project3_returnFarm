@@ -1,6 +1,10 @@
-import * as db from "../db_Process/user.js";
-import { tokenValidation } from "../middleware/validation";
+import {
+  accessToken,
+  tokenValidation,
+  generateRefresh,
+} from "../middleware/validation";
 import User from "../../models/user";
+import { userInfo } from "../db_Process/user.db";
 
 /** 확인하려는 유저
  * user_id: choppa
@@ -13,18 +17,20 @@ import User from "../../models/user";
 // user_id, address 맞다면, db_process의 userInfo 함수 실행
 
 export const getMyinfo = async (req, res, next) => {
+  const { user_id, address } = req.body;
   // const tokenData = tokenValidation();
   // --> db 프로세스 코드 넣기
-  console.log(req.body, "🔎");
+  // console.log(req.body, "🔎");
 
-  // const myInfo = db.userInfo(tokenData.address);
-  const myInfo = await User.findOne({ where: { user_id: req.body.user_id } });
-  // console.log(myInfo, "🍋");
+  const dbResult = userInfo(user_id, address);
+  // const dbResult = await User.findOne({ where: { user_id: req.body.user_id } });
+  // console.log(dbResult, "🍋");
 
   // 토큰에 데이터가 있고 DB에서 유저 조회가 성공적이라면
-  if (myInfo) {
+  if (dbResult) {
     // && tokenData
-    res.status(200).send(myInfo);
+    res.status(200).send(dbResult);
+    console.log();
   } else {
     res.status(400).send({ message: "내 정보를 불러오는데 실패했어.." });
   }

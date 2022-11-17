@@ -1,6 +1,6 @@
 import User from "../../models/user";
 
-exports.userInfo = async (user_id, address) => {
+const userInfo = async (user_id, address) => {
   console.log(user_id, address, "🥦");
   const result = await User.findOne({
     where: {
@@ -18,3 +18,5 @@ exports.userInfo = async (user_id, address) => {
   }).then((e) => e.dataValues);
   console.log("✅", result);
 };
+
+export { userInfo };
