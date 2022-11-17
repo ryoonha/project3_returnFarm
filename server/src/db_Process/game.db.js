@@ -65,8 +65,7 @@ exports.randCreate = async (address) => {
     },
   })
     .then((e) => e[0].dataValues.tile)
-    .catch((e) => console.log("❌", e));
-  console.log("🟠", result);
+    .catch((e) => e);
   return result;
 };
 
