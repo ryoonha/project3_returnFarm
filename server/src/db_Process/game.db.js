@@ -51,16 +51,22 @@ exports.putGameBag = async (address, bag) => {
 };
 
 exports.randCreate = async (address) => {
-  const welcomRand = [
-    { seed: null, add: [], estimated_time: "2022/11/17/13/20" },
-    { seed: null, add: [], estimated_time: "2022/11/17/13/20" },
-  ];
-  const result = await Rand.create({
-    address: address,
-    tile: welcomRand,
+  // const welcomRand = [
+  //   { seed: null, add: [], estimated_time: "2022/11/17/13/20" },
+  //   { seed: null, add: [], estimated_time: "2022/11/17/13/20" },
+  // ];
+  const result = await Rand.findOrCreate({
+    where: { address: address },
+    defaults: {
+      tile: [
+        { seed: null, add: [], estimated_time: "2022/11/17/13/20" },
+        { seed: null, add: [], estimated_time: "2022/11/17/13/20" },
+      ],
+    },
   })
-    .then((e) => e.dataValues.tile)
-    .catch((e) => false);
+    .then((e) => e[0].dataValues.tile)
+    .catch((e) => console.log("❌", e));
+  console.log("🟠", result);
   return result;
 };
 
