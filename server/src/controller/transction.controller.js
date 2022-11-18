@@ -7,8 +7,6 @@ import db from "../db_Process/transaction.db";
 const sell = async (req, res, next) => {
   // const tokenData = tokenValidation();
   // --> db 프로세스 코드 넣기
-  // const { item_name, item_count, selling_price, address } = req.body;
-  console.log("🥯");
   const { item_name, item_count, selling_price, address } = req.body;
   const dbResult = await db.postTransactionSell(
     item_name,
