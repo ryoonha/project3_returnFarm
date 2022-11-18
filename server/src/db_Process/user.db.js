@@ -1,7 +1,7 @@
 import User from "../../models/user";
 
-const userInfo = async (user_id, address) => {
-  console.log(user_id, address, "🥦");
+
+exports.userInfo = async (user_id, address) => {
   const result = await User.findOne({
     where: {
       user_id: user_id,
@@ -15,8 +15,8 @@ const userInfo = async (user_id, address) => {
       "token_amount",
       "created_at",
     ],
-  }).then((e) => e.dataValues);
-  console.log("✅", result);
+  })
+    .then((e) => e.dataValues)
+    .catch((e) => false);
+  return result;
 };
-
-export { userInfo };
