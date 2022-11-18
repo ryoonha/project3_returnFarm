@@ -5,11 +5,10 @@ import { useSelector } from "react-redux";
 import Control from "./Control";
 import { Vector3 } from "three";
 
-export function Man() {
+export function Man({ nickName }) {
   const [vec] = useState(() => new Vector3());
   const model = useRef();
   const { camera } = useThree();
-  // console.log(camera);
   const { nodes, materials, animations } = useGLTF(
     `/models/character/man.gltf`
   );
@@ -23,6 +22,9 @@ export function Man() {
   useFrame(() => {
     if (model.current) {
       const { x, y, z } = model.current.position;
+      // const { nx, ny, nz } = nick.current.position;
+      // nick.current.position.lerp(x, y, z, 0.1);
+      // console.log(nick.current.position);
       camera.lookAt(x, y, z + 5);
       camera.position.lerp(vec.set(x, y + 10, z - 10), 0.1);
     }
@@ -77,8 +79,14 @@ export function Man() {
   }, [actions]);
 
   return (
-    <group ref={model} dispose={null}>
-      {/* <Html>{data.nickName}</Html> */}
+    <group ref={model} dispose={null} position={[0, -1, 0]}>
+      {/* <Html
+        center
+        className="cc cn"
+        style={{ backgroundColor: "gray", width: "50px" }}
+      >
+        {nickName}
+      </Html> */}
       <Control />
       <group name="Scene">
         <group name="Armature" rotation={[Math.PI / 2, 0, 0]} scale={0.01}>
@@ -88,42 +96,56 @@ export function Man() {
             geometry={nodes.Body.geometry}
             material={materials["Bodymat.001"]}
             skeleton={nodes.Body.skeleton}
+            // receiveShadow
+            castShadow
           />
           <skinnedMesh
             name="Bottoms"
             geometry={nodes.Bottoms.geometry}
             material={materials["Bottommat.001"]}
             skeleton={nodes.Bottoms.skeleton}
+            // receiveShadow
+            castShadow
           />
           <skinnedMesh
             name="Eyelashes"
             geometry={nodes.Eyelashes.geometry}
             material={materials["Eyelashmat.001"]}
             skeleton={nodes.Eyelashes.skeleton}
+            // receiveShadow
+            castShadow
           />
           <skinnedMesh
             name="Eyes"
             geometry={nodes.Eyes.geometry}
             material={materials["Bodymat.001"]}
             skeleton={nodes.Eyes.skeleton}
+            // receiveShadow
+            castShadow
           />
           <skinnedMesh
             name="Hair"
             geometry={nodes.Hair.geometry}
             material={materials["Hairmat.001"]}
             skeleton={nodes.Hair.skeleton}
+            // receiveShadow
+            castShadow
           />
           <skinnedMesh
             name="Shoes"
             geometry={nodes.Shoes.geometry}
             material={materials["Shoesmat.001"]}
             skeleton={nodes.Shoes.skeleton}
+            // receiveShadow
+            castShadow
           />
           <skinnedMesh
             name="Tops"
             geometry={nodes.Tops.geometry}
             material={materials["Topmat.001"]}
             skeleton={nodes.Tops.skeleton}
+            // receiveShadow
+            castShadow
           />
         </group>
       </group>
