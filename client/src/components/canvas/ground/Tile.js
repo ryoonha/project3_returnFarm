@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
+import * as THREE from "three";
 import { Color, TextureLoader } from "three";
 import Corn from "../../models/Corn";
 import Tomato from "../../models/Tomato";
@@ -12,16 +13,21 @@ const Tile = ({ indexX, indexY, num }) => {
   const textureStarField1 = useMemo(
     () =>
       new TextureLoader().load(
-        process.env.PUBLIC_URL + "/images/ground/grass.png"
+        process.env.PUBLIC_URL + "/images/ground/tile.png"
       ),
     []
   );
 
-  //textureStarField1.repeat.set(1, 1);
+  // textureStarField1.repeat.set(2, 2);
+  textureStarField1.repeat.x = 2;
+  textureStarField1.repeat.y = 2;
+  textureStarField1.wrapS = THREE.RepeatWrapping;
+  textureStarField1.wrapT = THREE.RepeatWrapping;
   //textureStarField1.repeat.set(1, 1);
 
   return (
     <mesh
+      receiveShadow
       rotation={[-Math.PI / 2, 0, 0]}
       position={[-26.5 + indexX * 5.1, 0, -22]}
       onPointerOver={(e) => {
@@ -36,9 +42,9 @@ const Tile = ({ indexX, indexY, num }) => {
       // }}
     >
       <planeGeometry attach="geometry" args={[5, 5]} />
-      <meshBasicMaterial
+      <meshPhysicalMaterial
         map={textureStarField1}
-        opacity={0.5}
+        opacity={1}
         attach="material"
         color={select}
         transparent
