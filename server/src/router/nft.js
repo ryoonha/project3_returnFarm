@@ -1,10 +1,11 @@
-import express from "express";
-import * as nftController from "../controller/nft.js";
+import express from "express";;
+import { createNFT } from "../../API/NFT/createNFT.js";
 
 const router = express.Router();
 
 // NFT 생성
-router.post("/create");
+router.post("/create", createNFT);
+
 
 // NFT 전송
 router.post("/exchange");

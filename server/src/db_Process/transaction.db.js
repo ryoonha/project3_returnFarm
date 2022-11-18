@@ -18,6 +18,7 @@ exports.postTransactionSell = async (
   return result;
 };
 
+
 exports.postTransactionExchange = async (address, bag) => {
   const result = await Bag.findOne({
     where: { address: address },

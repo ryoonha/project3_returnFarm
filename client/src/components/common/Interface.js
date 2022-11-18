@@ -7,6 +7,7 @@ import HotkeyBox from "./hotkeyBox/HotkeyBox";
 import Inventory from "./inventory/Inventory";
 import MenuBox from "./menuBox/MenuBox";
 import Status from "./status/Status";
+import useKeyEvents from "../../hooks/useKeyEvents";
 
 // <FontAwesomeIcon icon="fa-solid fa-circle-xmark" /> 닫기 버튼
 // <FontAwesomeIcon icon="fa-solid fa-circle-question" /> 도움말 버튼
@@ -20,6 +21,7 @@ const InterfaceBox = styled.div`
 const Interface = () => {
   const dispatch = useDispatch();
   const select = useSelector((state) => state.state.openState);
+  useKeyEvents();
 
   return (
     <InterfaceBox>

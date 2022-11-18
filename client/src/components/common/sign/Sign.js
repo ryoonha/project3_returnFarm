@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import {
@@ -92,18 +92,18 @@ const Sign = ({ setLoginCheck }) => {
     });
   };
 
-  const test = () => {
-    axios
-      .put(
-        "http://localhost:4000/game/rand",
-        { user_id: "kkm", user_pwd: 123, user_nick: "냥냥고" },
-        {
-          "Content-Type": "application/json",
-          withCredentials: true,
-        }
-      )
-      .then((e) => console.log(e));
-  };
+  // const test = () => {
+  //   axios
+  //     .put(
+  //       "http://localhost:4000/game/rand",
+  //       { user_id: "kkm", user_pwd: 123, user_nick: "냥냥고" },
+  //       {
+  //         "Content-Type": "application/json",
+  //         withCredentials: true,
+  //       }
+  //     )
+  //     .then((e) => console.log(e));
+  // };
 
   // 토큰을 서버로 보낼 때
   // axios
@@ -158,7 +158,6 @@ const Sign = ({ setLoginCheck }) => {
             로그인
           </button>
           <button onClick={() => disconnectSocket()}>회원가입</button>
-          <button onClick={() => test()}>테스트</button>
         </div>
       </div>
     </SignContainer>

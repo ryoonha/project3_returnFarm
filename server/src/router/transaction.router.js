@@ -1,5 +1,5 @@
 import express from "express";
-import { sell, exchange, buy } from "../controller/transction.controller.js";
+import { sell, exchange, buy } from "../controller/transaction.controller.js";
 
 const router = express.Router();
 

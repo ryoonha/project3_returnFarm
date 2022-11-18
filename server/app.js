@@ -6,6 +6,7 @@ import { createServer } from "http";
 import cors from "cors";
 import { sequelize } from "./models/index";
 import router from "./src/router";
+// import { create } from "ipfs-http-client";
 
 const PORT = process.env.PORT || 4000;
 
@@ -35,6 +36,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/", router);
 
 // * ------------ server 및 router ------------ *
+// npm i ipfs-http-client@56.0.2
+// const ipfs = create("/ip4/127.0.0.1/tcp/5001");
+// const imgUpload = async (img) => {
+//   if (!Buffer.isBuffer(img)) return null;
+//   const addFile = await ipfs.add(img);
+//   const initUri = "https://ipfs.io/ipfs/";
+//   const mkUrl = initUri + addFile.cid;
+//   return mkUrl;
+// };
 
 // 서버 생성
 const webServer = createServer(app);
