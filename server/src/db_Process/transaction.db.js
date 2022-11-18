@@ -29,12 +29,16 @@ exports.postTransactionExchange = async (address, bag) => {
 };
 
 //postTransactionBuy
-exprtts.tokenAmountUpdate = async (address, token_amount) => {
-  const result = await User.update(
-    { token_amount: token_amount },
-    {
-      where: { address: address },
-    }
-  );
+exports.tokenAmountUpdate = async (address, token_amount) => {
+  const result = await User.findOne({
+    where: {
+      address: address,
+    },
+    attributes: ["id","address", "token_amount"],
+  })
+    .then((user) => {
+      return user.update({ token_amount: token_amount });
+    })
+    .then((e) => e.dataValues);
   return result;
 };
