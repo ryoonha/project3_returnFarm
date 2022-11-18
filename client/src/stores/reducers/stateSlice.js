@@ -9,6 +9,8 @@ const stateSlice = createSlice({
     oPos: {},
 
     openState: null,
+
+    weather: "sun",
   },
   reducers: {
     handleSelect: (state, action) => {
@@ -35,8 +37,12 @@ const stateSlice = createSlice({
     userSaveF: (state, action) => {
       state.userTest = action.payload.user;
     },
+    weatherChange: (state, action) => {
+      state.weather = action.payload.change;
+    },
   },
 });
 
 export default stateSlice;
-export const { handleSelect, opneControl, userSaveF } = stateSlice.actions;
+export const { handleSelect, opneControl, userSaveF, weatherChange } =
+  stateSlice.actions;
