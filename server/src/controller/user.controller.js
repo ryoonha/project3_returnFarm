@@ -20,7 +20,6 @@ export const getMyinfo = async (req, res, next) => {
   const { user_id, address } = req.body;
   // const tokenData = tokenValidation();
   // --> db 프로세스 코드 넣기
-  const { user_id, address } = req.body;
   const dbResult = await db.userInfo(user_id, address);
 
   // 토큰에 데이터가 있고 DB에서 유저 조회가 성공적이라면
