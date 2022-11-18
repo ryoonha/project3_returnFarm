@@ -23,10 +23,9 @@ exports.getGameBag = async (address) => {
           quality: "1",
           time: "2022/11/17/13/20",
         },
-      ]
-    }
-  })
-    .then((e) => e[0].dataValues.item)
+      ],
+    },
+  }).then((e) => e[0].dataValues.item);
   return result;
 };
 
@@ -44,10 +43,6 @@ exports.putGameBag = async (address, bag) => {
 };
 
 exports.randCreate = async (address) => {
-  // const welcomRand = [
-  //   { seed: null, add: [], estimated_time: "2022/11/17/13/20" },
-  //   { seed: null, add: [], estimated_time: "2022/11/17/13/20" },
-  // ];
   const result = await Rand.findOrCreate({
     where: { address: address },
     defaults: {
