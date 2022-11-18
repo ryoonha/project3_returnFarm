@@ -64,13 +64,13 @@ const generateRenewToken = (headers, id) => {
     return false;
   }
   // refresh 포함, 새로운 access token 생성
-  const finallyGenerate = (id, refreshToken) => {
+  const finallygenerated = (id, refreshToken) => {
     return jwt.sign({ id, refreshToken }, process.env.ACCESS_SECRET, {
       expiresIn: "1h",
     });
   };
   // console.log(id, refreshToken, "🎉");
-  return finallyGenerate(id, refreshToken);
+  return finallygenerated(id, refreshToken);
 };
 
 /**
@@ -80,4 +80,15 @@ const generateRenewToken = (headers, id) => {
 // 새로운 access token 발급(인자로 req로 받은 id, 기존의 refresh(암호화된상태)를 넣어줌)
  */
 
-export { tokenValidation, generateToken, generateRenewToken };
+// ---------------------* 로그아웃, token 삭제 *---------------------
+
+// logout 시, req의 header의 auth 갖겨옴
+const removeToken = (authorization) => {
+  const token = authorization;
+  //
+  getLogout = token.filter((token) => token !== refreshToken);
+  res.sendStatus(204);
+  window.localStorage.removeItem(token); // window, localstarage 모두 정의 안 되서 에러
+};
+
+export { tokenValidation, generateToken, generateRenewToken, removeToken };

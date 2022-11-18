@@ -2,7 +2,7 @@ import {} from "express-async-errors";
 import {
   generateToken,
   generateRenewToken,
-  tokenValidation,
+  removeToken,
 } from "../middleware/validation";
 import { userRegister, userLogin } from "../db_Process/sign.db";
 
@@ -11,7 +11,7 @@ const register = async (req, res, next) => {
   const dbResult = await userRegister(user_id, user_pwd, user_nick);
   const [bool, msg] = dbResult;
   if (!bool) {
-    res.status(409).json({ massage: msg }); // 이미 가입한 유저
+    res.status(409).json({ massage: msg }); // 이미 가입한 유저, conflict
   } else {
     res.status(201).json({ message: "🎉 SUCCESS!" });
   }
@@ -39,9 +39,9 @@ const loginExtension = async (req, res, next) => {
   // 이미 한 번 이상 로그인 한 회원이므로 로그인 과정 생략
   // 기존 refresh 사용한 access token 발행
   const { id } = req.body;
-  const renewToken = generateRenewToken(req.headers, id);
+  const renewToken = await generateRenewToken(req.headers, id);
   if (!renewToken) {
-    res.sendStatus(401);
+    res.sendStatus(412); // 412: 클라이언트의 헤더에 있는 전제조건은 서버의 전제조건에 적절하지 않습니다.
   } else {
     console.log(renewToken, "🔓 새로 발급한 token");
 
@@ -49,16 +49,16 @@ const loginExtension = async (req, res, next) => {
   }
 };
 
-// Deauthenticate - log out, 작업 중
-// Delete refresh token
-const logout = async (req, res) => {
-  if (!req.header) {
-    res.status(404).json({ message: "헤더가 없어요.." });
+const logout = async (req, res, next) => {
+  // 헤더에 토큰이 아예 없으면 로그인 한 회원 아님
+  if (!req.headers.authorization) {
+    res.status(412).json({ message: "no Auth" });
+  } else {
+    let body = "🔥 bye";
+    res.removeHeader("Authorization");
+    // res.removeHeader("X-Powered-By");
+    res.end(body);
   }
-  const refresh = tokenValidation(req.headers);
-
-  refreshTokens = refreshTokens.filter((token) => token !== refresh);
-  res.sendStatus(204);
 };
 
 export { register, login, loginExtension, logout };
