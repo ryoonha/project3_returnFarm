@@ -56,7 +56,7 @@ const logout = async (req, res, next) => {
   } else {
     let body = "🔥 bye";
     res.removeHeader("Authorization");
-    // res.removeHeader("X-Powered-By");
+    res.removeHeader("X-Powered-By");
     res.end(body);
   }
 };

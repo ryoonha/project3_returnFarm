@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 
-// ---------------------* 공통 사용 *---------------------
+// ---------------* 토큰 검정 및 refresh token *---------------
 
 // refresh token 생성
 const generateRefreshToken = (id) => {
@@ -80,15 +80,4 @@ const generateRenewToken = (headers, id) => {
 // 새로운 access token 발급(인자로 req로 받은 id, 기존의 refresh(암호화된상태)를 넣어줌)
  */
 
-// ---------------------* 로그아웃, token 삭제 *---------------------
-
-// logout 시, req의 header의 auth 갖겨옴
-const removeToken = (authorization) => {
-  const token = authorization;
-  //
-  getLogout = token.filter((token) => token !== refreshToken);
-  res.sendStatus(204);
-  window.localStorage.removeItem(token); // window, localstarage 모두 정의 안 되서 에러
-};
-
-export { tokenValidation, generateToken, generateRenewToken, removeToken };
+export { tokenValidation, generateToken, generateRenewToken };
