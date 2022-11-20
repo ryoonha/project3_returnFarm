@@ -8,6 +8,8 @@ import { weatherChange } from "../../../stores/reducers/stateSlice";
 export const Light = () => {
   const dispatch = useDispatch();
   const pointLight = useRef();
+  const axisLight = useRef();
+  const ref = useRef();
 
   const [dayOrNight, setDayOrNight] = useState({
     dx: false,
@@ -15,7 +17,7 @@ export const Light = () => {
     dz: false,
   });
   const [weather, setWeather] = useState(null);
-  useHelper(pointLight, PointLightHelper, 1.5, "lightblue");
+  //useHelper(pointLight, PointLightHelper, 10.5, "red");
 
   useFrame(() => {
     //pointLight.current.position.set((x -= 0.11), y, z);
@@ -24,7 +26,7 @@ export const Light = () => {
       const { dx, dy, dz } = dayOrNight;
       if (x >= 100 && dx) {
         setDayOrNight({ ...dayOrNight, dx: false });
-      } else if (y <= -100 && !dx) {
+      } else if (x <= -100 && !dx) {
         setDayOrNight({ ...dayOrNight, dx: true });
       }
       if (y >= 100 && dy) {
@@ -52,28 +54,38 @@ export const Light = () => {
         ),
         0.2
       );
+      // 빛 자체 회전
+      // let rAxis = axisLight.current.rotation;
+      // if (dy) {
+      //   axisLight.current.rotation.set(0, rAxis.y + 0.0001, 0);
+      // } else {
+      //   axisLight.current.rotation.set(0, rAxis.y - 0.0001, 0);
+      // }
+      ref.current.material.uniforms.sunPosition.value = new Vector3(x, y, z);
     }
   });
 
   return (
     <>
-      <pointLight
-        castShadow
-        ref={pointLight}
-        position={[0, 100, 0]}
-        intensity={1.5}
-        shadow-mapSize-width={4096}
-        shadow-mapSize-height={4096}
-        shadow-camera-far={5000}
-        shadow-camera-near={0.5}
-        shadow-camera-left={-5000}
-        shadow-camera-right={5000}
-        shadow-camera-top={-5000}
-        shadow-camera-bottom={5000}
-      />
+      <group ref={axisLight}>
+        <pointLight
+          castShadow
+          ref={pointLight}
+          position={[0, 100, 0]}
+          intensity={1.5}
+          shadow-mapSize-width={4096}
+          shadow-mapSize-height={4096}
+          shadow-camera-far={5000}
+          shadow-camera-near={0.5}
+          shadow-camera-left={-5000}
+          shadow-camera-right={5000}
+          shadow-camera-top={-5000}
+          shadow-camera-bottom={5000}
+        />
+      </group>
       <ambientLight intensity={0.3} />
       {/* inclination={inclination} */}
-      <Sky sunPosition={1} rayleigh={0} />
+      <Sky ref={ref} rayleigh={0} />
     </>
   );
 };
