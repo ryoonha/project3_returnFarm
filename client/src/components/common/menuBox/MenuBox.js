@@ -3,6 +3,8 @@ import styled, { css } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { TextBox } from "../../../libs/cssFrame";
 import { opneControl } from "../../../stores/reducers/stateSlice";
+import { useSelector } from "react-redux";
+import { weatherData } from "../../../data/weather";
 
 const MenuContainer = styled.div`
   position: fixed;
@@ -34,8 +36,11 @@ const MenuContainer = styled.div`
       height: 50px;
       background-color: rgb(255, 255, 255);
       border-radius: 50%;
-      color: #ff4931;
-      animation: rotation 5s infinite linear forwards;
+      color: ${(props) => (props.weather === "sun" ? "#ff4931" : "#c9d651")};
+      animation: ${(props) =>
+        props.weather === "sun"
+          ? "sunRotation 5s infinite linear forwards"
+          : "moonRotation 5s infinite forwards"};
 
       :hover {
         font-size: 30px;
@@ -43,12 +48,23 @@ const MenuContainer = styled.div`
     }
   }
 
-  @keyframes rotation {
+  @keyframes sunRotation {
     0% {
       transform: rotate(0deg);
     }
     100% {
       transform: rotate(360deg);
+    }
+  }
+  @keyframes moonRotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    50% {
+      transform: rotate(-40deg);
+    }
+    100% {
+      transform: rotate(0deg);
     }
   }
 `;
@@ -92,8 +108,10 @@ const Menu = styled.div`
 `;
 
 const MenuBox = ({ dispatch }) => {
+  const { weather } = useSelector((state) => state.state);
+  const wData = weatherData;
   return (
-    <MenuContainer className="cc">
+    <MenuContainer className="cc" weather={weather}>
       <Menu
         text={"info"}
         onClick={() => dispatch(opneControl({ select: "Status" }))}
@@ -108,9 +126,7 @@ const MenuBox = ({ dispatch }) => {
       </Menu>
       <Menu>?</Menu>
       <div className="weatherBox">
-        <div className="weather">
-          <FontAwesomeIcon icon="fa-solid fa-sun" />
-        </div>
+        <div className="weather">{wData[weather]}</div>
       </div>
       <Menu
         text={"exchange"}

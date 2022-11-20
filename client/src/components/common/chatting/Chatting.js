@@ -163,6 +163,7 @@ const Chatting = () => {
   // 채팅은 서버에서 받아 바로바로 표시
   const [message, setMessage] = useState("");
   const [toggle, setToggle] = useState(false);
+  const [focus, setFocus] = useState(false);
 
   const { userList, chatList } = useSelector((state) => state.socket);
 
@@ -195,7 +196,6 @@ const Chatting = () => {
       const eh = clientHeight + scrollTop;
       const isScroll = save <= eh;
       save = chatRef.current.scrollHeight;
-      console.log(scrollTop);
       if (isScroll) {
         chatRef.current.scrollTop = chatRef.current.scrollHeight;
       }
@@ -227,6 +227,11 @@ const Chatting = () => {
           placeholder="메세지 입력"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSendMessage(e);
+            }
+          }}
         />
         <button onClick={handleSendMessage} className="cc">
           <FontAwesomeIcon icon="fa-regular fa-paper-plane" />

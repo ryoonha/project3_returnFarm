@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import store from "../../stores/store";
 import Character from "../character/Character";
 import { BulletinBoard } from "./object/BulletinBoard";
+import { Light } from "./setting/Light";
 
 const Index = () => {
   return (
@@ -14,13 +15,12 @@ const Index = () => {
         shadows
         camera={{
           fov: 60,
-          far: 250000,
+          far: 15000,
           near: 3,
         }}
       >
         <Provider store={store}>
-          <ambientLight />
-          <pointLight position={[5, 5, 5]} />
+          <Light />
           <Character />
           <Ground />
           <Camera />
