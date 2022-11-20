@@ -3,10 +3,10 @@ import { useSelector } from "react-redux";
 import { Man } from "./Man";
 
 const Character = () => {
-  const { userTest } = useSelector((state) => state.state);
+  const { myInfo } = useSelector((state) => state.state);
   return (
     <group>
-      <Man nickName={userTest} />
+      <Man nickName={myInfo.nickName} />
     </group>
   );
 };
