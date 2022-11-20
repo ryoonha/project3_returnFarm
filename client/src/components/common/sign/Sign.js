@@ -130,14 +130,20 @@ const Sign = ({ setLoginCheck }) => {
     }
   };
 
-  const handleRegister = () => {
-    signRegister(userData);
-
-    setUseData({
-      user_id: "",
-      user_pwd: "",
-      user_nick: "",
-    });
+  const handleRegister = async () => {
+    try {
+      const data = await signRegister(userData);
+      console.log(data);
+      setToggleRegister(false);
+      setUseData({
+        user_id: "",
+        user_pwd: "",
+        user_nick: "",
+      });
+    } catch (err) {
+      console.log(err);
+      alert(err.response.data.massage);
+    }
   };
   const handleLogin = async () => {
     const { user_id, user_pwd } = userData;

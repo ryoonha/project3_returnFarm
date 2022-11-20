@@ -6,7 +6,7 @@ const userRegister = async (user_id, user_pwd, user_nick) => {
     user_pwd,
     user_nick,
   })
-    .then((e) => e.dataValues)
+    .then((e) => [true, e.dataValues])
     .catch((err) => {
       return [false, err.errors[0].message];
     });
