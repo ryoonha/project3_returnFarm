@@ -11,7 +11,7 @@ function App() {
   const [loginCheck, setLoginCheck] = useState(false);
 
   useEffect(() => {
-    localStorage.clear();
+    // localStorage.clear();
     return () => {
       disconnectSocket();
     };

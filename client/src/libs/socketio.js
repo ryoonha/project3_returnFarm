@@ -27,7 +27,6 @@ export const SocketIo = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     socket.on("newUserResponse", (data) => {
-      console.log(data);
       dispatch(handleUser({ user: data }));
     });
   }, [socket]);

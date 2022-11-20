@@ -123,6 +123,9 @@ const ChattingBox = styled.div`
         background-color: rgb(51, 51, 255);
         transform: translateY(-50%) rotate(20deg);
       }
+      .paper {
+        transform: translate(-2px, -1px);
+      }
     }
   }
   .chatUserListBox {
@@ -163,12 +166,9 @@ const Chatting = () => {
   // 채팅은 서버에서 받아 바로바로 표시
   const [message, setMessage] = useState("");
   const [toggle, setToggle] = useState(false);
-  const [focus, setFocus] = useState(false);
 
   const { userList, chatList } = useSelector((state) => state.socket);
-
-  // 임시로 아이디 사용, 스토리지 사용
-  //const { id } = JSON.parse(localStorage.userData);
+  console.log(chatList);
 
   const { userTest } = useSelector((state) => state.state);
 
@@ -234,7 +234,7 @@ const Chatting = () => {
           }}
         />
         <button onClick={handleSendMessage} className="cc">
-          <FontAwesomeIcon icon="fa-regular fa-paper-plane" />
+          <FontAwesomeIcon icon="fa-regular fa-paper-plane" className="paper" />
         </button>
       </div>
       <div className="chatUserListBox">
