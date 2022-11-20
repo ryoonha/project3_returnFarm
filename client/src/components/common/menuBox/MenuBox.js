@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { TextBox } from "../../../libs/cssFrame";
-import { opneControl } from "../../../stores/reducers/stateSlice";
+import { handleTopMenu } from "../../../stores/reducers/stateSlice";
 import { useSelector } from "react-redux";
 import { weatherData } from "../../../data/weather";
 
 const MenuContainer = styled.div`
   position: fixed;
   width: 100vw;
-  height: 80px;
-  border-radius: 0px 0px 50% 50%;
-  background-color: var(--mainColor);
+  height: 70px;
+  border-radius: 0px 0px 20% 20%;
+  background-color: rgba(133, 133, 133, 0.4);
   overflow: hidden;
 
   div {
@@ -27,8 +26,8 @@ const MenuContainer = styled.div`
   .weatherBox {
     width: 90px;
     height: 90px;
-    margin: 0px 15px 0px 15px;
-    background-color: rgb(130, 197, 255);
+    //margin: 0px 15px 0px 15px;
+    //background-color: rgba(134, 88, 74, 0.507);
     border-radius: 50%;
 
     .weather {
@@ -76,8 +75,10 @@ const Menu = styled.div`
   border-radius: 10%;
 
   :hover {
+    transition: 0.2s;
     background-color: rgb(255, 240, 212);
     font-size: 30px;
+    outline: 1px solid rgba(133, 133, 133, 0.4);
     ${(props) =>
       css`
         ::before {
@@ -114,13 +115,13 @@ const MenuBox = ({ dispatch }) => {
     <MenuContainer className="cc" weather={weather}>
       <Menu
         text={"info"}
-        onClick={() => dispatch(opneControl({ select: "Status" }))}
+        onClick={() => dispatch(handleTopMenu({ select: "Status" }))}
       >
         <FontAwesomeIcon icon="fa-solid fa-circle-user" />
       </Menu>
       <Menu
         text={"inventory"}
-        onClick={() => dispatch(opneControl({ select: "Inventory" }))}
+        onClick={() => dispatch(handleTopMenu({ select: "Inventory" }))}
       >
         <FontAwesomeIcon icon="fa-solid fa-suitcase" />
       </Menu>
@@ -130,13 +131,13 @@ const MenuBox = ({ dispatch }) => {
       </div>
       <Menu
         text={"exchange"}
-        onClick={() => dispatch(opneControl({ select: "Exchange" }))}
+        onClick={() => dispatch(handleTopMenu({ select: "Exchange" }))}
       >
         <FontAwesomeIcon icon="fa-solid fa-arrow-right-arrow-left" />
       </Menu>
       <Menu
         text={"chatting"}
-        onClick={() => dispatch(opneControl({ select: "Chatting" }))}
+        onClick={() => dispatch(handleTopMenu({ select: "Chatting" }))}
       >
         <FontAwesomeIcon icon="fa-regular fa-comment" />
       </Menu>

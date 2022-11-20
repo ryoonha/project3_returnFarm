@@ -1,13 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { animated } from "react-spring";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useDivMove from "../../../hooks/useDivMove";
 import { BasicBox } from "../../../libs/cssFrame";
 import { itemList } from "../../../data/item";
 
 const InventoryBox = styled(BasicBox)`
-  /* background-color: #f7a9ec; */
   transform: translateX(48vw);
   height: auto;
 
@@ -22,7 +20,6 @@ const InventoryBox = styled(BasicBox)`
       height: 50px;
       :hover {
         background-color: #ffba39;
-        //background-color: rgb(212, 212, 212);
       }
       img {
         width: 50px;
