@@ -3,7 +3,8 @@ import { useDispatch } from "react-redux";
 import styled, { css } from "styled-components";
 import { signLogin, signRegister } from "../../../api/sign";
 import { initSocketConnection, socket } from "../../../libs/socketio";
-import { userSaveF } from "../../../stores/reducers/stateSlice";
+import { modalChange } from "../../../stores/reducers/modalSlice";
+import { myInfoSave } from "../../../stores/reducers/stateSlice";
 
 const SignContainer = styled.div`
   position: relative;
@@ -140,19 +141,24 @@ const Sign = ({ setLoginCheck }) => {
   };
   const handleLogin = async () => {
     const { user_id, user_pwd } = userData;
+    dispatch(modalChange({ change: "loading" }));
     console.log(user_id, user_pwd);
     try {
-      const test = await signLogin({ user_id, user_pwd });
-      //status
-      console.log(test);
-      setLoginCheck(initSocketConnection());
-      setUseData({
-        user_id: "",
-        user_pwd: "",
-        user_nick: "",
-      });
+      const { data } = await signLogin({ user_id, user_pwd });
+      const { nickName, token } = data;
+      console.log(data);
+      if (initSocketConnection(nickName)) {
+        setLoginCheck(true);
+        setUseData({
+          user_id: "",
+          user_pwd: "",
+          user_nick: "",
+        });
+        dispatch(myInfoSave({ nickName: nickName, token: token }));
+        dispatch(modalChange({ change: null }));
+      }
     } catch (e) {
-      console.log(e.response.data);
+      dispatch(modalChange({ change: null }));
       alert(e.response.data.message);
     }
   };
