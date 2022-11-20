@@ -5,7 +5,7 @@ export const BasicBox = styled.div`
   top: 130px;
   width: 500px;
   height: 250px;
-  background-color: #fff5d4;
+  background-color: rgba(209, 209, 209, 0.9);
 
   .header {
     display: flex;
@@ -15,11 +15,13 @@ export const BasicBox = styled.div`
     height: 30px;
     border-radius: 10px 10px 0px 0px;
     transform: translateY(-8px);
-    background-color: rgb(65, 141, 255);
+    color: white;
+    background-color: rgb(161, 76, 76);
+    transition: 0.2s;
     text-align: center;
 
     :hover {
-      background-color: rgb(255, 115, 115);
+      background-color: rgb(112, 16, 16);
     }
   }
 `;
