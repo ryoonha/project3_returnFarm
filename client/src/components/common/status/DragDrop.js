@@ -135,7 +135,7 @@ const DragDrop = ({ setFileData, fileData, imgURL, setImageUrl }) => {
         <img src={imgURL} alt="" className="dragdrop" />
       ) : (
         <label htmlFor="fileUpload" ref={dragRef}>
-          <div className="dragdrop cc">파일 첨부</div>
+          <div className="dragdrop cc">사진 변경</div>
         </label>
       )}
       {/* {fileData ? (

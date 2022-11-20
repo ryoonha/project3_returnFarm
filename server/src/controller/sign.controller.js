@@ -26,10 +26,11 @@ const login = async (req, res, next) => {
   }
   // access token, refresh token 담긴 토큰
   const token = generateToken(req.body.user_id);
-  console.log(token, " 🔑 처음 발급한 token ");
+  //console.log(token, " 🔑 처음 발급한 token ");
 
   res.status(200).json({
     token,
+    nickName: logined.user_nick,
     message: `Welcome ${logined.user_nick}🥕`,
   });
 };
@@ -43,7 +44,7 @@ const loginExtension = async (req, res, next) => {
   if (!renewToken) {
     res.sendStatus(412); // 412: 클라이언트의 헤더에 있는 전제조건은 서버의 전제조건에 적절하지 않습니다.
   } else {
-    console.log(renewToken, "🔓 새로 발급한 token");
+    //console.log(renewToken, "🔓 새로 발급한 token");
 
     res.status(200).json({ message: "재연장 성공!" });
   }

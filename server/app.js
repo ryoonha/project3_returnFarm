@@ -35,17 +35,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/", router);
 
-// * ------------ server 및 router ------------ *
-// npm i ipfs-http-client@56.0.2
-// const ipfs = create("/ip4/127.0.0.1/tcp/5001");
-// const imgUpload = async (img) => {
-//   if (!Buffer.isBuffer(img)) return null;
-//   const addFile = await ipfs.add(img);
-//   const initUri = "https://ipfs.io/ipfs/";
-//   const mkUrl = initUri + addFile.cid;
-//   return mkUrl;
-// };
-
 // 서버 생성
 const webServer = createServer(app);
 // 서버 - 소켓 연결
@@ -77,10 +66,13 @@ let users = [];
 // socket.이벤트 - client 전송
 // io.이벤트 - server 전송
 io.on("connection", (socket) => {
-  // 소켓 연결 알림
   console.log(`${socket.id} 유저가 소켓에 연결되었습니다!`);
   socket.on("loginUser", (nickName) => {
-    users.push(nickName);
+    const init = {
+      nickName,
+      socketId: socket.id,
+    };
+    users.push(init);
     io.emit("newUserResponse", users);
   });
 
@@ -88,11 +80,9 @@ io.on("connection", (socket) => {
     io.emit("messageResponse", data);
   });
 
-  // 소켓 연결 해제
   socket.on("disconnect", () => {
     console.log("🔥: A user disconnected");
-    users = users.filter((user) => user.socketID !== socket.id);
-    // 유저 이탈 시 채팅 참가 목록에서 제외 코드 작성하기
+    users = users.filter((user) => user.socketId !== socket.id);
     io.emit("newUserResponse", users);
     socket.disconnect();
   });

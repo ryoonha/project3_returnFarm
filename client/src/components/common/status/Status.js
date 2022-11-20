@@ -8,7 +8,7 @@ import DragDrop from "./DragDrop";
 
 const StatusBox = styled(BasicBox)`
   left: 50px;
-  background-color: #c4f3ff;
+  //background-color: #c4f3ff;
 
   .statusBody {
     display: flex;
@@ -63,10 +63,6 @@ const Status = () => {
         </div>
         <div className="statusBody">
           <div className="statusUserBox">
-            {/* <div className="statusImgBox cc">
-              <FontAwesomeIcon icon="fa-solid fa-address-card" />
-              <img src="" alt="프로필 사진" />
-            </div> */}
             <DragDrop
               setFileData={setFileData}
               fileData={fileData}
