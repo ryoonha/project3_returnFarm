@@ -27,6 +27,7 @@ const exchange = async (req, res, next) => {
   // --> db 프로세스 코드 넣기(토큰에서 address, 바디에서 bagArray)
   const dbResult = await postTransactionExchange(bag, address);
   if (dbResult && tokenData) {
+
     res.status(200).send(dbResult);
   } else {
     res.status(400).send({ message: "전송을 실패했어요 😭" });
