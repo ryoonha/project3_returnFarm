@@ -12,17 +12,15 @@ const generateRefreshToken = (id) => {
 };
 
 // 로그인 된 상태에서 인증 필요한 페이지 이동 시, 토큰 검증
-const tokenValidation = (req, res, next) => {
-  if (!req.headers.authorization) {
-    res.status(401).send({ status: false, message: "다시 로그인해 주세요!" });
+const tokenValidation = (accessToken) => {
+  if (!accessToken) {
+    return false;
   } else {
-    const authorization = req.headers.authorization;
-    const token = authorization.split(" ")[1];
-    const data = jwt.verify(token, process.env.ACCESS_SECRET);
+    const data = jwt.verify(accessToken, process.env.ACCESS_SECRET);
     if (data) {
-      res.status(401).send({ status: false, message: "다시 로그인해 주세요!" });
-    } else {
       return data;
+    } else {
+      return false;
     }
   }
 };

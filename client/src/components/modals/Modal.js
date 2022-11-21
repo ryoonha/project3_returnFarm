@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 
@@ -19,12 +19,12 @@ const ModalBox = styled.div`
 
 const Modal = () => {
   // 컨트롤 코드 필요
-  const { check } = useSelector((state) => state.modal);
+  const { modalCheck } = useSelector((state) => state.state);
 
   return (
-    <ModalBox check={check}>
-      {check === "loading" ? <Loading /> : null}
-      {check === "screenshot" ? <Screenshot /> : null}
+    <ModalBox check={modalCheck}>
+      {modalCheck === "loading" ? <Loading /> : null}
+      {modalCheck === "screenshot" ? <Screenshot /> : null}
     </ModalBox>
   );
 };

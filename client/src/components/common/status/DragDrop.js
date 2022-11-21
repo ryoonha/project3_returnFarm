@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { modalChange } from "../../../stores/reducers/modalSlice";
+import { modalChange } from "../../../stores/reducers/stateSlice";
 
 const DragDropBox = styled.div`
   width: 150px;

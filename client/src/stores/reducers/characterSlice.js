@@ -1,12 +1,5 @@
 import { createSlice, current } from "@reduxjs/toolkit";
 
-const init = {
-  up: false,
-  right: false,
-  down: false,
-  left: false,
-};
-
 const characterSlice = createSlice({
   name: "characterSlice",
   initialState: {

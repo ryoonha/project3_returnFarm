@@ -8,9 +8,7 @@ import { userRegister, userLogin } from "../db_Process/sign.db";
 
 const register = async (req, res, next) => {
   const { user_id, user_pwd, user_nick } = req.body;
-  console.log(req.body, "✨");
   const dbResult = await userRegister(user_id, user_pwd, user_nick);
-  console.log(dbResult, "🚓");
   const [bool, msg] = dbResult;
   if (!bool) {
     res.status(409).json({ massage: msg }); // 이미 가입한 유저, conflict
