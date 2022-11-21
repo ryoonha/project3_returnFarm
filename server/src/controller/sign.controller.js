@@ -1,8 +1,8 @@
 import {} from "express-async-errors";
 import {
-  generateToken,
+  generateAccessToken,
+  generateRefreshToken,
   generateRenewToken,
-  removeToken,
 } from "../middleware/validation";
 import { userRegister, userLogin } from "../db_Process/sign.db";
 
@@ -28,16 +28,19 @@ const login = async (req, res, next) => {
     return res.status(401).json({ message: "회원가입을먼저해주세요" });
   }
   // logined에 이미 userLogin 한 값들이 담겨 있음
-  // access token, refresh token 담긴 토큰
-  const token = generateToken(
+  // generateAccessToken -> 첫 로그인 시 주는 access token 생성 함수
+
+  const firstAccessToken = generateAccessToken(
     logined.user_nick,
     logined.address,
     logined.token_amount
   );
+  const refreshToken = generateRefreshToken(logined.user_nick);
   // console.log(token, " 🔑 처음 발급한 token "); // token이 출력(nick, address, token_amout) 확인
 
   res.status(200).json({
-    token,
+    firstAccessToken,
+    refreshToken,
     nickName: logined.user_nick,
     message: `Welcome ${logined.user_nick}🥕`,
   });

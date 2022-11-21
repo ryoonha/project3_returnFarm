@@ -29,21 +29,20 @@ const tokenValidation = (req, res, next) => {
 
 // ---------------------* 로그인 할 때 *---------------------
 
-// 첫 로그인 토큰(access, refresh) 생성
+// generateAccessToken -> 첫 로그인 시 주는 access token 생성 함수
 // nick, address, token_amount
-const generateToken = (user_nick, address, token_amount) => {
+const generateAccessToken = (user_nick, address, token_amount) => {
   // 1. refresh token 생성 -> renew에서 비교해보기
-  const refreshToken = generateRefreshToken(user_nick);
   // 2. access token 생성
   const accessToken = jwt.sign(
-    { user_nick, address, token_amount, refreshToken },
+    { user_nick, address, token_amount },
     process.env.ACCESS_SECRET,
     {
       expiresIn: "1h",
       issuer: "return Farm;",
     }
   );
-  return { accessToken, refreshToken };
+  return accessToken;
 };
 
 // 로그인 연장 토큰(두번째 access, 기존 refresh) 생성
@@ -81,4 +80,9 @@ const generateRenewToken = (headers, id) => {
 // 새로운 access token 발급(인자로 req로 받은 id, 기존의 refresh(암호화된상태)를 넣어줌)
  */
 
-export { tokenValidation, generateToken, generateRenewToken };
+export {
+  tokenValidation,
+  generateAccessToken,
+  generateRefreshToken,
+  generateRenewToken,
+};
