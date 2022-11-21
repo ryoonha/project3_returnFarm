@@ -1,7 +1,7 @@
 import { tokenValidation } from "../middleware/validation";
 import { userInfo } from "../db_Process/user.db";
 
-const getMyinfo = async (req, res, next) => {
+export const getMyinfo = async (req, res, next) => {
   const { user_id, address } = req.body;
   // const tokenData = tokenValidation();
   // --> db 프로세스 코드 넣기
