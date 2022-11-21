@@ -20,16 +20,14 @@ const InterfaceBox = styled.div`
 
 const Interface = () => {
   const dispatch = useDispatch();
-  const { myInfo, topMenuSelect } = useSelector((state) => state.state);
+  const { topMenuSelect } = useSelector((state) => state.state);
   useKeyEvents();
 
   return (
     <InterfaceBox>
       {topMenuSelect === "Status" ? <Status dispatch={dispatch} /> : null}
       {topMenuSelect === "Exchange" ? <Exchange dispatch={dispatch} /> : null}
-      {topMenuSelect === "Chatting" ? (
-        <Chatting dispatch={dispatch} myInfo={myInfo} />
-      ) : null}
+      {topMenuSelect === "Chatting" ? <Chatting dispatch={dispatch} /> : null}
       {topMenuSelect === "Inventory" ? <Inventory dispatch={dispatch} /> : null}
       <MenuBox dispatch={dispatch} />
       <HotkeyBox dispatch={dispatch} />

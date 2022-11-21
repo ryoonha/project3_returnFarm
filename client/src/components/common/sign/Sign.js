@@ -5,7 +5,7 @@ import { gameBag } from "../../../api/game";
 import { signLogin, signRegister } from "../../../api/sign";
 import { initSocketConnection, socket } from "../../../libs/socketio";
 import { modalChange } from "../../../stores/reducers/stateSlice";
-import { myInfoSave } from "../../../stores/reducers/userSlice";
+import { bagUpdate, myInfoSave } from "../../../stores/reducers/userSlice";
 
 const SignContainer = styled.div`
   position: relative;
@@ -134,7 +134,6 @@ const Sign = ({ setLoginCheck }) => {
   const handleRegister = async () => {
     try {
       const data = await signRegister(userData);
-      console.log(data);
       setToggleRegister(false);
       setUseData({
         user_id: "",
@@ -150,14 +149,12 @@ const Sign = ({ setLoginCheck }) => {
     dispatch(modalChange({ change: "loading" }));
     try {
       const { data } = await signLogin({ user_id, user_pwd });
-      const { nickName, token } = data;
-      if (initSocketConnection(nickName)) {
+      const { logined, token } = data;
+      if (initSocketConnection(data)) {
         localStorage.setItem("token", JSON.stringify(token));
-        console.log(localStorage.getItem("token"));
-        const bagInfo = await gameBag();
-        console.log("???????");
-        console.log(bagInfo);
-        await dispatch(myInfoSave({ nickName: nickName }));
+        const bagInfo = await gameBag({ address: logined.address });
+        await dispatch(myInfoSave({ data: logined, token: token }));
+        await dispatch(bagUpdate({ bag: bagInfo.data }));
         await setLoginCheck(true);
         await setUseData({
           user_id: "",

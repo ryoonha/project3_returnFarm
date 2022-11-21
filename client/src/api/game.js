@@ -1,7 +1,7 @@
 import { game } from ".";
 
-export const gameBag = () => {
-  return game.get("bag");
+export const gameBag = (address) => {
+  return game.post("bag", address);
 };
 
 export const gameBagUpdate = (userData) => {
