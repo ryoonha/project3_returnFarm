@@ -7,7 +7,7 @@ const getBag = async (req, res, next) => {
     const { accessToken, refreshToken } = JSON.parse(req.headers.authorization);
 
     const tokenData = tokenValidation(accessToken);
-    console.log(tokenData);
+    console.log(tokenData, "🔎🔎");
     // --> db 프로세스 코드 넣기
     const dbResult = db.getGameBag(tokenData.address);
     //const dbResult = await db.getGameBag(req.body.address);
