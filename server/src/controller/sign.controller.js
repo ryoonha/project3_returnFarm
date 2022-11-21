@@ -5,11 +5,25 @@ import {
   removeToken,
 } from "../middleware/validation";
 import { userRegister, userLogin } from "../db_Process/sign.db";
+import Web3 from "web3";
+const web3 = new Web3(
+  new Web3.providers.HttpProvider(
+    "https://goerli.infura.io/v3/b03f802e554f441786b51c437837bfe4%22"
+  )
+);
 
 const register = async (req, res, next) => {
   const { user_id, user_pwd, user_nick } = req.body;
-  const dbResult = await userRegister(user_id, user_pwd, user_nick);
+  const { address, privateKey } = web3.eth.accounts.create();
+  const dbResult = await userRegister(
+    user_id,
+    user_pwd,
+    user_nick,
+    address,
+    privateKey
+  );
   const [bool, msg] = dbResult;
+
   if (!bool) {
     res.status(409).json({ massage: msg }); // 이미 가입한 유저, conflict
   } else {
@@ -25,19 +39,15 @@ const login = async (req, res, next) => {
   if (!logined) {
     return res.status(401).json({ message: "회원가입을먼저해주세요" });
   }
-  // logined에 이미 userLogin 한 값들이 담겨 있음
-  // access token, refresh token 담긴 토큰
   const token = generateToken(
     logined.user_nick,
     logined.address,
     logined.token_amount
   );
-  // console.log(token, " 🔑 처음 발급한 token "); // token이 출력(nick, address, token_amout) 확인
 
   res.status(200).json({
     token,
-    nickName: logined.user_nick,
-    message: `Welcome ${logined.user_nick}🥕`,
+    logined,
   });
 };
 

@@ -6,6 +6,7 @@ dotenv.config();
 
 // refresh token 생성
 const generateRefreshToken = (user_nick) => {
+  console.log("🔎🔎", user_nick, process.env.REFRESH_SECRET);
   return jwt.sign({ user_nick }, process.env.REFRESH_SECRET, {
     expiresIn: "3d",
   });
@@ -31,6 +32,7 @@ const tokenValidation = (accessToken) => {
 // nick, address, token_amount
 const generateToken = (user_nick, address, token_amount) => {
   // 1. refresh token 생성 -> renew에서 비교해보기
+  console.log("🔎🔎🔎", user_nick, address, token_amount);
   const refreshToken = generateRefreshToken(user_nick);
   // 2. access token 생성
   const accessToken = jwt.sign(

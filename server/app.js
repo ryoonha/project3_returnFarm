@@ -6,10 +6,7 @@ import { createServer } from "http";
 import cors from "cors";
 import { sequelize } from "./models/index";
 import router from "./src/router";
-// import { create } from "ipfs-http-client";
-
 const PORT = process.env.PORT || 4000;
-
 // * ------------ data base ------------ *
 
 sequelize

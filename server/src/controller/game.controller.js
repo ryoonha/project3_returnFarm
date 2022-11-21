@@ -2,22 +2,12 @@ import { tokenValidation } from "../middleware/validation";
 import db from "../db_Process/game.db";
 
 const getBag = async (req, res, next) => {
-  // console.log(req.headers, "✨");
-  if (req.headers.authorization) {
-    const { accessToken, refreshToken } = JSON.parse(req.headers.authorization);
-
-    const tokenData = tokenValidation(accessToken);
-    console.log(tokenData, "🔎🔎");
-    // --> db 프로세스 코드 넣기
-    const dbResult = db.getGameBag(tokenData.address);
-    //const dbResult = await db.getGameBag(req.body.address);
-    // 토큰에 데이터가 있고 DB에서 가방 조회가 성공적이라면
-    if (dbResult) {
-      //&& tokenData
-      res.status(200).send(dbResult);
-    } else {
-      res.status(400).send({ message: "가방 정보를 불러오는데 실패했어.." });
-    }
+  const { address } = req.body;
+  const dbResult = db.getGameBag(address);
+  if (dbResult) {
+    res.status(200).send(dbResult);
+  } else {
+    res.status(400).send({ message: "가방 정보를 불러오는데 실패했어.." });
   }
 };
 
