@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import styled, { css } from "styled-components";
+import { gameBag } from "../../../api/game";
 import { signLogin, signRegister } from "../../../api/sign";
 import { initSocketConnection, socket } from "../../../libs/socketio";
-import { modalChange } from "../../../stores/reducers/modalSlice";
-import { myInfoSave } from "../../../stores/reducers/stateSlice";
+import { modalChange } from "../../../stores/reducers/stateSlice";
+import { bagUpdate, myInfoSave } from "../../../stores/reducers/userSlice";
 
 const SignContainer = styled.div`
   position: relative;
@@ -133,7 +134,6 @@ const Sign = ({ setLoginCheck }) => {
   const handleRegister = async () => {
     try {
       const data = await signRegister(userData);
-      console.log(data);
       setToggleRegister(false);
       setUseData({
         user_id: "",
@@ -141,29 +141,30 @@ const Sign = ({ setLoginCheck }) => {
         user_nick: "",
       });
     } catch (err) {
-      console.log(err);
       alert(err.response.data.massage);
     }
   };
   const handleLogin = async () => {
     const { user_id, user_pwd } = userData;
     dispatch(modalChange({ change: "loading" }));
-    console.log(user_id, user_pwd);
     try {
       const { data } = await signLogin({ user_id, user_pwd });
-      const { nickName, token } = data;
-      console.log(data);
-      if (initSocketConnection(nickName)) {
-        setLoginCheck(true);
-        setUseData({
+      const { logined, token } = data;
+      if (initSocketConnection(data)) {
+        localStorage.setItem("token", JSON.stringify(token));
+        const bagInfo = await gameBag({ address: logined.address });
+        await dispatch(myInfoSave({ data: logined, token: token }));
+        await dispatch(bagUpdate({ bag: bagInfo.data }));
+        await setLoginCheck(true);
+        await setUseData({
           user_id: "",
           user_pwd: "",
           user_nick: "",
         });
-        dispatch(myInfoSave({ nickName: nickName, token: token }));
-        dispatch(modalChange({ change: null }));
       }
+      dispatch(modalChange({ change: null }));
     } catch (e) {
+      localStorage.clear();
       dispatch(modalChange({ change: null }));
       alert(e.response.data.message);
     }
@@ -214,7 +215,6 @@ const Sign = ({ setLoginCheck }) => {
         <div className="signButton cc">
           <button
             onClick={(e) => {
-              console.log("들어옴");
               if (userDateValidation()) {
                 if (!toggleRegister) {
                   handleLogin();

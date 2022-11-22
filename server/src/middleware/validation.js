@@ -5,24 +5,23 @@ dotenv.config();
 // ---------------* 토큰 검정 및 refresh token *---------------
 
 // refresh token 생성
-const generateRefreshToken = (id) => {
-  return jwt.sign({ id }, process.env.REFRESH_SECRET, {
+const generateRefreshToken = (user_nick) => {
+  console.log("🔎🔎", user_nick, process.env.REFRESH_SECRET);
+  return jwt.sign({ user_nick }, process.env.REFRESH_SECRET, {
     expiresIn: "3d",
   });
 };
 
 // 로그인 된 상태에서 인증 필요한 페이지 이동 시, 토큰 검증
-const tokenValidation = (req, res, next) => {
-  if (!req.headers.authorization) {
-    res.status(401).send({ status: false, message: "다시 로그인해 주세요!" });
+const tokenValidation = (accessToken) => {
+  if (!accessToken) {
+    return false;
   } else {
-    const authorization = req.headers.authorization;
-    const token = authorization.split(" ")[1];
-    const data = jwt.verify(token, process.env.ACCESS_SECRET);
+    const data = jwt.verify(accessToken, process.env.ACCESS_SECRET);
     if (data) {
-      res.status(401).send({ status: false, message: "다시 로그인해 주세요!" });
-    } else {
       return data;
+    } else {
+      return false;
     }
   }
 };
@@ -30,15 +29,17 @@ const tokenValidation = (req, res, next) => {
 // ---------------------* 로그인 할 때 *---------------------
 
 // 첫 로그인 토큰(access, refresh) 생성
-const generateToken = (id) => {
+// nick, address, token_amount
+const generateToken = (user_nick, address, token_amount) => {
   // 1. refresh token 생성 -> renew에서 비교해보기
-  const refreshToken = generateRefreshToken(id);
+  console.log("🔎🔎🔎", user_nick, address, token_amount);
+  const refreshToken = generateRefreshToken(user_nick);
   // 2. access token 생성
   const accessToken = jwt.sign(
-    { id, refreshToken },
+    { user_nick, address, token_amount, refreshToken },
     process.env.ACCESS_SECRET,
     {
-      expiresIn: "10s", // 시간 수정하기
+      expiresIn: "1h",
       issuer: "return Farm;",
     }
   );

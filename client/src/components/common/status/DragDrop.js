@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { modalChange } from "../../../stores/reducers/modalSlice";
+import { modalChange } from "../../../stores/reducers/stateSlice";
 
 const DragDropBox = styled.div`
   width: 150px;
@@ -17,6 +17,11 @@ const DragDropBox = styled.div`
     border-radius: 10px;
     background-color: #daffe5;
     object-fit: contain;
+  }
+
+  .ddt {
+    transform: translateY(-180px);
+    opacity: 0;
   }
 
   .fileInfo {
@@ -131,27 +136,11 @@ const DragDrop = ({ setFileData, fileData, imgURL, setImageUrl }) => {
         onChange={onChangeFiles}
       />
 
-      {imgURL ? (
-        <img src={imgURL} alt="" className="dragdrop" />
-      ) : (
-        <label htmlFor="fileUpload" ref={dragRef}>
-          <div className="dragdrop cc">사진 변경</div>
-        </label>
-      )}
-      {/* {fileData ? (
-        <div className="fileInfo cc">
-          <div>{fileData.name}</div>
-          <div
-            className="close"
-            onClick={() => {
-              setImageUrl(null);
-              setFileData(null);
-            }}
-          >
-            X
-          </div>
-        </div>
-      ) : null} */}
+      <label htmlFor="fileUpload" ref={dragRef}>
+        <img src={imgURL} alt="" className="dragdrop " />
+        {/* 사진 변경 API 연결 */}
+        <div className="dragdrop ddt cc">사진 변경</div>
+      </label>
     </DragDropBox>
   );
 };

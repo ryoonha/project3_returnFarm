@@ -1,10 +1,18 @@
 import User from "../../models/user";
 
-const userRegister = async (user_id, user_pwd, user_nick) => {
+const userRegister = async (
+  user_id,
+  user_pwd,
+  user_nick,
+  address,
+  privateKey
+) => {
   const result = await User.create({
     user_id,
     user_pwd,
     user_nick,
+    address,
+    privateKey,
   })
     .then((e) => [true, e.dataValues])
     .catch((err) => {

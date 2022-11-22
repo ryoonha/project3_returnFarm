@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useDivMove from "../../../hooks/useDivMove";
 import { BasicBox } from "../../../libs/cssFrame";
 import DragDrop from "./DragDrop";
+import { useSelector } from "react-redux";
 
 const StatusBox = styled(BasicBox)`
   left: 50px;
@@ -31,7 +32,8 @@ const StatusBox = styled(BasicBox)`
         font-size: 100px;
       }
       .statusUserProfile {
-        margin-top: ${(props) => (props.fileData ? "10px" : "0px")};
+        /* margin-top: ${(props) => (props.fileData ? "10px" : "10px")}; */
+        margin-top: 10px;
         text-align: center;
       }
     }
@@ -46,10 +48,10 @@ const StatusBox = styled(BasicBox)`
 
 const Status = () => {
   const [x, y, bindDivPos] = useDivMove();
+  const { nickName, profileImg, haetsal, token_amount, created_at } =
+    useSelector((state) => state.user.myInfo);
   const [fileData, setFileData] = useState(null); // 이미지 데이터
-  const [nftName, setNftName] = useState(""); // nft 이름
   const [imgURL, setImgURL] = useState(null); //imgURL base64
-
   return (
     <animated.div
       style={{
@@ -70,8 +72,8 @@ const Status = () => {
               setImageUrl={setImgURL}
             />
             <div className="statusUserProfile">
-              <div className="userNickName">kkm</div>
-              <div className="userTimeData">2001.11.28</div>
+              <div className="userNickName">{nickName}</div>
+              <div className="userTimeData">{created_at.split("T")[0]}</div>
             </div>
           </div>
           <div className="statusUserEtc">

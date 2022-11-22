@@ -42,12 +42,6 @@ exports.putGameBag = async (address, bag) => {
   return result;
 };
 
-
-
-
-
-
-
 exports.randCreate = async (address) => {
   const result = await Rand.findOrCreate({
     where: { address: address },

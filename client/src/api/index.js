@@ -1,11 +1,11 @@
 import axios from "axios";
 import { setInterceptors } from "./common/interceptors";
 
-function createInstanceWithAuth(url, type) {
+function createInstanceWithAuth(url) {
   const instance = axios.create({
     baseURL: `http://localhost:4000/${url}`,
   });
-  return setInterceptors(instance, type);
+  return setInterceptors(instance);
 }
 
 //http://localhost:4000/
