@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { animated } from "react-spring";
 import useDivMove from "../../../hooks/useDivMove";
-import { BasicBox } from "../../../libs/cssFrame";
+import { BasicBox, DetailBox } from "../../../libs/cssFrame";
 import { itemList } from "../../../data/item";
 import { useSelector } from "react-redux";
+import { dateName } from "../../../data/weather";
 
 const InventoryBox = styled(BasicBox)`
   transform: translateX(48vw);
@@ -32,54 +33,9 @@ const InventoryBox = styled(BasicBox)`
         bottom: 0px;
         width: 100%;
         font-size: 10px;
-        //border-radius: 5px 5px 0px 0px;
         background-color: rgba(0, 0, 0, 0.473);
         color: white;
       }
-    }
-  }
-  .detailBox {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 50px;
-    width: 210px;
-    //height: 150px;
-    background-color: rgba(36, 36, 36, 0.479);
-    div {
-      text-align: center;
-      color: white;
-    }
-    .item {
-      color: rgb(116, 194, 194);
-      background-color: rgb(41, 41, 41);
-    }
-    .desc,
-    .countBox,
-    .timeBox {
-      padding: 5px 0px 5px 0px;
-      .time0 {
-        color: orange;
-      }
-      .time1 {
-        color: #f8ff94;
-      }
-      .time2 {
-        color: #b9ff8a;
-      }
-      .time3 {
-        color: #c0bcff;
-      }
-      .time4 {
-        color: #f290ff;
-      }
-    }
-    .countBox {
-      border-top: 1px solid rgb(110, 110, 110);
-      border-bottom: 1px solid rgb(110, 110, 110);
-    }
-    .title {
-      color: rgb(164, 214, 255);
     }
   }
 `;
@@ -89,14 +45,6 @@ const Inventory = () => {
   const [hover, setHover] = useState();
   const { bag } = useSelector((state) => state.user);
   const itemData = itemList;
-
-  const dateName = {
-    0: "년",
-    1: "월",
-    2: "일",
-    3: "시",
-    4: "분",
-  };
 
   return (
     <animated.div
@@ -130,8 +78,7 @@ const Inventory = () => {
               <img src={itemData[item.item_name].img} alt="" />
               <div className="itemName cc">{item.item_name}</div>
               {hover === `item${index}` ? (
-                <div
-                  className="detailBox"
+                <DetailBox
                   onMouseOver={(e) => {
                     setHover(false);
                   }}
@@ -153,7 +100,7 @@ const Inventory = () => {
                       ))}
                     </div>
                   </div>
-                </div>
+                </DetailBox>
               ) : null}
             </div>
           ))}
