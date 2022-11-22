@@ -20,6 +20,14 @@ body {
 
 :root {
   --mainColor: rgb(193, 226, 255);
+  --year: orange;
+  --month: #f8ff94;
+  --Day: #b9ff8a;
+  --hour: #c0bcff;
+  --minute: #f290ff;
+  --title: rgb(164, 214, 255);
+  --back: rgba(36, 36, 36, 0.7);
+  --headerBack: rgb(41, 41, 41);
 }
 
 .cc {
