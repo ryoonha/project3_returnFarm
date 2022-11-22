@@ -1,8 +1,0 @@
-{
-  "workbench.colorCustomizations": {
-    "titleBar.activeBackground": "#5cbf78",
-    "titleBar.inactiveBackground": "#5cbf78"
-  },
-  "explorer.compactFolders": false,
-  "prettier.printWidth": 80
-}

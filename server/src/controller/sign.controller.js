@@ -38,11 +38,7 @@ const login = async (req, res, next) => {
   if (!logined) {
     return res.status(401).json({ message: "회원가입을먼저해주세요" });
   }
-  const token = generateAccessToken(
-    logined.user_nick,
-    logined.address,
-    logined.token_amount
-  );
+  const token = generateAccessToken(logined.user_nick, logined.address);
   const [accessToken, refreshToken] = token;
 
   res.status(200).json({
