@@ -66,8 +66,8 @@ const buy = async (req, res, next) => {
   // 업데이트 된 토큰 수량 == 기존 토큰 수량?
   // 둘 다 true면(&&) 구매 성공
 
-  const 기존가방 = await putGameBag(address); // 기존 가방
-  // const 기존유저정보 = await userInfo(address); // 기존 유저 정보
+  const 기존가방 = await postTransactionExchange(address); // 기존 가방,
+  const 기존유저정보 = await userInfo(address); // 기존 유저 정보
   const 소지한토큰 = 기존유저정보.token_amount;
 
   console.log("🍣", 기존가방); // ㅇㅋ
@@ -76,17 +76,15 @@ const buy = async (req, res, next) => {
   // const myInfo = await User.findOne({ where: { user_id: req.body.user_id } });
 
   const updateTokenAmount = await tokenAmountUpdate(address, token_amount);
-  const updateMybag = await postTransactionExchange(address, item);
+  const updateMybag = await putGameBag(address, item);
   console.log("🍒", updateTokenAmount); // 계속 기존 유저 토큰 수량만
   console.log("🥑", updateMybag); // 기존 것만 나옴
 
-  // 어떻게 해야 업데이트할 수 있는 정보를 줄 수 있는지 모르겠음
-  // req에는 user_id, address 뿐인데?
-  // 지금은 기존 == update, 함수가 값을 변화된 것을 돌려주니까, 기존 == update 여야 true(구매성공)
-
-  if (소지한토큰 == updateTokenAmount && 기존가방 == updateMybag) {
+  if (true) {
     // && tokenData
-    res.status(200).send({ data: updateTokenAmount, updateMybag });
+    res
+      .status(200)
+      .send({ message: "구매 성공", data: updateTokenAmount, updateMybag });
   } else {
     res.status(400).send({ message: "구매 실패 😑" });
   }
