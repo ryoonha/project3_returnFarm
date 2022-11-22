@@ -30,7 +30,7 @@ const tokenValidation = (accessToken) => {
 
 // 첫 로그인 토큰(access, refresh) 생성
 // nick, address, token_amount
-const generateToken = (user_nick, address, token_amount) => {
+const generateAccessToken = (user_nick, address, token_amount) => {
   // 1. refresh token 생성 -> renew에서 비교해보기
   console.log("🔎🔎🔎", user_nick, address, token_amount);
   const refreshToken = generateRefreshToken(user_nick);
@@ -43,7 +43,7 @@ const generateToken = (user_nick, address, token_amount) => {
       issuer: "return Farm;",
     }
   );
-  return accessToken;
+  return [accessToken, refreshToken];
 };
 
 // 로그인 연장: req.body의 refresh token이 맞는지 확인해서 새로운 access token 생성 -> 발급
