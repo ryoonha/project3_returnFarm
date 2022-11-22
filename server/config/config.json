@@ -1,0 +1,10 @@
+{
+  "development": {
+    "username": "root",
+    "password": "rkskek",
+    "database": "returnfarm",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "timezone": "+09:00"
+  }
+}
