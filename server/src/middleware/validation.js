@@ -2,16 +2,6 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 
-// ---------------* 토큰 검정 및 refresh token *---------------
-
-// refresh token 생성
-const generateRefreshToken = (user_nick) => {
-  console.log("🔎🔎", user_nick, process.env.REFRESH_SECRET);
-  return jwt.sign({ user_nick }, process.env.REFRESH_SECRET, {
-    expiresIn: "3d",
-  });
-};
-
 // 로그인 된 상태에서 인증 필요한 페이지 이동 시, 토큰 검증
 const tokenValidation = (accessToken) => {
   if (!accessToken) {
@@ -26,24 +16,19 @@ const tokenValidation = (accessToken) => {
   }
 };
 
-// ---------------------* 로그인 할 때 *---------------------
+// refresh token
+const generateRefreshToken = (user_nick, address) => {
+  return jwt.sign({ user_nick, address }, process.env.REFRESH_SECRET, {
+    expiresIn: "3d",
+  });
+};
 
-// 첫 로그인 토큰(access, refresh) 생성
-// nick, address, token_amount
-const generateToken = (user_nick, address, token_amount) => {
-  // 1. refresh token 생성 -> renew에서 비교해보기
-  console.log("🔎🔎🔎", user_nick, address, token_amount);
-  const refreshToken = generateRefreshToken(user_nick);
-  // 2. access token 생성
-  const accessToken = jwt.sign(
-    { user_nick, address },
-    process.env.ACCESS_SECRET,
-    {
-      expiresIn: "1h",
-      issuer: "return Farm;",
-    }
-  );
-  return accessToken;
+// 로그인 시, 주는 access token
+const generateAccessToken = (user_nick, address) => {
+  return jwt.sign({ user_nick, address }, process.env.ACCESS_SECRET, {
+    expiresIn: "1h",
+    issuer: "return Farm;",
+  });
 };
 
 // 로그인 연장: req.body의 refresh token이 맞는지 확인해서 새로운 access token 생성 -> 발급
@@ -56,6 +41,7 @@ const generateRenewToken = (req) => {
     const renewAccessToken = (user_nick, address) => {
       return jwt.sign({ user_nick, address }, process.env.ACCESS_SECRET, {
         expiresIn: "1h",
+        issuer: "returnFarm; extension",
       });
     };
     return renewAccessToken(user_nick, address);
@@ -65,7 +51,7 @@ const generateRenewToken = (req) => {
 
 export {
   tokenValidation,
-  generateAccessToken,
   generateRefreshToken,
+  generateAccessToken,
   generateRenewToken,
 };
