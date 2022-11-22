@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import styled, { css } from "styled-components";
-import { gameBag } from "../../../api/game";
+import { gameBag, gameRandCreate } from "../../../api/game";
 import { signLogin, signRegister } from "../../../api/sign";
 import { transactionList } from "../../../api/transaction";
 import { initSocketConnection, socket } from "../../../libs/socketio";
+import { handleMarketList } from "../../../stores/reducers/gameSlice";
 import { modalChange } from "../../../stores/reducers/stateSlice";
 import {
   bagUpdate,
@@ -161,11 +162,12 @@ const Sign = ({ setLoginCheck }) => {
       if (initSocketConnection(data)) {
         localStorage.setItem("token", JSON.stringify(token));
         const bagInfo = await gameBag({ address: logined.address });
+        const randInfo = await gameRandCreate({ address: logined.address });
         const marketList = await transactionList();
-        console.log(marketList);
         await dispatch(myInfoSave({ data: logined, token: token }));
         await dispatch(bagUpdate({ bag: bagInfo.data }));
-        await dispatch(tileUpdate({ tile: marketList.data }));
+        await dispatch(tileUpdate({ tile: randInfo.data }));
+        await dispatch(handleMarketList({ list: marketList.data }));
         await setLoginCheck(true);
         await setUseData({
           user_id: "",
