@@ -1,5 +1,6 @@
 import "@fortawesome/fontawesome-free/js/all.js";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import "./App.css";
 import Index from "./components/canvas/Canvas";
 import Interface from "./components/common/Interface";
@@ -9,9 +10,16 @@ import { disconnectSocket, SocketIo } from "./libs/socketio";
 
 function App() {
   const [loginCheck, setLoginCheck] = useState(false);
+  // const {token } = useSelector(state => state.state.myInfo);
 
   useEffect(() => {
-    // localStorage.clear();
+    localStorage.clear();
+    // if (JSON.parse(localStorage.getItem("token"))) {
+    //   setLoginCheck(true);
+    // } else {
+    //   localStorage.clear();
+    // }
+    // console.log(JSON.parse(localStorage.getItem("token")));
     return () => {
       disconnectSocket();
     };

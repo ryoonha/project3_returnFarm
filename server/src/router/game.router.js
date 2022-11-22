@@ -9,7 +9,7 @@ import {
 
 const router = express.Router();
 
-router.get("/bag", getBag); // 가방 조회
+router.post("/bag", getBag); // 가방 조회
 router.put("/bag", updateBag); // 가방 속 아이템 수정, 삭제
 router.get("/rand", getRand); // 땅 조회
 router.post("/randCreate", createRand); // 땅 생성

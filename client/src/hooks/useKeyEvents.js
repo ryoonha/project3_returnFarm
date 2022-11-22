@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { modalChange } from "../stores/reducers/modalSlice";
+import { modalChange } from "../stores/reducers/stateSlice";
 
 let keySave = null;
 const useKeyEvents = () => {

@@ -3,15 +3,11 @@ import { createSlice, current } from "@reduxjs/toolkit";
 const stateSlice = createSlice({
   name: "stateSlice",
   initialState: {
-    myInfo: { nickName: null, token: null },
     topMenuSelect: null,
     weather: "sun",
+    modalCheck: null,
   },
   reducers: {
-    myInfoSave: (state, action) => {
-      state.myInfo.nickName = action.payload.nickName;
-      state.myInfo.token = action.payload.token;
-    },
     handleSelect: (state, action) => {
       const [sx, sy] = state.pos;
       const { x, y } = action.payload.pos;
@@ -36,9 +32,12 @@ const stateSlice = createSlice({
     weatherChange: (state, action) => {
       state.weather = action.payload.change;
     },
+    modalChange: (state, action) => {
+      state.modalCheck = action.payload.change;
+    },
   },
 });
 
 export default stateSlice;
-export const { myInfoSave, handleSelect, handleTopMenu, weatherChange } =
+export const { handleSelect, handleTopMenu, weatherChange, modalChange } =
   stateSlice.actions;

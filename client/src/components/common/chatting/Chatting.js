@@ -161,25 +161,23 @@ const ChattingBox = styled.div`
 `;
 
 let save = 0;
-const Chatting = ({ myInfo }) => {
+const Chatting = () => {
   const chatRef = useRef();
   // 채팅은 서버에서 받아 바로바로 표시
   const [message, setMessage] = useState("");
   const [toggle, setToggle] = useState(false);
 
-  console.log(myInfo);
   const { userList, chatList } = useSelector((state) => state.chat);
-  console.log(userList);
-  console.log(chatList);
+  const { nickName } = useSelector((state) => state.user.myInfo);
 
   const handleSendMessage = (e) => {
     e.preventDefault();
     let today = new Date();
     let hours = today.getHours();
     let minutes = today.getMinutes();
-    if (message.trim() && myInfo.nickName) {
+    if (message.trim() && nickName) {
       socket.emit("message", {
-        name: myInfo.nickName,
+        name: nickName,
         text: message,
         id: `${socket.id}${Math.random()}`,
         socketID: socket.id,
@@ -207,9 +205,7 @@ const Chatting = ({ myInfo }) => {
       <div className="chatting" ref={chatRef}>
         {chatList.map((msgData, index) => (
           <div
-            className={
-              myInfo.nickName === msgData.name ? "myChatBox" : "chatBox"
-            }
+            className={nickName === msgData.name ? "myChatBox" : "chatBox"}
             key={index}
           >
             <div className="profileImg cc">
@@ -243,7 +239,7 @@ const Chatting = ({ myInfo }) => {
         <div className="chatUserList">
           {userList.map((user, index) => (
             <div style={{ textAlign: "center" }} key={index}>
-              {user.nickName}
+              {user.nickName.logined.user_nick}
             </div>
           ))}
         </div>

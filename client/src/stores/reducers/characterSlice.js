@@ -1,12 +1,5 @@
 import { createSlice, current } from "@reduxjs/toolkit";
 
-const init = {
-  up: false,
-  right: false,
-  down: false,
-  left: false,
-};
-
 const characterSlice = createSlice({
   name: "characterSlice",
   initialState: {
@@ -19,7 +12,6 @@ const characterSlice = createSlice({
   reducers: {
     keyDownE: (state, action) => {
       const key = action.payload.key;
-      console.log(current(state).shift);
       if (!current(state).shift && key === "shift") {
         state.shift = true;
       } else if (current(state).shift && key === "shift") {

@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Man } from "./Man";
 
 const Character = () => {
-  const { myInfo } = useSelector((state) => state.state);
+  const { myInfo } = useSelector((state) => state.user);
   return (
     <group>
       <Man nickName={myInfo.nickName} />

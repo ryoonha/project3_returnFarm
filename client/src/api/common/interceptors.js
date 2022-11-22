@@ -8,7 +8,7 @@ export function setInterceptors(instance, type) {
       //   config.headers["Content-Type"] = "application/json; charset=utf-8";
       // }
       config.withCredentials = true;
-      //config.headers.Authorization = store.state.token; // token
+      config.headers.authorization = localStorage.getItem("token");
       return config;
     },
     function (error) {

@@ -1,6 +1,7 @@
 // const { userTokenTransfer } = require("../api/userToKenTransfer")
 // userTokenTransfer('0x989C339d2CecA0D919Df26FDF1fF97b3384C2Bc0', '0x163164CB5442a3D087B2562Ccfb8A44F2Ea0E8C8' ,'0xc777e02a6ac8881887144110de80c6bc7433e71256b11cfabfa89f2fbbc9dbe1', 10)
-require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 const Web3 = require("web3");
 const rpcURL = "https://goerli.infura.io/v3/b03f802e554f441786b51c437837bfe4";//process.env.INFURA_KEY;
 const web3 = new Web3(rpcURL);
@@ -10,11 +11,11 @@ const web3 = new Web3(rpcURL);
 const erc20ABI = require("../../smartContract/abi/erc20abi.json");
 const erc721ABI = require("../../smartContract/abi/erc721abi.json");
 
-const erc20Address = "0x2e31c765e77457BBa686B4831627d929f56F3024"
-const erc721Address = "0x75f5fecAC06f1036bF06483c37DcD0881dFE16B5"
-const serverAddress = '0x7842eBB02dAC50D732B0d337c8D9a92ade5cF755'
-const privateKey = '06e62f2d492e32a888379a37f6a32c3c2efa0f586e712434a1387313419e20a8';
-const fromAddress = '0x1C7291C03d2B250C7AD6559A361Ddd32Ca445700'
+const erc20Address = "0x2e31c765e77457BBa686B4831627d929f56F3024";
+const erc721Address = "0x6645e7C6cc65888E8c41793CfBEEd5946bcBb47C";
+const serverAddress = '0x7842eBB02dAC50D732B0d337c8D9a92ade5cF755';
+const privateKey = process.env.PRIVATEKEY;
+const fromAddress = '0x1C7291C03d2B250C7AD6559A361Ddd32Ca445700';
 
 const contract20 = new web3.eth.Contract(erc20ABI, erc20Address)
 const contract721 = new web3.eth.Contract(erc721ABI, erc721Address)
@@ -22,11 +23,11 @@ const contract721 = new web3.eth.Contract(erc721ABI, erc721Address)
 const result = async () => {
 	try{
 		//creating contract object
-		let contract = new web3.eth.Contract(erc20ABI,erc20Address, {from: serverAddress} ); 
+		let contract = new web3.eth.Contract(erc20ABI,erc20Address, {from: '0x7842eBB02dAC50D732B0d337c8D9a92ade5cF755'} ); 
 		let data = contract.methods.approve(erc721Address, 10000000000).encodeABI(); //Create the data for token transaction.
 		let rawTransaction = {"to": erc20Address, "gas": 500000, "data": data }; 
 
-		const signedTx =await web3.eth.accounts.signTransaction(rawTransaction, privateKey);
+		const signedTx =await web3.eth.accounts.signTransaction(rawTransaction, '70ea2b470dd1cfe21eea37bc200d7534c4d447e5038df3e053dc8fb5d67ac812');
 		web3.eth.sendSignedTransaction(signedTx.rawTransaction);
 		
 		return signedTx;
@@ -171,6 +172,7 @@ const gasPrice = async () => {
 // gasPrice()
 
 
+// const contract721 = new web3.eth.Contract(erc721ABI, erc721Address)
 
 const getmethods = async () => {
 	return await contract721.methods.tokenURI(1).call()
@@ -179,8 +181,16 @@ const getmethods = async () => {
 	});                        
 }
 
+//유저가 nft를 만드는데
 
 
 getmethods()
 
 console.log(contract721.methods)
+
+
+
+
+// for ( let a = 0; a < asset.length; a++){
+// 	asset[]
+// }

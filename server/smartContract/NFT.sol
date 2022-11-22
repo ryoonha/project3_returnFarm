@@ -13,19 +13,20 @@ contract NFTLootBox is ERC721URIStorage, Ownable {
     IERC20 token;
     uint256 fee;
     uint256 nftPrice;
+    
 
    constructor() ERC721("returnFarmNFT", "RFN") {
     }
     
     function mintNFT(address serveraddress, string memory tokenURI, uint256 mintingPrice) public returns (uint256) {
         fee = mintingPrice;
-        require(token.balanceOf(recipient) >= fee, "insufficient token for minting");
+        require(token.balanceOf(msg.sender) >= fee, "insufficient token for minting");
 
         token.transferFrom(msg.sender, serveraddress, fee);
         
         _tokenIds.increment();
         uint256 newItemId = _tokenIds.current();
-        _mint(recipient, newItemId);
+        _mint(msg.sender, newItemId);
         _setTokenURI(newItemId, tokenURI);
 
         return newItemId;
@@ -35,8 +36,8 @@ contract NFTLootBox is ERC721URIStorage, Ownable {
         nftPrice = price;
         require(token.balanceOf(buyer) >= nftPrice, "insufficient token");
 
-        token.transferFrom(buyer, owner, nftPrice*99.5);
-        token.transferFrom(buyer, msg.sender, nftPrice*0.05);
+        token.transferFrom(buyer, owner, nftPrice*995/1000);
+        token.transferFrom(buyer, msg.sender, nftPrice*5/1000);
         transferFrom(owner, buyer, tokenId);
 
         return true;
