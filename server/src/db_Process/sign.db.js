@@ -46,4 +46,3 @@ const userLogin = async (user_id, user_pwd) => {
 
 export { userRegister, userLogin };
 
-//private에서 public으로 변환
