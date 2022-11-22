@@ -42,14 +42,16 @@ exports.putGameBag = async (address, bag) => {
   return result;
 };
 
-exports.randCreate = async (address) => {
+exports.postGameLand = async (address) => {
+  const array = Array(100).fill({
+    status: null,
+    add: [],
+    estimated_time: null,
+  });
   const result = await Rand.findOrCreate({
     where: { address: address },
     defaults: {
-      tile: [
-        { seed: null, add: [], estimated_time: "2022/11/17/13/20" },
-        { seed: null, add: [], estimated_time: "2022/11/17/13/20" },
-      ],
+      tile: array,
     },
   })
     .then((e) => e[0].dataValues.tile)
@@ -57,21 +59,7 @@ exports.randCreate = async (address) => {
   return result;
 };
 
-exports.getGameRand = async (address) => {
-  const result = await Rand.findOne({
-    where: {
-      address: address,
-    },
-  }).then((e) => e.dataValues.tile);
-  return result;
-};
-
 exports.putGameRand = async (address, rand) => {
-  // const randArraytest = [
-  //   //테스트를위한 더미데이터 (rand와 address를 받을예정 )
-  //   { seed: "아보카도", add: [], estimated_time: "2022/11/17/13/20" },
-  //   { seed: "파인애플", add: [], estimated_time: "2022/11/17/13/20" },
-  // ];
   const result = await Rand.findOne({
     where: {
       address: address,

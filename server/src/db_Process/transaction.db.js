@@ -2,6 +2,11 @@ import Market_item from "../../models/market_item";
 import Bag from "../../models/bag";
 import User from "../../models/user";
 
+exports.getTransactionList = async () => {
+  const result = await Market_item.findAll().then(console.log);
+  return result;
+};
+
 exports.postTransactionSell = async (
   item_name,
   item_count,
@@ -34,7 +39,7 @@ exports.tokenAmountUpdate = async (address, token_amount) => {
     where: {
       address: address,
     },
-    attributes: ["id","address", "token_amount"],
+    attributes: ["id", "address", "token_amount"],
   })
     .then((user) => {
       return user.update({ token_amount: token_amount });
