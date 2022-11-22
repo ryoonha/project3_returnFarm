@@ -23,7 +23,7 @@ const generateRefreshToken = (user_nick, address) => {
   });
 };
 
-// 로그인 시, 주는 access token
+// 로그인 시, 주는 첫번째 access token
 const generateAccessToken = (user_nick, address) => {
   return jwt.sign({ user_nick, address }, process.env.ACCESS_SECRET, {
     expiresIn: "1h",
@@ -32,20 +32,31 @@ const generateAccessToken = (user_nick, address) => {
 };
 
 // 로그인 연장: req.body의 refresh token이 맞는지 확인해서 새로운 access token 생성 -> 발급
-const generateRenewToken = (req) => {
-  const result = jwt.verify(req.body.refreshToken, process.env.REFRESH_SECRET); // refresh 검증
+const generateRenewToken = (refreshToken) => {
+  const result = jwt.verify(refreshToken, process.env.REFRESH_SECRET);
+  // decode 부분
+  const parseRefresh = (refreshToken) => {
+    return JSON.parse(
+      Buffer.from(refreshToken.split(".")[1], "base64").toString()
+    );
+  };
+  const refreshNick = parseRefresh(refreshToken).user_nick;
+  const refreshAddress = parseRefresh(refreshToken).address;
+
   if (!result) {
-    // 서버에서 발급한 refresh token 아니라면, 에러
     return false;
   } else {
-    const renewAccessToken = (user_nick, address) => {
-      return jwt.sign({ user_nick, address }, process.env.ACCESS_SECRET, {
-        expiresIn: "1h",
-        issuer: "returnFarm; extension",
-      });
+    const renewAccessToken = (refreshNick, refreshAddress) => {
+      return jwt.sign(
+        { refreshNick, refreshAddress },
+        process.env.ACCESS_SECRET,
+        {
+          expiresIn: "1h",
+          issuer: "returnFarm; extension",
+        }
+      );
     };
-    return renewAccessToken(user_nick, address);
-    // console.log(user_nick, address, "🎉");
+    return renewAccessToken(refreshNick, refreshAddress);
   }
 };
 

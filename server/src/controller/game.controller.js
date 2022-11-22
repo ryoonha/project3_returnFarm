@@ -3,8 +3,9 @@ import db from "../db_Process/game.db";
 
 const getBag = async (req, res, next) => {
   const { address } = req.body;
-  const dbResult = db.getGameBag(address);
+  const dbResult = await db.getGameBag(address);
   if (dbResult) {
+    // console.log(dbResult, "🥝");
     res.status(200).send(dbResult);
   } else {
     res.status(400).send({ message: "가방 정보를 불러오는데 실패했어.." });

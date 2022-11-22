@@ -5,6 +5,9 @@ import {
   tokenAmountUpdate,
 } from "../db_Process/transaction.db";
 import { login } from "./sign.controller";
+import { getMyinfo } from "./user.controller";
+import { putGameBag } from "../db_Process/game.db";
+import { userInfo } from "../db_Process/user.db";
 
 const sell = async (req, res, next) => {
   // const tokenData = tokenValidation(); // 토큰 검정해서 아니라면 에러
@@ -24,6 +27,8 @@ const sell = async (req, res, next) => {
   }
 };
 
+// exchange test 필요함
+// exchange 하면 bag 데이터 그대로 뿌려줌
 const exchange = async (req, res, next) => {
   // const tokenData = tokenValidation();
   const { address, bag } = req.body;
@@ -36,44 +41,39 @@ const exchange = async (req, res, next) => {
   }
 };
 
-// token_amount(햇살): 기존 토큰, update_token_amount(햇살): 업데이트된 토큰
-// 새롭게 차감된 토큰 잔액을 넣어줘야 함 -> Jwt token 안에 넣어주기
+// token_amount(햇살): 기존 토큰, updateTokenAmount(햇살): 업데이트된 토큰
 // client에게 jwt token, update된 bag 넘겨줘야 함
 
 const buy = async (req, res, next) => {
-  const { address, token_amount } = req.body;
-  // access token 따로 빼기
-  console.log(req.headers.authorization);
-  // console.log("🔥 address:", address, "token_amount:", token_amount, "🔥"); // 🔥 address: undefined token_amount: undefined 🔥
-  const update_token_amount = await tokenAmountUpdate(address, token_amount); // 에러 나는 곳
-  // 어떻게 update_token_amount 안에 새로 바뀐 token_amount 넣어주지?
-  // refresh token -> renew access token 하듯이?
+  const { address, token_amount, item } = req.body;
+  // 여기서 token_amount는 업데이트될 토큰양(원래-총소비, 인지는 모르겠음)
+  // bag은 업데이트 될 백의 정보
 
-  // 기존 amount 추출? 제거하면 되지 않을까?
+  // 갖고 있던 주소, 가방, 토큰을 준다 -> Post
+  // 가방, 토큰 업데이트
+  // 업데이트 된 가방 == 기존 가방 ?
+  // 업데이트 된 토큰 수량 == 기존 토큰 수량?
+  // 둘 다 true면(&&) 구매 성공
 
-  if (!result) {
-    // 서버에서 발급한 refresh token 아니라면, 에러
-    return false;
-  }
-  // refresh 포함, 새로운 access token 생성
-  const finallygenerated = (id, refreshToken) => {
-    return jwt.sign({ id, refreshToken }, process.env.ACCESS_SECRET, {
-      expiresIn: "1h",
-    });
-  };
-  // console.log(id, refreshToken, "🎉");
-  return finallygenerated(id, refreshToken);
+  const 기존가방 = await putGameBag(address); // 기존 가방
+  // const 기존유저정보 = await userInfo(address); // 기존 유저 정보
+  const 소지한토큰 = 기존유저정보.token_amount;
 
-  const dbResult_bag = await postTransactionExchange(address, bag);
+  console.log("🍣", 기존가방); // ㅇㅋ
+  console.log("🍱", 소지한토큰); // ㅇㅋ
 
-  // address 일치하고(로그인성공이면 일치하는 걸로), token_amount > 구매하려는 총가격 이면, 구매 성공
-  // 1. 바뀐 잔액이랑 원래 갖고 있던 토큰이랑 금액이 다른지 -> 다르면 true, 같으면 구매 실패 -> false
-  // 2. bag update -> bag 바뀌면 true
-  // 3. if: 두 개 조건이 && -> true 여야 구매 성공
+  const updateTokenAmount = await tokenAmountUpdate(address, token_amount);
+  const updateMybag = await postTransactionExchange(address, item);
+  console.log("🍒", updateTokenAmount); // 계속 기존 유저 토큰 수량만
+  console.log("🥑", updateMybag); // 기존 것만 나옴
 
-  if ((update_token_amount, dbResult_bag)) {
+  // 어떻게 해야 업데이트할 수 있는 정보를 줄 수 있는지 모르겠음
+  // req에는 user_id, address 뿐인데?
+  // 지금은 기존 == update, 함수가 값을 변화된 것을 돌려주니까, 기존 == update 여야 true(구매성공)
+
+  if (소지한토큰 == updateTokenAmount && 기존가방 == updateMybag) {
     // && tokenData
-    res.status(200).send({ data: update_token_amount, dbResult_bag });
+    res.status(200).send({ data: updateTokenAmount, updateMybag });
   } else {
     res.status(400).send({ message: "구매 실패 😑" });
   }
