@@ -14,6 +14,7 @@ const userSlice = createSlice({
       created_at: null,
     },
     bag: [],
+    tile: [],
   },
   reducers: {
     myInfoSave: (state, action) => {
@@ -33,13 +34,15 @@ const userSlice = createSlice({
       state.myInfo.token_amount = token_amount || state.myInfo.token_amount;
       state.myInfo.token = action.payload.token || state.myInfo.token;
       state.myInfo.created_at = created_at || state.myInfo.created_at;
-      console.log(current(state));
     },
     bagUpdate: (state, action) => {
       state.bag = action.payload.bag;
+    },
+    tileUpdate: (state, action) => {
+      state.tile = action.payload.tile;
     },
   },
 });
 
 export default userSlice;
-export const { myInfoSave, bagUpdate } = userSlice.actions;
+export const { myInfoSave, bagUpdate, tileUpdate } = userSlice.actions;

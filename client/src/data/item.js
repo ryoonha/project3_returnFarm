@@ -1,6 +1,9 @@
 export const itemList = {
-  삽: { img: "/images/items/tools/shovel.png" },
-  물뿌리개: { img: "/images/items/tools/wateringTool.png" },
+  삽: { img: "/images/items/tools/shovel.png", desc: "땅을 팔 수 있습니다." },
+  물뿌리개: {
+    img: "/images/items/tools/wateringTool.png",
+    desc: "대상에 물을 줄 수 있습니다.",
+  },
   해바라기: { img: "/images/items/crops/sunflower.png" },
   토마토: { img: "/images/items/crops/tomato.png" },
   옥수수: { img: "/images/items/crops/corn.png" },

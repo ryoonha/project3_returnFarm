@@ -3,22 +3,17 @@ import { createSlice, current } from "@reduxjs/toolkit";
 const stateSlice = createSlice({
   name: "stateSlice",
   initialState: {
+    tileSelect: [],
     topMenuSelect: null,
     weather: "sun",
     modalCheck: null,
   },
   reducers: {
-    handleSelect: (state, action) => {
-      const [sx, sy] = state.pos;
-      const { x, y } = action.payload.pos;
-      if (sx === x && sy === y) {
-        state.tileSelect = false;
-        state.pos = [null, null];
-        state.oPos = {};
+    handleTile: (state, action) => {
+      if (state.tileSelect.length === 0) {
+        state.tileSelect = action.payload.pos;
       } else {
-        state.tileSelect = true;
-        state.pos = [x, y];
-        state.oPos = action.payload.oPos;
+        state.tileSelect = [];
       }
     },
     handleTopMenu: (state, action) => {
@@ -39,5 +34,5 @@ const stateSlice = createSlice({
 });
 
 export default stateSlice;
-export const { handleSelect, handleTopMenu, weatherChange, modalChange } =
+export const { handleTile, handleTopMenu, weatherChange, modalChange } =
   stateSlice.actions;

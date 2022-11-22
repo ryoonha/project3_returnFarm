@@ -3,8 +3,19 @@ import {
   postTransactionSell,
   postTransactionExchange,
   tokenAmountUpdate,
+  getTransactionList,
 } from "../db_Process/transaction.db";
 import { login } from "./sign.controller";
+
+const list = async (req, res, next) => {
+  const transactionList = await getTransactionList();
+  console.log(transactionList, "🎈");
+  if (transactionList) {
+    res.status(200).send(transactionList);
+  } else {
+    res.status(400).send({ message: "거래소 목록을 불러오는데 실패했어요!" });
+  }
+};
 
 const sell = async (req, res, next) => {
   // const tokenData = tokenValidation(); // 토큰 검정해서 아니라면 에러
@@ -79,4 +90,4 @@ const buy = async (req, res, next) => {
   }
 };
 
-export { sell, exchange, buy };
+export { list, sell, exchange, buy };

@@ -3,9 +3,14 @@ import { useDispatch } from "react-redux";
 import styled, { css } from "styled-components";
 import { gameBag } from "../../../api/game";
 import { signLogin, signRegister } from "../../../api/sign";
+import { transactionList } from "../../../api/transaction";
 import { initSocketConnection, socket } from "../../../libs/socketio";
 import { modalChange } from "../../../stores/reducers/stateSlice";
-import { bagUpdate, myInfoSave } from "../../../stores/reducers/userSlice";
+import {
+  bagUpdate,
+  myInfoSave,
+  tileUpdate,
+} from "../../../stores/reducers/userSlice";
 
 const SignContainer = styled.div`
   position: relative;
@@ -133,13 +138,16 @@ const Sign = ({ setLoginCheck }) => {
 
   const handleRegister = async () => {
     try {
-      const data = await signRegister(userData);
-      setToggleRegister(false);
-      setUseData({
-        user_id: "",
-        user_pwd: "",
-        user_nick: "",
-      });
+      const { status } = await signRegister(userData);
+      console.log(status);
+      if (status === 201) {
+        setToggleRegister(false);
+        setUseData({
+          user_id: "",
+          user_pwd: "",
+          user_nick: "",
+        });
+      }
     } catch (err) {
       alert(err.response.data.massage);
     }
@@ -153,8 +161,11 @@ const Sign = ({ setLoginCheck }) => {
       if (initSocketConnection(data)) {
         localStorage.setItem("token", JSON.stringify(token));
         const bagInfo = await gameBag({ address: logined.address });
+        const marketList = await transactionList();
+        console.log(marketList);
         await dispatch(myInfoSave({ data: logined, token: token }));
         await dispatch(bagUpdate({ bag: bagInfo.data }));
+        await dispatch(tileUpdate({ tile: marketList.data }));
         await setLoginCheck(true);
         await setUseData({
           user_id: "",
