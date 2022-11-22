@@ -3,17 +3,18 @@ import { createSlice, current } from "@reduxjs/toolkit";
 const stateSlice = createSlice({
   name: "stateSlice",
   initialState: {
-    tileSelect: [],
+    tileSelect: { x: null, z: null, data: null },
     topMenuSelect: null,
     weather: "sun",
     modalCheck: null,
   },
   reducers: {
     handleTile: (state, action) => {
-      if (state.tileSelect.length === 0) {
-        state.tileSelect = action.payload.pos;
+      const { x, z, data } = action.payload;
+      if (state.tileSelect.x === x && state.tileSelect.z === z) {
+        state.tileSelect = { x: null, z: null, data: null };
       } else {
-        state.tileSelect = [];
+        state.tileSelect = { x: x, z: z, data: data };
       }
     },
     handleTopMenu: (state, action) => {
