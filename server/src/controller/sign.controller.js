@@ -1,8 +1,8 @@
 import {} from "express-async-errors";
 import {
-  generateToken,
+  generateAccessToken,
+  generateRefreshToken,
   generateRenewToken,
-  removeToken,
 } from "../middleware/validation";
 import { userRegister, userLogin } from "../db_Process/sign.db";
 import Web3 from "web3";
@@ -25,7 +25,7 @@ const register = async (req, res, next) => {
   const [bool, msg] = dbResult;
 
   if (!bool) {
-    res.status(409).json({ massage: msg }); // 이미 가입한 유저, conflict
+    res.status(409).json({ massage: msg });
   } else {
     res.status(201).json({ message: "🎉 SUCCESS!" });
   }
@@ -34,19 +34,19 @@ const register = async (req, res, next) => {
 const login = async (req, res, next) => {
   const { user_id, user_pwd } = req.body;
   const logined = await userLogin(user_id, user_pwd);
-  // console.log("🪪", logined.user_nick, logined.address, logined.token_amount); // 출력 확인
 
   if (!logined) {
     return res.status(401).json({ message: "회원가입을먼저해주세요" });
   }
-  const token = generateToken(
+  const token = generateAccessToken(
     logined.user_nick,
     logined.address,
     logined.token_amount
   );
+  const [accessToken, refreshToken] = token;
 
   res.status(200).json({
-    token,
+    token: { accessToken: accessToken, refreshToken: refreshToken },
     logined,
   });
 };
@@ -73,7 +73,6 @@ const logout = async (req, res, next) => {
   } else {
     let body = "🔥 bye";
     res.removeHeader("Authorization");
-    res.removeHeader("X-Powered-By");
     res.end(body);
   }
 };
