@@ -7,7 +7,7 @@ import {
 import { login } from "./sign.controller";
 
 const sell = async (req, res, next) => {
-  // const tokenData = tokenValidation();
+  // const tokenData = tokenValidation(); // 토큰 검정해서 아니라면 에러
   const { item_name, item_count, selling_price, address } = req.body;
   const dbResult = await postTransactionSell(
     item_name,
@@ -25,9 +25,8 @@ const sell = async (req, res, next) => {
 };
 
 const exchange = async (req, res, next) => {
-  const { address, bag } = req.body;
   // const tokenData = tokenValidation();
-  // --> db 프로세스 코드 넣기(토큰에서 address, 바디에서 bagArray)
+  const { address, bag } = req.body;
   const dbResult = await postTransactionExchange(bag, address);
   if (dbResult) {
     // && tokenData
@@ -37,16 +36,34 @@ const exchange = async (req, res, next) => {
   }
 };
 
-// item 거래소에서 구매
+// token_amount(햇살): 기존 토큰, update_token_amount(햇살): 업데이트된 토큰
+// 새롭게 차감된 토큰 잔액을 넣어줘야 함 -> Jwt token 안에 넣어주기
+// client에게 jwt token, update된 bag 넘겨줘야 함
+
 const buy = async (req, res, next) => {
-  console.log("😫");
-  const { address, token_amount } = req.body; //db테스트용
+  const { address, token_amount } = req.body;
+  // access token 따로 빼기
+  console.log(req.headers.authorization);
+  // console.log("🔥 address:", address, "token_amount:", token_amount, "🔥"); // 🔥 address: undefined token_amount: undefined 🔥
+  const update_token_amount = await tokenAmountUpdate(address, token_amount); // 에러 나는 곳
+  // 어떻게 update_token_amount 안에 새로 바뀐 token_amount 넣어주지?
+  // refresh token -> renew access token 하듯이?
 
-  // token_amout: 기존 토큰, dbResult_token: 업데이트된 토큰
-  // 새롭게 차감된 토큰 잔액을 넣어줘야 함 -> Jwt token 안에 넣어주기
-  // client에게 jwt token, update된 bag 넘겨줘야 함
+  // 기존 amount 추출? 제거하면 되지 않을까?
 
-  const dbResult_token = await tokenAmountUpdate(address, token_amount);
+  if (!result) {
+    // 서버에서 발급한 refresh token 아니라면, 에러
+    return false;
+  }
+  // refresh 포함, 새로운 access token 생성
+  const finallygenerated = (id, refreshToken) => {
+    return jwt.sign({ id, refreshToken }, process.env.ACCESS_SECRET, {
+      expiresIn: "1h",
+    });
+  };
+  // console.log(id, refreshToken, "🎉");
+  return finallygenerated(id, refreshToken);
+
   const dbResult_bag = await postTransactionExchange(address, bag);
 
   // address 일치하고(로그인성공이면 일치하는 걸로), token_amount > 구매하려는 총가격 이면, 구매 성공
@@ -54,9 +71,9 @@ const buy = async (req, res, next) => {
   // 2. bag update -> bag 바뀌면 true
   // 3. if: 두 개 조건이 && -> true 여야 구매 성공
 
-  if ((dbResult_token, dbResult_bag)) {
+  if ((update_token_amount, dbResult_bag)) {
     // && tokenData
-    res.status(200).send({ data: dbResult_token, dbResult_bag });
+    res.status(200).send({ data: update_token_amount, dbResult_bag });
   } else {
     res.status(400).send({ message: "구매 실패 😑" });
   }
