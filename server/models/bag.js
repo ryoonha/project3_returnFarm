@@ -7,6 +7,7 @@ module.exports = class Bag extends Sequelize.Model {
         address: {
           type: Sequelize.STRING(100),
           allowNull: false,
+          unique: true,
         },
         item: {
           type: Sequelize.JSON,

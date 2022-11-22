@@ -3,11 +3,22 @@ import {
   postTransactionSell,
   postTransactionExchange,
   tokenAmountUpdate,
+  getTransactionList,
 } from "../db_Process/transaction.db";
 import { login } from "./sign.controller";
 import { getMyinfo } from "./user.controller";
 import { putGameBag } from "../db_Process/game.db";
 import { userInfo } from "../db_Process/user.db";
+
+const list = async (req, res, next) => {
+  const transactionList = await getTransactionList();
+
+  if (transactionList) {
+    res.status(200).send(transactionList);
+  } else {
+    res.status(400).send({ message: "거래소 목록을 불러오는데 실패했어요!" });
+  }
+};
 
 const sell = async (req, res, next) => {
   // const tokenData = tokenValidation(); // 토큰 검정해서 아니라면 에러
@@ -62,6 +73,8 @@ const buy = async (req, res, next) => {
   console.log("🍣", 기존가방); // ㅇㅋ
   console.log("🍱", 소지한토큰); // ㅇㅋ
 
+  // const myInfo = await User.findOne({ where: { user_id: req.body.user_id } });
+
   const updateTokenAmount = await tokenAmountUpdate(address, token_amount);
   const updateMybag = await postTransactionExchange(address, item);
   console.log("🍒", updateTokenAmount); // 계속 기존 유저 토큰 수량만
@@ -79,4 +92,4 @@ const buy = async (req, res, next) => {
   }
 };
 
-export { sell, exchange, buy };
+export { list, sell, exchange, buy };

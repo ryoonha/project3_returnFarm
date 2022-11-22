@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { animated } from "react-spring";
 import useDivMove from "../../../hooks/useDivMove";
 import { BasicBox } from "../../../libs/cssFrame";
 import { itemList } from "../../../data/item";
+import { useSelector } from "react-redux";
 
 const InventoryBox = styled(BasicBox)`
   transform: translateX(48vw);
@@ -37,22 +38,66 @@ const InventoryBox = styled(BasicBox)`
       }
     }
   }
+  .detailBox {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 50px;
+    width: 210px;
+    //height: 150px;
+    background-color: rgba(36, 36, 36, 0.479);
+    div {
+      text-align: center;
+      color: white;
+    }
+    .item {
+      color: rgb(116, 194, 194);
+      background-color: rgb(41, 41, 41);
+    }
+    .desc,
+    .countBox,
+    .timeBox {
+      padding: 5px 0px 5px 0px;
+      .time0 {
+        color: orange;
+      }
+      .time1 {
+        color: #f8ff94;
+      }
+      .time2 {
+        color: #b9ff8a;
+      }
+      .time3 {
+        color: #c0bcff;
+      }
+      .time4 {
+        color: #f290ff;
+      }
+    }
+    .countBox {
+      border-top: 1px solid rgb(110, 110, 110);
+      border-bottom: 1px solid rgb(110, 110, 110);
+    }
+    .title {
+      color: rgb(164, 214, 255);
+    }
+  }
 `;
 
 const Inventory = () => {
   const [x, y, bindDivPos] = useDivMove();
+  const [hover, setHover] = useState();
+  const { bag } = useSelector((state) => state.user);
   const itemData = itemList;
-  // db에서 인벤토리 데이터 받아오기
-  // let arr = Array(30).fill(<FontAwesomeIcon icon="fa-solid fa-carrot" />);
-  let arr = [
-    { item_name: "삽" },
-    { item_name: "물뿌리개" },
-    { item_name: "사과" },
-    { item_name: "해바라기" },
-    { item_name: "옥수수" },
-    { item_name: "옥수수씨앗" },
-    { item_name: "벼" },
-  ];
+
+  const dateName = {
+    0: "년",
+    1: "월",
+    2: "일",
+    3: "시",
+    4: "분",
+  };
+
   return (
     <animated.div
       style={{
@@ -65,21 +110,51 @@ const Inventory = () => {
           Inventory
         </div>
         <div className="boxBody cc">
-          {arr.map((item, index) => (
-            // <div
-            //   className="itemBox cc"
-            //   key={index}
-            //   style={item ? { border: "1px solid rgb(173, 173, 173)" } : null}
-            // >
-            //   {item}
-            // </div>
+          {bag.map((item, index) => (
             <div
               className="itemBox cc"
               key={index}
               style={item ? { border: "1px solid rgb(173, 173, 173)" } : null}
+              onMouseEnter={(e) => {
+                setHover(`item${index}`);
+              }}
+              onMouseLeave={(e) => {
+                if (hover) {
+                  setHover(false);
+                }
+              }}
+              onContextMenu={(e) => {
+                alert("채팅방을 정말 삭제하시겠어요?");
+              }}
             >
               <img src={itemData[item.item_name].img} alt="" />
               <div className="itemName cc">{item.item_name}</div>
+              {hover === `item${index}` ? (
+                <div
+                  className="detailBox"
+                  onMouseOver={(e) => {
+                    setHover(false);
+                  }}
+                >
+                  <div className="item cc">{item.item_name}</div>
+                  <div className="desc">{itemData[item.item_name].desc}</div>
+                  <div className="countBox">
+                    <div className="title">개수</div>
+                    <div>{item.item_count} 개</div>
+                  </div>
+                  <div className="timeBox">
+                    <div className="title">획득시간</div>
+                    <div>
+                      {item.time.split("/").map((data, index) => (
+                        <span
+                          key={index}
+                          className={`time${index}`}
+                        >{`${data}${dateName[index]} `}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : null}
             </div>
           ))}
         </div>

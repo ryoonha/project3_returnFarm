@@ -1,5 +1,9 @@
 import { transaction } from ".";
 
+export const transactionList = () => {
+  return transaction.get("list");
+};
+
 export const transactionSell = (itemData) => {
   return transaction.post("sell", itemData);
 };
