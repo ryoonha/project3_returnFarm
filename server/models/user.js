@@ -34,6 +34,15 @@ module.exports = class User extends Sequelize.Model {
         token_amount: {
           type: Sequelize.INTEGER,
         },
+        crop_count: {
+          type: Sequelize.INTEGER,
+        },
+        crop_per: {
+          type: Sequelize.INTEGER,
+        },
+        play_time: {
+          type: Sequelize.STRING(10),
+        },
         createdAt: {
           type: "TIMESTAMP",
           defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),

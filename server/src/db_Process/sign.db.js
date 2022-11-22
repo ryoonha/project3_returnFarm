@@ -45,3 +45,4 @@ const userLogin = async (user_id, user_pwd) => {
 };
 
 export { userRegister, userLogin };
+

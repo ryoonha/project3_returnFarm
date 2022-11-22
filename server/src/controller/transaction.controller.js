@@ -9,7 +9,7 @@ import { login } from "./sign.controller";
 
 const list = async (req, res, next) => {
   const transactionList = await getTransactionList();
-  console.log(transactionList, "🎈");
+
   if (transactionList) {
     res.status(200).send(transactionList);
   } else {
