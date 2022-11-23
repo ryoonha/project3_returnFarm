@@ -18,23 +18,23 @@ export function Girl() {
   const { nodes, materials, animations } = useGLTF(
     "/models/character/girl.gltf"
   );
-  const { actions, names } = useAnimations(animations, model);
-  const deg2rad = (degrees) => degrees * (Math.PI / 180);
-  const { up, right, down, left, shift } = useSelector(
-    (state) => state.character
-  );
 
-  const [ref] = useBox(() => ({
-    type: "Kinematic",
-    mass: 1,
-    position: [0, 0, 0],
-  }));
+  // const [model, api] = useBox(() => ({
+  //   type: "Kinematic",
+  //   mass: 1,
+  //   // position: [0, 0, 0],
+  // }));
   // return (
   //   <mesh ref={ref}>
   //     <boxGeometry />
   //     <meshNormalMaterial />
   //   </mesh>
   // );
+  const { actions, names } = useAnimations(animations, model);
+  const deg2rad = (degrees) => degrees * (Math.PI / 180);
+  const { up, right, down, left, shift } = useSelector(
+    (state) => state.character
+  );
 
   useFrame(() => {
     if (model.current) {

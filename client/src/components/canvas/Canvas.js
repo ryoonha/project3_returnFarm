@@ -8,6 +8,7 @@ import store from "../../stores/store";
 import Character from "../character/Character";
 import { Light } from "./setting/Light";
 import Environment from "./environment/Environment";
+import Object from "./object/Object";
 
 const Index = () => {
   return (
@@ -28,6 +29,7 @@ const Index = () => {
               <Character />
               <Ground />
               <Environment />
+              <Object />
             </Debug>
           </Physics>
         </Provider>

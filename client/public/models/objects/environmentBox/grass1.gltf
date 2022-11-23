@@ -1,0 +1,155 @@
+{
+    "asset" : {
+        "generator" : "Khronos glTF Blender I/O v3.3.32",
+        "version" : "2.0"
+    },
+    "scene" : 0,
+    "scenes" : [
+        {
+            "name" : "Scene",
+            "nodes" : [
+                4
+            ]
+        }
+    ],
+    "nodes" : [
+        {
+            "mesh" : 0,
+            "name" : "Circle.012_Grass_0"
+        },
+        {
+            "children" : [
+                0
+            ],
+            "name" : "Circle.012",
+            "rotation" : [
+                -0.5660259127616882,
+                0.42380979657173157,
+                0.4238097667694092,
+                0.5660259127616882
+            ],
+            "scale" : [
+                3.97145938873291,
+                3.9714596271514893,
+                7.207752704620361
+            ]
+        },
+        {
+            "children" : [
+                1
+            ],
+            "name" : "RootNode"
+        },
+        {
+            "children" : [
+                2
+            ],
+            "name" : "Low poly Grass pack.fbx",
+            "rotation" : [
+                0.7071068286895752,
+                0,
+                0,
+                0.7071067094802856
+            ]
+        },
+        {
+            "children" : [
+                3
+            ],
+            "name" : "Sketchfab_model",
+            "rotation" : [
+                -0.7071068286895752,
+                0,
+                0,
+                0.7071067094802856
+            ]
+        }
+    ],
+    "materials" : [
+        {
+            "doubleSided" : true,
+            "name" : "Grass",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.025709200650453568,
+                    0.3995470106601715,
+                    0.135453000664711,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.823941707611084
+            }
+        }
+    ],
+    "meshes" : [
+        {
+            "name" : "Circle.012_Grass_0",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 0,
+                        "NORMAL" : 1
+                    },
+                    "indices" : 2,
+                    "material" : 0
+                }
+            ]
+        }
+    ],
+    "accessors" : [
+        {
+            "bufferView" : 0,
+            "componentType" : 5126,
+            "count" : 104,
+            "max" : [
+                4.389622688293457,
+                9.541923522949219,
+                9.070450782775879
+            ],
+            "min" : [
+                -7.765244007110596,
+                -1.5865474939346313,
+                -1.2846428632776359e-14
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 1,
+            "componentType" : 5126,
+            "count" : 104,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 2,
+            "componentType" : 5123,
+            "count" : 120,
+            "type" : "SCALAR"
+        }
+    ],
+    "bufferViews" : [
+        {
+            "buffer" : 0,
+            "byteLength" : 1248,
+            "byteOffset" : 0,
+            "target" : 34962
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 1248,
+            "byteOffset" : 1248,
+            "target" : 34962
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 240,
+            "byteOffset" : 2496,
+            "target" : 34963
+        }
+    ],
+    "buffers" : [
+        {
+            "byteLength" : 2736,
+            "uri" : "data:application/octet-stream;base64,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"
+        }
+    ]
+}

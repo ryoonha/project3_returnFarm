@@ -11,7 +11,7 @@ export function Tree2({ size }) {
     const [ref] = useBox(() => ({
       type: "Static",
       mass: 1,
-      position: [0, 0, 0],
+      position: [0, -0.1, 0],
       aegs: size,
       ...props,
     }));

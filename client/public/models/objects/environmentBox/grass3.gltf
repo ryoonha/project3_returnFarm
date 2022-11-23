@@ -1,0 +1,170 @@
+{
+    "asset" : {
+        "generator" : "Khronos glTF Blender I/O v3.3.32",
+        "version" : "2.0"
+    },
+    "scene" : 0,
+    "scenes" : [
+        {
+            "name" : "Scene",
+            "nodes" : [
+                5
+            ]
+        }
+    ],
+    "nodes" : [
+        {
+            "name" : "Circle.012",
+            "rotation" : [
+                -0.5660259127616882,
+                0.42380979657173157,
+                0.4238097667694092,
+                0.5660259127616882
+            ],
+            "scale" : [
+                3.97145938873291,
+                3.9714596271514893,
+                7.207752704620361
+            ]
+        },
+        {
+            "mesh" : 0,
+            "name" : "Circle.015_Grass_0"
+        },
+        {
+            "children" : [
+                1
+            ],
+            "name" : "Circle.015",
+            "rotation" : [
+                -0.6476264595985413,
+                0.2838659882545471,
+                0.28386592864990234,
+                0.6476265788078308
+            ],
+            "scale" : [
+                3.15248703956604,
+                3.15248703956604,
+                5.721409320831299
+            ]
+        },
+        {
+            "children" : [
+                0,
+                2
+            ],
+            "name" : "RootNode"
+        },
+        {
+            "children" : [
+                3
+            ],
+            "name" : "Low poly Grass pack.fbx",
+            "rotation" : [
+                0.7071068286895752,
+                0,
+                0,
+                0.7071067094802856
+            ]
+        },
+        {
+            "children" : [
+                4
+            ],
+            "name" : "Sketchfab_model",
+            "rotation" : [
+                -0.7071068286895752,
+                0,
+                0,
+                0.7071067094802856
+            ]
+        }
+    ],
+    "materials" : [
+        {
+            "doubleSided" : true,
+            "name" : "Grass",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.025709200650453568,
+                    0.3995470106601715,
+                    0.135453000664711,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.823941707611084
+            }
+        }
+    ],
+    "meshes" : [
+        {
+            "name" : "Circle.015_Grass_0",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 0,
+                        "NORMAL" : 1
+                    },
+                    "indices" : 2,
+                    "material" : 0
+                }
+            ]
+        }
+    ],
+    "accessors" : [
+        {
+            "bufferView" : 0,
+            "componentType" : 5126,
+            "count" : 78,
+            "max" : [
+                2.747981548309326,
+                5.457822799682617,
+                6.987285614013672
+            ],
+            "min" : [
+                -6.415389060974121,
+                -1.5865474939346313,
+                0
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 1,
+            "componentType" : 5126,
+            "count" : 78,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 2,
+            "componentType" : 5123,
+            "count" : 90,
+            "type" : "SCALAR"
+        }
+    ],
+    "bufferViews" : [
+        {
+            "buffer" : 0,
+            "byteLength" : 936,
+            "byteOffset" : 0,
+            "target" : 34962
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 936,
+            "byteOffset" : 936,
+            "target" : 34962
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 180,
+            "byteOffset" : 1872,
+            "target" : 34963
+        }
+    ],
+    "buffers" : [
+        {
+            "byteLength" : 2052,
+            "uri" : "data:application/octet-stream;base64,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"
+        }
+    ]
+}
