@@ -1,7 +1,9 @@
 import React, { useCallback, useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { userUpdatePfp } from "../../../api/user";
 import { modalChange } from "../../../stores/reducers/stateSlice";
+import { myInfoSave } from "../../../stores/reducers/userSlice";
 
 const DragDropBox = styled.div`
   width: 150px;
@@ -48,7 +50,7 @@ const DragDropBox = styled.div`
   }
 `;
 
-const DragDrop = ({ setFileData, fileData, imgURL, setImageUrl }) => {
+const DragDrop = ({ address, profileImg }) => {
   const dragRef = useRef(null);
   const dispatch = useDispatch();
 
@@ -64,15 +66,20 @@ const DragDrop = ({ setFileData, fileData, imgURL, setImageUrl }) => {
 
     const handleChangeFile = async (file) => {
       const reader = new FileReader();
-      reader.readAsDataURL(file); // URL get
-      return new Promise((resolve) => {
-        reader.onload = () => {
-          setImageUrl(reader.result);
-          resolve();
-          setFileData(selectFiles[0]);
-          dispatch(modalChange({ change: null }));
-        };
-      });
+      if (file && file.size < 50000) {
+        reader.readAsDataURL(file); // URL get
+        return new Promise((resolve) => {
+          reader.onload = () => {
+            userUpdatePfp({ address: address, image: reader.result });
+            dispatch(myInfoSave({ data: { user_pfp: reader.result } }));
+            resolve();
+            dispatch(modalChange({ change: null }));
+          };
+        });
+      } else {
+        alert("실패! 파일 크기가 50KB를 넘습니다!");
+      }
+      dispatch(modalChange({ change: null }));
     };
     handleChangeFile(selectFiles[0]);
   }, []);
@@ -137,7 +144,7 @@ const DragDrop = ({ setFileData, fileData, imgURL, setImageUrl }) => {
       />
 
       <label htmlFor="fileUpload" ref={dragRef}>
-        <img src={imgURL} alt="" className="dragdrop " />
+        <img src={profileImg} alt="" className="dragdrop " />
         {/* 사진 변경 API 연결 */}
         <div className="dragdrop ddt cc">사진 변경</div>
       </label>
