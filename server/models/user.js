@@ -31,6 +31,9 @@ module.exports = class User extends Sequelize.Model {
           type: Sequelize.STRING(100),
           unique: true,
         },
+        haes_sal_amount: {
+          type: Sequelize.INTEGER,
+        },
         token_amount: {
           type: Sequelize.INTEGER,
         },
