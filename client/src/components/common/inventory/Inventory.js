@@ -4,8 +4,10 @@ import { animated } from "react-spring";
 import useDivMove from "../../../hooks/useDivMove";
 import { BasicBox, DetailBox } from "../../../libs/cssFrame";
 import { itemList } from "../../../data/item";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { dateName } from "../../../data/weather";
+import ItemStatus from "../../modals/statusBox/ItemStatus";
+import { handleItem } from "../../../stores/reducers/stateSlice";
 
 const InventoryBox = styled(BasicBox)`
   transform: translateX(48vw);
@@ -42,7 +44,7 @@ const InventoryBox = styled(BasicBox)`
 
 const Inventory = () => {
   const [x, y, bindDivPos] = useDivMove();
-  const [hover, setHover] = useState();
+  const dispatch = useDispatch();
   const { bag } = useSelector((state) => state.user);
   const itemData = itemList;
 
@@ -63,45 +65,25 @@ const Inventory = () => {
               className="itemBox cc"
               key={index}
               style={item ? { border: "1px solid rgb(173, 173, 173)" } : null}
-              onMouseEnter={(e) => {
-                setHover(`item${index}`);
+              onMouseEnter={() => {
+                dispatch(handleItem({ itemNum: `item${index}` }));
               }}
-              onMouseLeave={(e) => {
-                if (hover) {
-                  setHover(false);
-                }
+              onMouseLeave={() => {
+                dispatch(handleItem({ itemNum: `item${index}` }));
               }}
-              onContextMenu={(e) => {
+              onContextMenu={() => {
                 alert("채팅방을 정말 삭제하시겠어요?");
               }}
             >
               <img src={itemData[item.item_name].img} alt="" />
               <div className="itemName cc">{item.item_name}</div>
-              {hover === `item${index}` ? (
-                <DetailBox
-                  onMouseOver={(e) => {
-                    setHover(false);
-                  }}
-                >
-                  <div className="item cc">{item.item_name}</div>
-                  <div className="desc">{itemData[item.item_name].desc}</div>
-                  <div className="countBox">
-                    <div className="title">개수</div>
-                    <div>{item.item_count} 개</div>
-                  </div>
-                  <div className="timeBox">
-                    <div className="title">획득시간</div>
-                    <div>
-                      {item.time.split("/").map((data, index) => (
-                        <span
-                          key={index}
-                          className={`time${index}`}
-                        >{`${data}${dateName[index]} `}</span>
-                      ))}
-                    </div>
-                  </div>
-                </DetailBox>
-              ) : null}
+              <ItemStatus
+                item={item}
+                index={index}
+                itemData={itemData}
+                dispatch={dispatch}
+                handleItem={handleItem}
+              />
             </div>
           ))}
         </div>
