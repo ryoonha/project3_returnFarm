@@ -4,6 +4,7 @@ const stateSlice = createSlice({
   name: "stateSlice",
   initialState: {
     tileSelect: { x: null, z: null, data: null },
+    itemSelect: null,
     topMenuSelect: null,
     weather: "sun",
     modalCheck: null,
@@ -15,6 +16,13 @@ const stateSlice = createSlice({
         state.tileSelect = { x: null, z: null, data: null };
       } else {
         state.tileSelect = { x: x, z: z, data: data };
+      }
+    },
+    handleItem: (state, action) => {
+      if (state.itemSelect === action.payload.itemNum) {
+        state.itemSelect = null;
+      } else if (!state.itemSelect) {
+        state.itemSelect = action.payload.itemNum;
       }
     },
     handleTopMenu: (state, action) => {
@@ -35,5 +43,10 @@ const stateSlice = createSlice({
 });
 
 export default stateSlice;
-export const { handleTile, handleTopMenu, weatherChange, modalChange } =
-  stateSlice.actions;
+export const {
+  handleTile,
+  handleItem,
+  handleTopMenu,
+  weatherChange,
+  modalChange,
+} = stateSlice.actions;
