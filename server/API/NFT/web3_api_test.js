@@ -1,7 +1,6 @@
 // const { userTokenTransfer } = require("../api/userToKenTransfer")
 // userTokenTransfer('0x989C339d2CecA0D919Df26FDF1fF97b3384C2Bc0', '0x163164CB5442a3D087B2562Ccfb8A44F2Ea0E8C8' ,'0xc777e02a6ac8881887144110de80c6bc7433e71256b11cfabfa89f2fbbc9dbe1', 10)
-import dotenv from "dotenv";
-dotenv.config();
+
 const Web3 = require("web3");
 const rpcURL = "https://goerli.infura.io/v3/b03f802e554f441786b51c437837bfe4";//process.env.INFURA_KEY;
 const web3 = new Web3(rpcURL);
@@ -175,7 +174,7 @@ const gasPrice = async () => {
 // const contract721 = new web3.eth.Contract(erc721ABI, erc721Address)
 
 const getmethods = async () => {
-	return await contract721.methods.tokenURI(1).call()
+	return await contract721.methods.tokenURI(5).call()
 	.then(result => {
 		console.log(result)
 	});                        
