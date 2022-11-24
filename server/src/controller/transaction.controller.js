@@ -1,9 +1,8 @@
 import { tokenValidation } from "../middleware/validation";
 import {
-  postTransactionSell,
-  postTransactionExchange,
-  tokenAmountUpdate,
-  getTransactionList,
+  marketItem_create,
+  bag_update,
+  tokenAmount_update,
 } from "../db_Process/transaction.db";
 import { userInfo } from "../db_Process/user.db";
 
@@ -20,8 +19,7 @@ const list = async (req, res, next) => {
 const sell = async (req, res, next) => {
   // const tokenData = tokenValidation();
   const { item_name, item_count, selling_price, address } = req.body;
-  // postTransactionSell 호출하면, 내 db에 토큰이 증가하지 않음
-  const dbResult = await postTransactionSell(
+  const dbResult = await marketItem_create(
     item_name,
     item_count,
     selling_price,
@@ -38,9 +36,15 @@ const sell = async (req, res, next) => {
 
 const exchange = async (req, res, next) => {
   // const tokenData = tokenValidation();
-  const { address, bag } = req.body;
-  const dbResult = await postTransactionExchange(address, bag);
-  // console.log(dbResult, "📦");
+  // const { address } = req.body;
+  // const address = "0xDf2DddDb52904F1Ce173786222eebC8Dd326f2yf";
+  // const nBag = {
+  //   time: "2022/12/23/08/30",
+  //   quality: "2",
+  //   item_name: "숟가락",
+  //   item_count: "-5",
+  // };
+  const dbResult = await bag_update(address, nBag);
   if (dbResult) {
     // && tokenData
     res.status(200).send(dbResult);
@@ -61,8 +65,8 @@ const buy = async (req, res, next) => {
     // && tokenData
     res.status(400).send({ message: "구매 실패 😑" });
   } else {
-    const updateMyBag = await postTransactionExchange(address, item);
-    const updateHaesSal = await tokenAmountUpdate(address, token_amount);
+    const updateMyBag = await bag_update(address, item);
+    const updateHaesSal = await tokenAmount_update(address, token_amount);
     res
       .status(200)
       .send({ message: "구매 성공", data: updateHaesSal, updateMyBag });
