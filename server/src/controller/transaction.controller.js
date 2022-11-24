@@ -1,15 +1,15 @@
 import { tokenValidation } from "../middleware/validation";
 import {
-  postTransactionSell,
-  postTransactionExchange,
-  tokenAmountUpdate,
+  marketItem_create,
+  bag_update,
+  tokenAmount_update,
 } from "../db_Process/transaction.db";
 import { login } from "./sign.controller";
 
 const sell = async (req, res, next) => {
   // const tokenData = tokenValidation(); // 토큰 검정해서 아니라면 에러
   const { item_name, item_count, selling_price, address } = req.body;
-  const dbResult = await postTransactionSell(
+  const dbResult = await marketItem_create(
     item_name,
     item_count,
     selling_price,
@@ -26,8 +26,15 @@ const sell = async (req, res, next) => {
 
 const exchange = async (req, res, next) => {
   // const tokenData = tokenValidation();
-  const { address, bag } = req.body;
-  const dbResult = await postTransactionExchange(bag, address);
+  // const { address } = req.body;
+  // const address = "0xDf2DddDb52904F1Ce173786222eebC8Dd326f2yf";
+  // const nBag = {
+  //   time: "2022/12/23/08/30",
+  //   quality: "2",
+  //   item_name: "숟가락",
+  //   item_count: "-5",
+  // };
+  const dbResult = await bag_update(address, nBag);
   if (dbResult) {
     // && tokenData
     res.status(200).send(dbResult);
@@ -45,7 +52,7 @@ const buy = async (req, res, next) => {
   // access token 따로 빼기
   console.log(req.headers.authorization);
   // console.log("🔥 address:", address, "token_amount:", token_amount, "🔥"); // 🔥 address: undefined token_amount: undefined 🔥
-  const update_token_amount = await tokenAmountUpdate(address, token_amount); // 에러 나는 곳
+  const update_token_amount = await tokenAmount_update(address, token_amount); // 에러 나는 곳
   // 어떻게 update_token_amount 안에 새로 바뀐 token_amount 넣어주지?
   // refresh token -> renew access token 하듯이?
 
@@ -64,7 +71,7 @@ const buy = async (req, res, next) => {
   // console.log(id, refreshToken, "🎉");
   return finallygenerated(id, refreshToken);
 
-  const dbResult_bag = await postTransactionExchange(address, bag);
+  const dbResult_bag = await bag_update(address, bag);
 
   // address 일치하고(로그인성공이면 일치하는 걸로), token_amount > 구매하려는 총가격 이면, 구매 성공
   // 1. 바뀐 잔액이랑 원래 갖고 있던 토큰이랑 금액이 다른지 -> 다르면 true, 같으면 구매 실패 -> false
