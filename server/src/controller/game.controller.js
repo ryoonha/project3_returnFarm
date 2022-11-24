@@ -4,6 +4,7 @@ import {
   bag_update,
   land_list,
   land_update,
+  bagObj_remove,
 } from "../db_Process/game.db";
 
 const getBag = async (req, res, next) => {
@@ -58,7 +59,7 @@ const updateRand = async (req, res, next) => {
   if (!rand) {
     res.status(400).send({ message: "다시 시도해 주세요!" });
   } else {
-    const dbResult = await db.land_update(address, rand);
+    const dbResult = await land_update(address, rand);
 
     if (dbResult) {
       // db 작업이 성공적이라면
@@ -69,4 +70,11 @@ const updateRand = async (req, res, next) => {
   }
 };
 
-export { getBag, updateBag, searchRand, updateRand };
+const bagTest = async (req, res, next) => {
+  console.log("왔니🙏");
+  const { address, item } = req.body;
+  const dbResult = await bagObj_remove(address, item);
+  console.log("✅", dbResult);
+};
+
+export { getBag, updateBag, searchRand, updateRand, bagTest };

@@ -1,6 +1,7 @@
 // const User = require("../../models/user");
 import Bag from "../../models/bag";
 import Rand from "../../models/rand";
+import Sequelize, { where } from "sequelize";
 
 //get-Game/Bag
 exports.bag_list = async (address) => {
@@ -72,4 +73,24 @@ exports.land_update = async (address, rand) => {
     })
     .then((e) => e.dataValues.tile);
   return result;
+};
+
+exports.bagObj_remove = async (address, item) => {
+  const fnSearch = Sequelize.fn(
+    "JSON_SEARCH",
+    Sequelize.col("item"),
+    "one",
+    item
+  );
+  // const fnRemove = Sequelize.fn(
+  //   "JSON_REMOVE",
+  //   Sequelize.col("item"),
+  //   '경로'
+  // )
+  const result = await Bag.findOne({
+    where: {address:address},
+    attributes: ["id", "address", "item", [fnSearch, "item_path"]]
+  }).then((user) => {
+    console.log('😍',user.dataValues)
+  })
 };
