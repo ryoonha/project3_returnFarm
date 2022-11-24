@@ -37,14 +37,13 @@ const register = async (req, res, next) => {
 const login = async (req, res, next) => {
   const { user_id, user_pwd } = req.body;
   const logined = await userLogin(user_id, user_pwd);
-
   if (!logined) {
     return res.status(401).json({ message: "회원가입을먼저해주세요" });
   }
   const accessToken = generateAccessToken(
     logined.user_nick,
     logined.address,
-    logined.token_amount
+    logined.ip_amount
   );
   const refreshToken = generateRefreshToken(logined.user_nick, logined.address);
   res.status(200).json({

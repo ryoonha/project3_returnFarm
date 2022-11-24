@@ -5,7 +5,7 @@ import Sequelize, { where } from "sequelize";
 
 //get-Transaction/List
 exports.marketItem_list = async () => {
-  const result = await Market_item.findAll().then(console.log);
+  const result = await Market_item.findAll();
   return result;
 };
 

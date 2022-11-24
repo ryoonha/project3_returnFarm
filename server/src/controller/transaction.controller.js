@@ -1,5 +1,5 @@
-import { tokenValidation } from "../middleware/validation";
 import {
+  marketItem_list,
   marketItem_create,
   bag_update,
   tokenAmount_update,
@@ -7,7 +7,7 @@ import {
 import { userInfo } from "../db_Process/user.db";
 
 const list = async (req, res, next) => {
-  const transactionList = await getTransactionList();
+  const transactionList = await marketItem_list();
 
   if (transactionList) {
     res.status(200).send(transactionList);
