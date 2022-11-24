@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { dateName } from "../../../data/weather";
+import { dateName } from "../../../data/etc";
 import { handleTile } from "../../../stores/reducers/stateSlice";
 
 const LandStatusBox = styled.div`
@@ -70,7 +70,6 @@ const LandStatusBox = styled.div`
 const LandStatus = ({ tileData }) => {
   const dispatch = useDispatch();
   const { x, z, data } = tileData;
-  console.log(tileData);
 
   return (
     <LandStatusBox

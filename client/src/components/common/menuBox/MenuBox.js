@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { handleTopMenu } from "../../../stores/reducers/stateSlice";
 import { useSelector } from "react-redux";
-import { weatherData } from "../../../data/weather";
+import { weatherData } from "../../../data/etc";
 
 const MenuContainer = styled.div`
   position: fixed;

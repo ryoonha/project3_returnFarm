@@ -5,7 +5,7 @@ import useDivMove from "../../../hooks/useDivMove";
 import { BasicBox, DetailBox } from "../../../libs/cssFrame";
 import { itemList } from "../../../data/item";
 import { useDispatch, useSelector } from "react-redux";
-import { dateName } from "../../../data/weather";
+import { dateName } from "../../../data/etc";
 import ItemStatus from "../../modals/statusBox/ItemStatus";
 import { handleItem } from "../../../stores/reducers/stateSlice";
 
