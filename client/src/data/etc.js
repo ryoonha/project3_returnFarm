@@ -12,3 +12,13 @@ export const dateName = {
   3: "시",
   4: "분",
 };
+
+export const unitColor = {
+  3: "#A52A2A",
+  4: "#FF7F50",
+  5: "#B8860B",
+  6: "#556B2F",
+  7: "#00CED1",
+  8: "#9400D3",
+  9: "#FF1493",
+};

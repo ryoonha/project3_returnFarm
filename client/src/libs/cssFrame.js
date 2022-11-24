@@ -6,6 +6,7 @@ export const BasicBox = styled.div`
   width: 500px;
   height: 250px;
   background-color: rgba(209, 209, 209, 0.9);
+  border-radius: 11px;
 
   .header {
     display: flex;
@@ -14,7 +15,7 @@ export const BasicBox = styled.div`
     width: 100%;
     height: 30px;
     border-radius: 10px 10px 0px 0px;
-    transform: translateY(-8px);
+    /* transform: translateY(-8px); */
     color: white;
     background-color: rgb(161, 76, 76);
     transition: 0.2s;
@@ -38,7 +39,7 @@ export const DetailBox = styled.div`
     color: white;
   }
   .item {
-    color: rgb(116, 194, 194);
+    color: var(--itemName);
     background-color: var(--headerBack);
   }
   .desc,

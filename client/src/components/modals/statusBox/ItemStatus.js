@@ -1,6 +1,6 @@
 import React from "react";
 import { DetailBox } from "../../../libs/cssFrame";
-import { dateName } from "../../../data/weather";
+import { dateName } from "../../../data/etc";
 import { useSelector } from "react-redux";
 
 const ItemStatus = ({ item, index, itemData, dispatch, handleItem }) => {

@@ -28,6 +28,7 @@ body {
   --title: rgb(164, 214, 255);
   --back: rgba(36, 36, 36, 0.7);
   --headerBack: rgb(41, 41, 41);
+  --itemName: rgb(116, 194, 194);
 }
 
 .cc {
