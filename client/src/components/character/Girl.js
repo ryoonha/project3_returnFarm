@@ -45,7 +45,7 @@ export function Girl() {
       // nick.current.position.lerp(x, y, z, 0.1);
       // console.log(nick.current.position);
       camera.lookAt(x, y, z + 5);
-      //camera.position.lerp(vec.set(x, y + 10, z - 15), 0.1);
+      camera.position.lerp(vec.set(x, y + 10, z - 15), 0.1);
 
       if (
         tilePos.x &&
