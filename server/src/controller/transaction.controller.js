@@ -54,9 +54,9 @@ const exchange = async (req, res, next) => {
 };
 
 const buy = async (req, res, next) => {
-  const { user_id, address, token_amount, item } = req.body;
+  const { user_id, address, ip_amount, item } = req.body;
   const dbUserInfon = await userInfo(user_id, address);
-  const haes_sal = dbUserInfon.token_amount;
+  const haes_sal = dbUserInfon.ip_amount;
   // console.log(haes_sal, "🌞");
   const totalPrice = item[0].price; // 임시로 price
   // console.log(price, "💎");
@@ -66,7 +66,7 @@ const buy = async (req, res, next) => {
     res.status(400).send({ message: "구매 실패 😑" });
   } else {
     const updateMyBag = await bag_update(address, item);
-    const updateHaesSal = await tokenAmount_update(address, token_amount);
+    const updateHaesSal = await tokenAmount_update(address, ip_amount);
     res
       .status(200)
       .send({ message: "구매 성공", data: updateHaesSal, updateMyBag });

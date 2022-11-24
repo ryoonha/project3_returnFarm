@@ -80,15 +80,15 @@ exports.bag_update = async (address, nBag) => {
 };
 
 //post-Transaction/Buy
-exports.tokenAmount_update = async (address, token_amount) => {
+exports.tokenAmount_update = async (address, ip_amount) => {
   const result = await User.findOne({
     where: {
       address: address,
     },
-    attributes: ["id", "address", "token_amount"],
+    attributes: ["id", "address", "ip_amount"],
   })
     .then((user) => {
-      return user.update({ token_amount: token_amount });
+      return user.update({ ip_amount: ip_amount });
     })
     .then((e) => e.dataValues);
   return result;

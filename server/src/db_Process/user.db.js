@@ -12,7 +12,7 @@ exports.userInfo = async (user_id, address) => {
       "user_pfp",
       "address",
       "haes_sal_amount",
-      "token_amount",
+      "ip_amount",
       "created_at",
       "crop_count",
       "crop_per",
