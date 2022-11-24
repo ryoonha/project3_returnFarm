@@ -2,10 +2,12 @@ import express from "express";;
 import { createNFT } from "../../API/NFT/createNFT.js";
 import { buyNFT } from "../../API/NFT/buyNFT.js";
 import { sellNFT } from "../../API/NFT/sellNFT";
-import { exchangeNFT } from "../../API/NFT/exchangeNFT";
+import { transferNFT } from "../../API/NFT/transferNFT";
 import { NFTList } from "../../API/NFT/NFTList";
-
+import { tokenExchange } from "../../API/NFT/tokenExchange.js";
+import { ipExchange } from "../../API/NFT/IpExchange.js";
 import multer from 'multer'; // express에 multer모듈 적용 (for 파일업로드)
+
 let _storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, 'uploads/')
@@ -20,12 +22,17 @@ let upload = multer({ storage: _storage })
 
 const router = express.Router();
 
-// NFT 생성
-router.post("/create", upload.single('file'), createNFT);
+// 토큰 교환 
+router.post("/exchange", tokenExchange);
 
+// 토큰 교환 ( 잎 -> 햇살 ) 
+router.post("/ipExchange", ipExchange);
+
+// NFT 생성
+router.post("/create", upload.array('file'), createNFT);
 
 // NFT 전송
-router.post("/exchange", exchangeNFT);
+router.post("/transfer", transferNFT);
 
 // NFT 조회
 router.post("/myList", NFTList);
