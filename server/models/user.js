@@ -34,7 +34,7 @@ module.exports = class User extends Sequelize.Model {
         haes_sal_amount: {
           type: Sequelize.INTEGER,
         },
-        token_amount: {
+        ip_amount: {
           type: Sequelize.INTEGER,
         },
         crop_count: {

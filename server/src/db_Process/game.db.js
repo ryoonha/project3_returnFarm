@@ -2,9 +2,8 @@
 import Bag from "../../models/bag";
 import Rand from "../../models/rand";
 
-//addr비교해서 기존유저는 item리스트 뱉
-//addr비교해서 신규유저라면 기본아이템 넣기 insert
-exports.getGameBag = async (address) => {
+//get-Game/Bag
+exports.bag_list = async (address) => {
   const result = await Bag.findOrCreate({
     where: {
       address: address,
@@ -29,7 +28,8 @@ exports.getGameBag = async (address) => {
   return result;
 };
 
-exports.putGameBag = async (address, bag) => {
+//put-game/bag
+exports.bag_update = async (address, bag) => {
   const result = await Bag.findOne({
     where: {
       address: address,
@@ -42,7 +42,8 @@ exports.putGameBag = async (address, bag) => {
   return result;
 };
 
-exports.postGameLand = async (address) => {
+//post-game/land
+exports.land_list = async (address) => {
   const array = Array(100).fill({
     status: null,
     add: [],
@@ -59,7 +60,8 @@ exports.postGameLand = async (address) => {
   return result;
 };
 
-exports.putGameRand = async (address, rand) => {
+//put-game/land
+exports.land_update = async (address, rand) => {
   const result = await Rand.findOne({
     where: {
       address: address,
