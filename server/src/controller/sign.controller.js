@@ -44,7 +44,7 @@ const login = async (req, res, next) => {
   const accessToken = generateAccessToken(
     logined.user_nick,
     logined.address,
-    logined.token_amount
+    logined.ip_amount
   );
   const refreshToken = generateRefreshToken(logined.user_nick, logined.address);
   res.status(200).json({

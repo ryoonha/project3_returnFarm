@@ -33,7 +33,7 @@ exports.userLogin = async (user_id, user_pwd) => {
       "user_nick",
       "user_pfp",
       "address",
-      "token_amount",
+      "ip_amount",
       "created_at",
       "crop_count",
       "crop_per",
