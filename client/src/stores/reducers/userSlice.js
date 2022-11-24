@@ -9,7 +9,7 @@ const userSlice = createSlice({
       address: null,
       profileImg: null,
       haetsal: 0,
-      token_amount: 0,
+      ip_amount: 0,
       crop_count: 0,
       crop_per: 0,
       play_time: 0,
@@ -28,7 +28,7 @@ const userSlice = createSlice({
         user_pfp,
         created_at,
         haes_sal_amount,
-        token_amount,
+        ip_amount,
         crop_count,
         crop_per,
         play_time,
@@ -38,7 +38,7 @@ const userSlice = createSlice({
       state.myInfo.address = address || state.myInfo.address;
       state.myInfo.profileImg = user_pfp || state.myInfo.profileImg;
       state.myInfo.haetsal = haes_sal_amount || state.myInfo.haetsal;
-      state.myInfo.token_amount = token_amount || state.myInfo.token_amount;
+      state.myInfo.ip_amount = ip_amount || state.myInfo.ip_amount;
       state.myInfo.token = action.payload.token || state.myInfo.token;
       state.myInfo.created_at = created_at || state.myInfo.created_at;
       state.myInfo.crop_count = crop_count || state.myInfo.crop_count;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { animated } from "react-spring";
 import useDivMove from "../../../hooks/useDivMove";
@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 
 const StatusBox = styled(BasicBox)`
   left: 50px;
-  //background-color: #c4f3ff;
 
   .statusBody {
     display: flex;
@@ -50,7 +49,7 @@ const Status = () => {
     address,
     profileImg,
     haetsal,
-    token_amount,
+    ip_amount,
     crop_count,
     crop_per,
     play_time,
@@ -78,7 +77,7 @@ const Status = () => {
           </div>
           <div className="statusUserEtc">
             <div className="totalHarvest">햇살 : {haetsal}</div>
-            <div className="totalHarvest">IP 토큰 : {token_amount}</div>
+            <div className="totalHarvest">IP 토큰 : {ip_amount}</div>
             <div className="totalHarvest">총 수확 횟수: {crop_count}</div>
             <div className="harvestPercentage">수확률: {crop_per}%</div>
             <div className="playTime">플레이 타임: {play_time}</div>

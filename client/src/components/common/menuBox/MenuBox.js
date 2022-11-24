@@ -131,7 +131,7 @@ const MenuBox = ({ dispatch }) => {
   const [time, setTime] = useState(null);
   const [hide, setHide] = useState(false);
   const { weather } = useSelector((state) => state.state);
-  const { haetsal, token_amount } = useSelector((state) => state.user.myInfo);
+  const { haetsal, ip_amount } = useSelector((state) => state.user.myInfo);
   const wData = weatherData;
 
   useEffect(() => {
@@ -184,7 +184,7 @@ const MenuBox = ({ dispatch }) => {
       <div className="streamlineBox cc" onClick={() => setHide(!hide)}>
         <div className="haetsal">{haetsal} 햇살</div>
         <div className="time">{time}</div>
-        <div className="tokenAmount">{token_amount} IP</div>
+        <div className="tokenAmount">{ip_amount} IP</div>
       </div>
     </MenuContainer>
   );

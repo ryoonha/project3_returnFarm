@@ -156,6 +156,7 @@ const Sign = ({ setLoginCheck }) => {
   const handleLogin = async () => {
     const { user_id, user_pwd } = userData;
     dispatch(modalChange({ change: "loading" }));
+    console.log(user_id, user_pwd);
     try {
       const { data } = await signLogin({ user_id, user_pwd });
       const { logined, token } = data;
