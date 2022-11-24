@@ -5,7 +5,6 @@ import Tile from "./Tile";
 
 const Ground = () => {
   const tileArr = useSelector((state) => state.user.tile);
-  console.log(tileArr);
 
   const Plane = (props) => {
     const [ref] = usePlane(() => ({
