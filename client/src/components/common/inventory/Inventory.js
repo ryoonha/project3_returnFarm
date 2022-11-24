@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { animated } from "react-spring";
 import useDivMove from "../../../hooks/useDivMove";
-import { BasicBox } from "../../../libs/cssFrame";
+import { BasicBox, DetailBox } from "../../../libs/cssFrame";
 import { itemList } from "../../../data/item";
+import { useDispatch, useSelector } from "react-redux";
+import { dateName } from "../../../data/weather";
+import ItemStatus from "../../modals/statusBox/ItemStatus";
+import { handleItem } from "../../../stores/reducers/stateSlice";
 
 const InventoryBox = styled(BasicBox)`
   transform: translateX(48vw);
@@ -31,7 +35,6 @@ const InventoryBox = styled(BasicBox)`
         bottom: 0px;
         width: 100%;
         font-size: 10px;
-        //border-radius: 5px 5px 0px 0px;
         background-color: rgba(0, 0, 0, 0.473);
         color: white;
       }
@@ -41,18 +44,10 @@ const InventoryBox = styled(BasicBox)`
 
 const Inventory = () => {
   const [x, y, bindDivPos] = useDivMove();
+  const dispatch = useDispatch();
+  const { bag } = useSelector((state) => state.user);
   const itemData = itemList;
-  // db에서 인벤토리 데이터 받아오기
-  // let arr = Array(30).fill(<FontAwesomeIcon icon="fa-solid fa-carrot" />);
-  let arr = [
-    { item_name: "삽" },
-    { item_name: "물뿌리개" },
-    { item_name: "사과" },
-    { item_name: "해바라기" },
-    { item_name: "옥수수" },
-    { item_name: "옥수수씨앗" },
-    { item_name: "벼" },
-  ];
+
   return (
     <animated.div
       style={{
@@ -65,21 +60,30 @@ const Inventory = () => {
           Inventory
         </div>
         <div className="boxBody cc">
-          {arr.map((item, index) => (
-            // <div
-            //   className="itemBox cc"
-            //   key={index}
-            //   style={item ? { border: "1px solid rgb(173, 173, 173)" } : null}
-            // >
-            //   {item}
-            // </div>
+          {bag.map((item, index) => (
             <div
               className="itemBox cc"
               key={index}
               style={item ? { border: "1px solid rgb(173, 173, 173)" } : null}
+              onMouseEnter={() => {
+                dispatch(handleItem({ itemNum: `item${index}` }));
+              }}
+              onMouseLeave={() => {
+                dispatch(handleItem({ itemNum: `item${index}` }));
+              }}
+              onContextMenu={() => {
+                alert("채팅방을 정말 삭제하시겠어요?");
+              }}
             >
               <img src={itemData[item.item_name].img} alt="" />
               <div className="itemName cc">{item.item_name}</div>
+              <ItemStatus
+                item={item}
+                index={index}
+                itemData={itemData}
+                dispatch={dispatch}
+                handleItem={handleItem}
+              />
             </div>
           ))}
         </div>

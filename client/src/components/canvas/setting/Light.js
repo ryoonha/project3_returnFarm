@@ -24,19 +24,19 @@ export const Light = () => {
     if (pointLight.current) {
       const { x, y, z } = pointLight.current.position;
       const { dx, dy, dz } = dayOrNight;
-      if (x >= 100 && dx) {
+      if (x >= 150 && dx) {
         setDayOrNight({ ...dayOrNight, dx: false });
-      } else if (x <= -100 && !dx) {
+      } else if (x <= -150 && !dx) {
         setDayOrNight({ ...dayOrNight, dx: true });
       }
-      if (y >= 100 && dy) {
+      if (y >= 150 && dy) {
         setDayOrNight({ ...dayOrNight, dy: false });
-      } else if (y <= -100 && !dy) {
+      } else if (y <= -150 && !dy) {
         setDayOrNight({ ...dayOrNight, dy: true });
       }
-      if (z >= 100 && dz) {
+      if (z >= 150 && dz) {
         setDayOrNight({ ...dayOrNight, dz: false });
-      } else if (z <= -100 && !dz) {
+      } else if (z <= -150 && !dz) {
         setDayOrNight({ ...dayOrNight, dz: true });
       }
       if (y > 0 && weather !== "sun") {
@@ -48,9 +48,9 @@ export const Light = () => {
       }
       pointLight.current.position.lerp(
         new Vector3(
-          dx ? x + 0.1 : x - 0.1,
-          dy ? y + 0.1 : y - 0.1,
-          dz ? z + 0.1 : z - 0.1
+          dx ? x + 0.01 : x - 0.01,
+          dy ? y + 0.01 : y - 0.01,
+          dz ? z + 0.01 : z - 0.01
         ),
         0.2
       );
@@ -71,7 +71,7 @@ export const Light = () => {
         <pointLight
           castShadow
           ref={pointLight}
-          position={[0, 100, 0]}
+          position={[0, 150, 0]}
           intensity={1.5}
           shadow-mapSize-width={4096}
           shadow-mapSize-height={4096}

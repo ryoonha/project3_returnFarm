@@ -35,6 +35,9 @@ exports.userLogin = async (user_id, user_pwd) => {
       "address",
       "token_amount",
       "created_at",
+      "crop_count",
+      "crop_per",
+      "play_time",
     ],
   })
     .then((e) => e.dataValues)

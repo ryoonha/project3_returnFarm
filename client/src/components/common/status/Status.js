@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { animated } from "react-spring";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useDivMove from "../../../hooks/useDivMove";
 import { BasicBox } from "../../../libs/cssFrame";
 import DragDrop from "./DragDrop";
@@ -32,7 +31,6 @@ const StatusBox = styled(BasicBox)`
         font-size: 100px;
       }
       .statusUserProfile {
-        /* margin-top: ${(props) => (props.fileData ? "10px" : "10px")}; */
         margin-top: 10px;
         text-align: center;
       }
@@ -41,17 +39,24 @@ const StatusBox = styled(BasicBox)`
       width: 330px;
       height: 220px;
       margin: auto;
-      //background-color: aliceblue;
     }
   }
 `;
 
 const Status = () => {
   const [x, y, bindDivPos] = useDivMove();
-  const { nickName, profileImg, haetsal, token_amount, created_at } =
-    useSelector((state) => state.user.myInfo);
-  const [fileData, setFileData] = useState(null); // 이미지 데이터
-  const [imgURL, setImgURL] = useState(null); //imgURL base64
+  const {
+    nickName,
+    address,
+    profileImg,
+    haetsal,
+    token_amount,
+    crop_count,
+    crop_per,
+    play_time,
+    created_at,
+  } = useSelector((state) => state.user.myInfo);
+
   return (
     <animated.div
       style={{
@@ -59,27 +64,24 @@ const Status = () => {
         y,
       }}
     >
-      <StatusBox fileData={fileData}>
+      <StatusBox>
         <div className="header" {...bindDivPos()}>
           Status
         </div>
         <div className="statusBody">
           <div className="statusUserBox">
-            <DragDrop
-              setFileData={setFileData}
-              fileData={fileData}
-              imgURL={imgURL}
-              setImageUrl={setImgURL}
-            />
+            <DragDrop address={address} profileImg={profileImg} />
             <div className="statusUserProfile">
               <div className="userNickName">{nickName}</div>
               <div className="userTimeData">{created_at.split("T")[0]}</div>
             </div>
           </div>
           <div className="statusUserEtc">
-            <div className="totalHarvest">총 수확 횟수: 0</div>
-            <div className="harvestPercentage">수확률: 0%</div>
-            <div className="playTime">플레이 타임: 10분</div>
+            <div className="totalHarvest">햇살 : {haetsal}</div>
+            <div className="totalHarvest">IP 토큰 : {token_amount}</div>
+            <div className="totalHarvest">총 수확 횟수: {crop_count}</div>
+            <div className="harvestPercentage">수확률: {crop_per}%</div>
+            <div className="playTime">플레이 타임: {play_time}</div>
           </div>
         </div>
       </StatusBox>

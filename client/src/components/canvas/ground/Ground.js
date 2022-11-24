@@ -1,25 +1,44 @@
+import { usePlane } from "@react-three/cannon";
 import React from "react";
 import { useSelector } from "react-redux";
 import Tile from "./Tile";
-//import { focusGround } from "../store/reducers/groundSlice";
 
 const Ground = () => {
-  let arr = Array(10).fill(0);
+  const tileArr = useSelector((state) => state.user.tile);
+  console.log(tileArr);
+
+  const Plane = (props) => {
+    const [ref] = usePlane(() => ({
+      type: "Static",
+      material: "ground",
+      ...props,
+    }));
+
+    return (
+      <group ref={ref}>
+        <mesh receiveShadow>
+          <planeGeometry args={[300, 300]} />
+          <meshStandardMaterial color={props.bgColor} />
+        </mesh>
+      </group>
+    );
+  };
 
   return (
-    <group position={[0, -1, 0]}>
-      {arr.map((e, indexY) => (
-        <group key={"col" + indexY} position={[0, 0, -4.5 + indexY * 5.1]}>
-          {arr.map((e, indexX) => (
-            <Tile
-              key={"row" + indexX}
-              indexX={indexX}
-              indexY={indexY}
-              num={Math.floor(Math.random() * 2)}
-            />
-          ))}
-        </group>
+    <group position={[0, 0, 0]}>
+      {tileArr.map((tileData, index) => (
+        <Tile
+          key={index}
+          tileData={tileData}
+          numX={index % 10}
+          numZ={Math.floor(index / 10)}
+        />
       ))}
+      <Plane
+        position={[0, -0.1, 0]}
+        rotation={[-Math.PI / 2, 0, 0]}
+        bgColor={"#90c57c"}
+      />
     </group>
   );
 };

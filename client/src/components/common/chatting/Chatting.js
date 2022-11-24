@@ -167,7 +167,7 @@ const Chatting = () => {
   const [message, setMessage] = useState("");
   const [toggle, setToggle] = useState(false);
 
-  const { userList, chatList } = useSelector((state) => state.chat);
+  const { userList, chatList } = useSelector((state) => state.game);
   const { nickName } = useSelector((state) => state.user.myInfo);
 
   const handleSendMessage = (e) => {

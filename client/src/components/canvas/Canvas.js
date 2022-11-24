@@ -1,12 +1,14 @@
 import { Canvas } from "@react-three/fiber";
+import { Debug, Physics } from "@react-three/cannon";
 import React from "react";
 import Ground from "./ground/Ground";
 import Camera from "./setting/Camera";
 import { Provider } from "react-redux";
 import store from "../../stores/store";
 import Character from "../character/Character";
-import { BulletinBoard } from "./object/BulletinBoard";
 import { Light } from "./setting/Light";
+import Environment from "./environment/Environment";
+import Object from "./object/Object";
 
 const Index = () => {
   return (
@@ -21,10 +23,15 @@ const Index = () => {
       >
         <Provider store={store}>
           <Light />
-          <Character />
-          <Ground />
           <Camera />
-          <BulletinBoard />
+          <Physics>
+            <Debug color="black" scale={1.5}>
+              <Character />
+              <Ground />
+              <Environment />
+              <Object />
+            </Debug>
+          </Physics>
         </Provider>
       </Canvas>
     </>

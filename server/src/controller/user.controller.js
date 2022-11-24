@@ -1,15 +1,12 @@
 import { tokenValidation } from "../middleware/validation";
-import { userInfo } from "../db_Process/user.db";
+import { userInfo, userPfp } from "../db_Process/user.db";
 
 const getMyinfo = async (req, res, next) => {
   const { user_id, address } = req.body;
-  // const tokenData = tokenValidation();
-  // --> db 프로세스 코드 넣기
   const dbResult = await userInfo(user_id, address);
 
-  // 토큰에 데이터가 있고 DB에서 유저 조회가 성공적이라면
+  console.log(dbResult);
   if (dbResult) {
-    // && tokenData
     res.status(200).send(dbResult);
   } else {
     res.status(400).send({
@@ -18,4 +15,16 @@ const getMyinfo = async (req, res, next) => {
   }
 };
 
-export { getMyinfo };
+const updatePfp = async (req, res, next) => {
+  const { address, image } = req.body;
+  const dbResult = await userPfp(address, image);
+  if (dbResult) {
+    res.status(200).send(dbResult);
+  } else {
+    res.status(400).send({
+      message: "실패",
+    });
+  }
+};
+
+export { getMyinfo, updatePfp };

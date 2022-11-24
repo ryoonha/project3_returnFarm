@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-
+import LandStatus from "./statusBox/LandStatus";
 import Loading from "./loading/Loading";
 import Screenshot from "./screenshot/Screenshot";
 
@@ -19,12 +19,15 @@ const ModalBox = styled.div`
 
 const Modal = () => {
   // 컨트롤 코드 필요
-  const { modalCheck } = useSelector((state) => state.state);
-
+  const modalCheck = useSelector((state) => state.state.modalCheck);
+  const tileSelect = useSelector((state) => state.state.tileSelect);
   return (
     <ModalBox check={modalCheck}>
       {modalCheck === "loading" ? <Loading /> : null}
       {modalCheck === "screenshot" ? <Screenshot /> : null}
+      {tileSelect.x !== null && tileSelect.z !== null ? (
+        <LandStatus tileData={tileSelect} />
+      ) : null}
     </ModalBox>
   );
 };

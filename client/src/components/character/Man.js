@@ -1,11 +1,14 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useGLTF, useAnimations, Html } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Control from "./Control";
 import { Vector3 } from "three";
+import { handleTile } from "../../stores/reducers/stateSlice";
 
 export function Man({ nickName }) {
+  const dispatch = useDispatch();
+  const tilePos = useSelector((state) => state.state.tileSelect);
   const [vec] = useState(() => new Vector3());
   const model = useRef();
   const nameRef = useRef();
@@ -28,7 +31,18 @@ export function Man({ nickName }) {
       // nick.current.position.lerp(x, y, z, 0.1);
       // console.log(nick.current.position);
       camera.lookAt(x, y, z + 5);
-      camera.position.lerp(vec.set(x, y + 15, z - 15), 0.1);
+      //camera.position.lerp(vec.set(x, y + 15, z - 15), 0.1);
+
+      if (
+        tilePos.x &&
+        tilePos.z &&
+        (tilePos.x + 10 < x ||
+          tilePos.x - 10 > x ||
+          tilePos.z + 10 < z ||
+          tilePos.z - 10 > z)
+      ) {
+        dispatch(handleTile({ x: null, z: null, data: null }));
+      }
     }
     if (model.current && (up || right || down || left)) {
       if (up && left) {
@@ -124,7 +138,7 @@ export function Man({ nickName }) {
   }, [up, right, down, left, shift]);
 
   return (
-    <group ref={model} dispose={null} position={[0, -1, 0]}>
+    <group ref={model} dispose={null} position={[0, 0, 0]}>
       {/* <Html
         // transform
         // center

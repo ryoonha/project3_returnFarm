@@ -20,15 +20,18 @@ const InterfaceBox = styled.div`
 
 const Interface = () => {
   const dispatch = useDispatch();
-  const { topMenuSelect } = useSelector((state) => state.state);
+  const select = useSelector((state) => state.state.topMenuSelect);
   useKeyEvents();
-
   return (
-    <InterfaceBox>
-      {topMenuSelect === "Status" ? <Status dispatch={dispatch} /> : null}
-      {topMenuSelect === "Exchange" ? <Exchange dispatch={dispatch} /> : null}
-      {topMenuSelect === "Chatting" ? <Chatting dispatch={dispatch} /> : null}
-      {topMenuSelect === "Inventory" ? <Inventory dispatch={dispatch} /> : null}
+    <InterfaceBox
+      onContextMenu={(e) => {
+        e.preventDefault();
+      }}
+    >
+      {select === "Status" ? <Status dispatch={dispatch} /> : null}
+      {select === "Exchange" ? <Exchange dispatch={dispatch} /> : null}
+      {select === "Chatting" ? <Chatting dispatch={dispatch} /> : null}
+      {select === "Inventory" ? <Inventory dispatch={dispatch} /> : null}
       <MenuBox dispatch={dispatch} />
       <HotkeyBox dispatch={dispatch} />
     </InterfaceBox>

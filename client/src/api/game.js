@@ -8,12 +8,8 @@ export const gameBagUpdate = (userData) => {
   return game.put("bag", userData);
 };
 
-export const gameRand = (userAddress) => {
-  return game.get("rand", userAddress);
-};
-
-export const gameRandCreate = (userAddress) => {
-  return game.post("randCreate", userAddress);
+export const gameRandCreate = (address) => {
+  return game.post("rand", address);
 };
 
 export const gameRandUpdate = (userRand) => {

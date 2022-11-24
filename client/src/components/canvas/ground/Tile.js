@@ -1,15 +1,12 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import * as THREE from "three";
 import { Color, TextureLoader } from "three";
-import Corn from "../../models/Corn";
-import Tomato from "../../models/Tomato";
+import { handleTile } from "../../../stores/reducers/stateSlice";
 
-const Tile = ({ indexX, indexY, num }) => {
+const Tile = ({ tileData, numX, numZ }) => {
   const dispatch = useDispatch();
   const [select, setSelect] = useState(false);
-  const [demo, setDemo] = useState(false);
-  const demoArr = [<Tomato demo={demo} />, <Corn demo={demo} />];
   const textureStarField1 = useMemo(
     () =>
       new TextureLoader().load(
@@ -24,22 +21,29 @@ const Tile = ({ indexX, indexY, num }) => {
   textureStarField1.wrapS = THREE.RepeatWrapping;
   textureStarField1.wrapT = THREE.RepeatWrapping;
   //textureStarField1.repeat.set(1, 1);
-
+  // console.log(tileData);
   return (
     <mesh
       receiveShadow
       rotation={[-Math.PI / 2, 0, 0]}
-      position={[-26.5 + indexX * 5.1, 0, -22]}
+      position={[24 - numX * 5.1, 0, 24 - numZ * 5.1]}
       onPointerOver={(e) => {
         setSelect(new Color(2, 2, 2));
       }}
       onPointerOut={(e) => {
         setSelect(new Color(1, 1, 1));
       }}
-      // onClick={(e) => {
-      //   const { x, y, z } = e.object.position;
-      //   setDemo(true);
-      // }}
+      onClick={(e) => {
+        const { x, y, z } = e.object.position;
+        console.log(e.object.position);
+        dispatch(
+          handleTile({
+            x: Math.floor(x * 100) / 100,
+            z: Math.floor(z * 100) / 100,
+            data: tileData,
+          })
+        );
+      }}
     >
       <planeGeometry attach="geometry" args={[5, 5]} />
       <meshPhysicalMaterial
@@ -49,7 +53,6 @@ const Tile = ({ indexX, indexY, num }) => {
         color={select}
         transparent
       />
-      {demo ? demoArr[num] : null}
     </mesh>
   );
 };

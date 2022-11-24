@@ -1,11 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { io } from "socket.io-client";
-import {
-  handleCharacter,
-  handleChat,
-  handleUser,
-} from "../stores/reducers/chatSlice";
+import { handleChat, handleUser } from "../stores/reducers/gameSlice";
 
 export let socket = io("http://localhost:4000", { transports: ["websocket"] });
 

@@ -119,7 +119,6 @@ const Menu = styled.div`
       align-items: center;
       position: absolute;
       top: -10px;
-      //width: 30px;
       height: 15px;
       background-color: rgb(48, 48, 48);
       color: white;
@@ -141,6 +140,7 @@ const MenuBox = ({ dispatch }) => {
       const hours = today.getHours(); // 시
       const minutes = today.getMinutes(); // 분
       const seconds = today.getSeconds(); // 초
+
       setTime(`${hours === 0 ? 12 : hours}:${minutes}:${seconds}`);
     }, 1000);
     return () => clearInterval(dataUpdate);
