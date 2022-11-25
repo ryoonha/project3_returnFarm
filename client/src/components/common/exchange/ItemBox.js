@@ -77,7 +77,7 @@ const ItemBoxContainer = styled.div`
 `;
 
 const ItemBox = ({ data }) => {
-  const { item_name, item_count, selling_price, address, created_at } = data;
+  const { item_name, item_count, selling_price, address, createdAt } = data;
   // 여기서 시작
   return (
     <ItemBoxContainer countColor={unitColor[item_count.length]}>
@@ -92,7 +92,7 @@ const ItemBox = ({ data }) => {
         <div className="info2 cc">
           <div className="itemTimeData">
             <div className="timeDataText">등록 날짜</div>
-            <div>{created_at} 2022/11/25</div>
+            <div>{createdAt.split("T")[0]}</div>
           </div>
           <div className="leafCountBox cc">
             <div className="leafCount">{selling_price}</div>

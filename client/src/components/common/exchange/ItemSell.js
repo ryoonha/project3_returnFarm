@@ -105,7 +105,6 @@ const ItemSell = ({ dispatch }) => {
       address,
       ...sell,
     };
-    console.log(sellData);
     const { data } = await transactionSell(sellData);
     if (data) {
       // 가방에서 아이템 삭제 코드 작성하기
