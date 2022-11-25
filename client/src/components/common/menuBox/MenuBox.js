@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { handleTopMenu, sellChange } from "../../../stores/reducers/stateSlice";
@@ -128,23 +128,11 @@ const Menu = styled.div`
 `;
 
 const MenuBox = ({ dispatch }) => {
-  const [time, setTime] = useState(null);
   const [hide, setHide] = useState(false);
   const weather = useSelector((state) => state.state.weather);
-  const { haetsal, ip_amount } = useSelector((state) => state.user.myInfo);
+  const haetsal = useSelector((state) => state.user.myInfo.haetsal);
+  const ip_amount = useSelector((state) => state.user.myInfo.ip_amount);
   const wData = weatherData;
-
-  useEffect(() => {
-    const dataUpdate = setInterval(() => {
-      const today = new Date();
-      const hours = today.getHours(); // 시
-      const minutes = today.getMinutes(); // 분
-      const seconds = today.getSeconds(); // 초
-
-      setTime(`${hours === 0 ? 12 : hours}:${minutes}:${seconds}`);
-    }, 1000);
-    return () => clearInterval(dataUpdate);
-  }, []);
 
   return (
     <MenuContainer className="cc" weather={weather} hide={hide}>
@@ -186,7 +174,6 @@ const MenuBox = ({ dispatch }) => {
       </Menu>
       <div className="streamlineBox cc" onClick={() => setHide(!hide)}>
         <div className="haetsal">{haetsal} 햇살</div>
-        <div className="time">{time}</div>
         <div className="tokenAmount">{ip_amount} IP</div>
       </div>
     </MenuContainer>

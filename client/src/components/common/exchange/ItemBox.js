@@ -76,11 +76,16 @@ const ItemBoxContainer = styled.div`
   } ;
 `;
 
-const ItemBox = ({ data }) => {
-  const { item_name, item_count, selling_price, address, createdAt } = data;
+const ItemBox = ({ data, handleBay }) => {
+  const { item_name, item_count, selling_price, createdAt } = data;
   // 여기서 시작
   return (
-    <ItemBoxContainer countColor={unitColor[item_count.length]}>
+    <ItemBoxContainer
+      countColor={unitColor[item_count.length]}
+      onClick={() => {
+        handleBay(data);
+      }}
+    >
       <div className="exchangeItemIconBox cc">
         <img src={itemList[item_name].img} alt="" />
       </div>
