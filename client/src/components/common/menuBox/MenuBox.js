@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { handleTopMenu } from "../../../stores/reducers/stateSlice";
+import { handleTopMenu, sellChange } from "../../../stores/reducers/stateSlice";
 import { useSelector } from "react-redux";
 import { weatherData } from "../../../data/etc";
 
@@ -130,7 +130,7 @@ const Menu = styled.div`
 const MenuBox = ({ dispatch }) => {
   const [time, setTime] = useState(null);
   const [hide, setHide] = useState(false);
-  const { weather } = useSelector((state) => state.state);
+  const weather = useSelector((state) => state.state.weather);
   const { haetsal, ip_amount } = useSelector((state) => state.user.myInfo);
   const wData = weatherData;
 
@@ -156,7 +156,10 @@ const MenuBox = ({ dispatch }) => {
       </Menu>
       <Menu
         text={"inventory"}
-        onClick={() => dispatch(handleTopMenu({ select: "Inventory" }))}
+        onClick={() => {
+          dispatch(sellChange({ change: false }));
+          dispatch(handleTopMenu({ select: "Inventory" }));
+        }}
       >
         <FontAwesomeIcon icon="fa-solid fa-suitcase" />
       </Menu>
