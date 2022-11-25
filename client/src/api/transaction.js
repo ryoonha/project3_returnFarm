@@ -11,3 +11,7 @@ export const transactionSell = (itemData) => {
 export const transactionExchange = (itemData) => {
   return transaction.post("exchange", itemData);
 };
+
+export const transactionBuy = (itemData) => {
+  return transaction.post("buy", itemData);
+};
