@@ -27,28 +27,30 @@ exports.marketItem_create = async (
   return result;
 };
 
-//post-Transaction/Exchange
-exports.bag_update = async (address, nBag) => {
+//put-Transaction/Exchange (post에서 put으로변경)
+exports.bag_update = async (address, nItem) => {
   const fnSearch = Sequelize.fn(
     "JSON_SEARCH",
     Sequelize.col("item"),
     "one",
-    nBag.item_name
+    nItem.item_name
   );
-
   const result = await Bag.findOne({
     where: { address: address },
     attributes: ["id", "address", "item", [fnSearch, "item_path"]],
   }).then((user) => {
     if (user.dataValues.item_path != null) {
-      const patn_split = user.dataValues.item_path.split(".", [1]);
-      const path = patn_split + ".item_count";
+      const path_split = user.dataValues.item_path.split(".")[0];
+      const path = path_split + ".item_count";
       const idx = path.match(/\d/g)[0];
       const fnReplace = Sequelize.fn(
         "JSON_REPLACE",
         Sequelize.col("item"),
         path,
-        Number(nBag.item_count) + Number(user.dataValues.item[idx].item_count)
+        String(
+          Number(nItem.item_count) +
+            Number(user.dataValues.item[idx].item_count)
+        )
       );
       return user
         .update({
@@ -58,9 +60,9 @@ exports.bag_update = async (address, nBag) => {
         .then((r) => r.dataValues.item);
     } else {
       const array = [];
-      for (let i in nBag) {
+      for (let i in nItem) {
         array.push(i);
-        array.push(nBag[i]);
+        array.push(nItem[i]);
       }
       const fnAppend = Sequelize.fn(
         "JSON_ARRAY_APPEND",
