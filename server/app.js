@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 4000;
 // * ------------ data base ------------ *
 
 sequelize
-  .sync({ force: true }) //기존데이터유지false
+  .sync({ force: false }) //기존데이터유지false
   .then(() => {
     console.log("데이터 베이스 연결 성공");
   })
