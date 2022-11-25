@@ -36,15 +36,8 @@ const sell = async (req, res, next) => {
 
 const exchange = async (req, res, next) => {
   // const tokenData = tokenValidation();
-  // const { address } = req.body;
-  // const address = "0xDf2DddDb52904F1Ce173786222eebC8Dd326f2yf";
-  // const nBag = {
-  //   time: "2022/12/23/08/30",
-  //   quality: "2",
-  //   item_name: "숟가락",
-  //   item_count: "-5",
-  // };
-  const dbResult = await bag_update(address, nBag);
+  const { address, nItem } = req.body;
+  const dbResult = await bag_update(address, nItem);
   if (dbResult) {
     // && tokenData
     res.status(200).send(dbResult);
