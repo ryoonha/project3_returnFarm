@@ -6,6 +6,7 @@ const stateSlice = createSlice({
     tileSelect: { x: null, z: null, data: null },
     itemSelect: null,
     topMenuSelect: null,
+    sellToggle: false,
     weather: "sun",
     modalCheck: null,
   },
@@ -39,6 +40,9 @@ const stateSlice = createSlice({
     modalChange: (state, action) => {
       state.modalCheck = action.payload.change;
     },
+    sellChange: (state, action) => {
+      state.sellToggle = action.payload.change;
+    },
   },
 });
 
@@ -49,4 +53,5 @@ export const {
   handleTopMenu,
   weatherChange,
   modalChange,
+  sellChange,
 } = stateSlice.actions;

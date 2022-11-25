@@ -6,6 +6,7 @@ const gameSlice = createSlice({
     marketList: [],
     userList: [],
     chatList: [],
+    sellData: null,
   },
   reducers: {
     handleMarketList: (state, action) => {
@@ -17,8 +18,12 @@ const gameSlice = createSlice({
     handleChat: (state, action) => {
       state.chatList.push(action.payload.chat);
     },
+    handleSell: (state, action) => {
+      state.sellData = action.payload.itemInfo;
+    },
   },
 });
 
 export default gameSlice;
-export const { handleMarketList, handleUser, handleChat } = gameSlice.actions;
+export const { handleMarketList, handleUser, handleChat, handleSell } =
+  gameSlice.actions;
