@@ -8,7 +8,8 @@ const stateSlice = createSlice({
     topMenuSelect: null,
     sellToggle: false,
     weather: "sun",
-    modalCheck: null,
+    modalCheck: "",
+    rightClick: [false, false, false],
   },
   reducers: {
     handleTile: (state, action) => {
@@ -20,7 +21,10 @@ const stateSlice = createSlice({
       }
     },
     handleItem: (state, action) => {
-      if (state.itemSelect === action.payload.itemNum) {
+      if (
+        state.itemSelect === action.payload.itemNum ||
+        action.payload.itemNum === null
+      ) {
         state.itemSelect = null;
       } else if (!state.itemSelect) {
         state.itemSelect = action.payload.itemNum;
@@ -43,6 +47,9 @@ const stateSlice = createSlice({
     sellChange: (state, action) => {
       state.sellToggle = action.payload.change;
     },
+    handleMouse: (state, action) => {
+      state.rightClick = action.payload.on;
+    },
   },
 });
 
@@ -54,4 +61,5 @@ export const {
   weatherChange,
   modalChange,
   sellChange,
+  handleMouse,
 } = stateSlice.actions;

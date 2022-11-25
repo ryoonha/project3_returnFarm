@@ -17,8 +17,8 @@ const getBag = async (req, res, next) => {
 };
 
 const updateBag = async (req, res, next) => {
-  const { address, item, count } = req.body;
-  const dbResult = await bagObj_remove(address, item, count);
+  const { address, itemName, count } = req.body;
+  const dbResult = await bagObj_remove(address, itemName, count);
   if (dbResult) {
     res.status(200).send(dbResult);
   } else {

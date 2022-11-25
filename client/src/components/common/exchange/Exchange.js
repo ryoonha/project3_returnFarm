@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { animated } from "react-spring";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useDivMove from "../../../hooks/useDivMove";
 import { BasicBox } from "../../../libs/cssFrame";
 import ItemBox from "./ItemBox";
 import { useDispatch, useSelector } from "react-redux";
-import { handleTopMenu, sellChange } from "../../../stores/reducers/stateSlice";
+import {
+  handleTopMenu,
+  modalChange,
+  sellChange,
+} from "../../../stores/reducers/stateSlice";
+import { transactionBuy } from "../../../api/transaction";
+import { bagUpdate, myInfoSave } from "../../../stores/reducers/userSlice";
+import { handleMarketList } from "../../../stores/reducers/gameSlice";
 
 const ExchangeBox = styled(BasicBox)`
   display: flex;
@@ -57,8 +63,37 @@ const Exchange = () => {
   const [x, y, bindDivPos] = useDivMove();
   const [open, setOpen] = useState(false);
   const list = useSelector((state) => state.game.marketList);
-  const ipToken = useSelector((state) => state.user.myInfo.ip_amount);
-  const itemData = useSelector((state) => state.game.sellData);
+  const { nickName, address, ip_amount } = useSelector(
+    (state) => state.user.myInfo
+  );
+
+  // ItemBay 컴포넌트에서 실행
+  const handleBay = async (item) => {
+    if (ip_amount >= item.selling_price) {
+      dispatch(modalChange({ change: "loading" }));
+      const userAndItem = {
+        user_nick: nickName,
+        address,
+        item,
+      };
+      const { status, data } = await transactionBuy(userAndItem);
+      if (status === 200) {
+        const { newMarketList, updateHaesSal, updateMyBag } = data;
+        console.log(updateHaesSal);
+        // 여기부터 시작 200 받고 데이터 업데이트 하기
+        dispatch(bagUpdate({ bag: updateMyBag }));
+        dispatch(handleMarketList({ list: newMarketList }));
+        dispatch(
+          myInfoSave({
+            data: { haes_sal_amount: updateHaesSal.haes_sal_amount },
+          })
+        );
+      }
+      dispatch(modalChange({ change: "" }));
+    } else {
+      dispatch(modalChange({ change: "error/haes_sal" }));
+    }
+  };
 
   useEffect(() => {
     setOpen(true);
@@ -77,7 +112,7 @@ const Exchange = () => {
         </div>
         <div className="listBox">
           {list.map((item, index) => (
-            <ItemBox key={index} data={item} />
+            <ItemBox key={index} data={item} handleBay={handleBay} />
           ))}
         </div>
         <div

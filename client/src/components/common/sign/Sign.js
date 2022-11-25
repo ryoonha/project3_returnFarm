@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled, { css } from "styled-components";
 import { gameBag, gameRandCreate } from "../../../api/game";
@@ -159,6 +159,7 @@ const Sign = ({ setLoginCheck }) => {
       const { data } = await signLogin({ user_id, user_pwd });
       const { logined, token } = data;
       if (initSocketConnection(data)) {
+        console.log(data);
         localStorage.setItem("token", JSON.stringify(token));
         const bagInfo = await gameBag({ address: logined.address });
         const randInfo = await gameRandCreate({ address: logined.address });
@@ -174,16 +175,49 @@ const Sign = ({ setLoginCheck }) => {
           user_nick: "",
         });
       }
-      dispatch(modalChange({ change: null }));
+      dispatch(modalChange({ change: "" }));
     } catch (e) {
       localStorage.clear();
-      dispatch(modalChange({ change: null }));
+      dispatch(modalChange({ change: "" }));
+      setUseData({
+        user_id: "",
+        user_pwd: "",
+        user_nick: "",
+      });
       alert(e.response.data.message);
     }
   };
 
+  // const enterDown = (key) => {
+  //   console.log(key);
+  //   if (key === "Enter" && userDateValidation()) {
+  //     if (!toggleRegister) {
+  //       handleLogin();
+  //     } else {
+  //       handleRegister();
+  //     }
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   document
+  //     .getElementById("target")
+  //     .addEventListener("keydown", (e) => enterDown(e.key));
+  // });
+
   return (
-    <SignContainer errorHandle={errorHandle}>
+    <SignContainer
+      errorHandle={errorHandle}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" && userDateValidation()) {
+          if (!toggleRegister) {
+            handleLogin();
+          } else {
+            handleRegister();
+          }
+        }
+      }}
+    >
       <div className="signHeader">return Farm !</div>
       <div className="signBox cc">
         <div className="signInput sid cc">

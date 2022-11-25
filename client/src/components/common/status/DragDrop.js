@@ -73,13 +73,13 @@ const DragDrop = ({ address, profileImg }) => {
             userUpdatePfp({ address: address, image: reader.result });
             dispatch(myInfoSave({ data: { user_pfp: reader.result } }));
             resolve();
-            dispatch(modalChange({ change: null }));
+            dispatch(modalChange({ change: "" }));
           };
         });
       } else {
         alert("실패! 파일 크기가 50KB를 넘습니다!");
       }
-      dispatch(modalChange({ change: null }));
+      dispatch(modalChange({ change: "" }));
     };
     handleChangeFile(selectFiles[0]);
   }, []);

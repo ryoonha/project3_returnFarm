@@ -4,6 +4,7 @@ import styled from "styled-components";
 import LandStatus from "./statusBox/LandStatus";
 import Loading from "./loading/Loading";
 import Screenshot from "./screenshot/Screenshot";
+import Error from "./error/Error";
 
 const ModalBox = styled.div`
   width: 100vw;
@@ -18,12 +19,14 @@ const ModalBox = styled.div`
 `;
 
 const Modal = () => {
-  // 컨트롤 코드 필요
   const modalCheck = useSelector((state) => state.state.modalCheck);
   const tileSelect = useSelector((state) => state.state.tileSelect);
   return (
     <ModalBox check={modalCheck}>
       {modalCheck === "loading" ? <Loading /> : null}
+      {modalCheck.split("/")[0] === "error" ? (
+        <Error type={modalCheck.split("/")[1]} />
+      ) : null}
       {modalCheck === "screenshot" ? <Screenshot /> : null}
       {tileSelect.x !== null && tileSelect.z !== null ? (
         <LandStatus tileData={tileSelect} />

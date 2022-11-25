@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { gameBagUpdate } from "../../../api/game";
 import { transactionList, transactionSell } from "../../../api/transaction";
 import { itemList } from "../../../data/item";
 import {
@@ -13,6 +14,7 @@ import {
   modalChange,
   sellChange,
 } from "../../../stores/reducers/stateSlice";
+import { bagUpdate } from "../../../stores/reducers/userSlice";
 
 const ItemSellBox = styled.div`
   position: absolute;
@@ -101,14 +103,25 @@ const ItemSell = ({ dispatch }) => {
   const handleItemSell = async () => {
     dispatch(modalChange({ change: "loading" }));
     const sellData = {
-      item_name: item.item_name,
-      address,
+      ...item,
       ...sell,
+      address,
     };
     const { data } = await transactionSell(sellData);
+    console.log(data);
     if (data) {
-      // 가방에서 아이템 삭제 코드 작성하기
+      const updateData = {
+        address,
+        itemName: item.item_name,
+        count: sell.item_count,
+      };
+      // 거래소에 올린 아이템을 DB 가방테이블에 빼거나 삭제해서 저장
+      const itemUpdate = await gameBagUpdate(updateData);
+      // 최신화된 마켓 리스트를 불러온다
       const marketList = await transactionList();
+      // 가방을 업데이트 한다
+      await dispatch(bagUpdate({ bag: itemUpdate.data }));
+      // 클라이언트에 마켓 리스트를 적용한다.
       await dispatch(handleMarketList({ list: marketList.data }));
     } else {
       alert("아이템 등록에 실패 했습니다!");

@@ -14,13 +14,17 @@ exports.marketItem_create = async (
   item_name,
   item_count,
   selling_price,
-  address
+  address,
+  time,
+  quality
 ) => {
   const result = await Market_item.create({
     item_name,
     item_count,
     selling_price,
     address,
+    time,
+    quality,
   })
     .then((e) => true)
     .catch((err) => false);
@@ -61,6 +65,14 @@ exports.bag_update = async (address, nItem) => {
     } else {
       const array = [];
       for (let i in nItem) {
+        if (
+          i === "createdAt" ||
+          i === "selling_price" ||
+          i === "address" ||
+          i === "id"
+        ) {
+          continue;
+        }
         array.push(i);
         array.push(nItem[i]);
       }
@@ -82,16 +94,23 @@ exports.bag_update = async (address, nItem) => {
 };
 
 //post-Transaction/Buy
-exports.tokenAmount_update = async (address, ip_amount) => {
+exports.tokenAmount_update = async (address, haes_sal_amount) => {
   const result = await User.findOne({
     where: {
       address: address,
     },
-    attributes: ["id", "address", "ip_amount"],
+    attributes: ["id", "address", "haes_sal_amount"],
   })
     .then((user) => {
-      return user.update({ ip_amount: ip_amount });
+      return user.update({ haes_sal_amount: haes_sal_amount });
     })
     .then((e) => e.dataValues);
+  return result;
+};
+
+exports.marketItem_delete = async (item) => {
+  const result = await Market_item.destroy({
+    where: { address: item.address, item_name: item.item_name },
+  }).then(() => Market_item.findAll());
   return result;
 };
