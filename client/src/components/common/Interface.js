@@ -28,12 +28,12 @@ const Interface = () => {
         e.preventDefault();
       }}
     >
-      {select === "Status" ? <Status dispatch={dispatch} /> : null}
-      {select === "Exchange" ? <Exchange dispatch={dispatch} /> : null}
-      {select === "Chatting" ? <Chatting dispatch={dispatch} /> : null}
-      {select === "Inventory" ? <Inventory dispatch={dispatch} /> : null}
+      {select === "Status" ? <Status /> : null}
+      {select === "Exchange" ? <Exchange /> : null}
+      {select === "Chatting" ? <Chatting /> : null}
+      {select === "Inventory" ? <Inventory select={select} /> : null}
       <MenuBox dispatch={dispatch} />
-      <HotkeyBox dispatch={dispatch} />
+      <HotkeyBox />
     </InterfaceBox>
   );
 };

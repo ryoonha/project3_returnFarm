@@ -7,6 +7,8 @@ import { Vector3 } from "three";
 import { handleTile } from "../../stores/reducers/stateSlice";
 import { useBox } from "@react-three/cannon";
 
+const moveSpeed = 0.08;
+const runSpeed = 0.2;
 export function Girl() {
   const dispatch = useDispatch();
   const tilePos = useSelector((state) => state.state.tileSelect);
@@ -61,74 +63,74 @@ export function Girl() {
     if (model.current && (up || right || down || left)) {
       if (up && left) {
         if (shift) {
-          model.current.position.z += 0.2;
-          model.current.position.x += 0.2;
+          model.current.position.z += runSpeed;
+          model.current.position.x += runSpeed;
           model.current.rotation.y = deg2rad(35);
         } else {
-          model.current.position.z += 0.1;
-          model.current.position.x += 0.1;
+          model.current.position.z += moveSpeed;
+          model.current.position.x += moveSpeed;
           model.current.rotation.y = deg2rad(35);
         }
       } else if (up && right) {
         if (shift) {
-          model.current.position.z += 0.2;
-          model.current.position.x -= 0.2;
+          model.current.position.z += runSpeed;
+          model.current.position.x -= runSpeed;
           model.current.rotation.y = deg2rad(305);
         } else {
-          model.current.position.z += 0.1;
-          model.current.position.x -= 0.1;
+          model.current.position.z += moveSpeed;
+          model.current.position.x -= moveSpeed;
           model.current.rotation.y = deg2rad(305);
         }
       } else if (down && left) {
         if (shift) {
-          model.current.position.z -= 0.2;
-          model.current.position.x += 0.2;
+          model.current.position.z -= runSpeed;
+          model.current.position.x += runSpeed;
           model.current.rotation.y = deg2rad(125);
         } else {
-          model.current.position.z -= 0.1;
-          model.current.position.x += 0.1;
+          model.current.position.z -= moveSpeed;
+          model.current.position.x += moveSpeed;
           model.current.rotation.y = deg2rad(125);
         }
       } else if (down && right) {
         if (shift) {
-          model.current.position.z -= 0.2;
-          model.current.position.x -= 0.2;
+          model.current.position.z -= runSpeed;
+          model.current.position.x -= runSpeed;
           model.current.rotation.y = deg2rad(215);
         } else {
-          model.current.position.z -= 0.1;
-          model.current.position.x -= 0.1;
+          model.current.position.z -= moveSpeed;
+          model.current.position.x -= moveSpeed;
           model.current.rotation.y = deg2rad(215);
         }
       } else if (up) {
         if (shift) {
-          model.current.position.z += 0.2;
+          model.current.position.z += runSpeed;
           model.current.rotation.y = deg2rad(-10);
         } else {
-          model.current.position.z += 0.1;
+          model.current.position.z += moveSpeed;
           model.current.rotation.y = deg2rad(-10);
         }
       } else if (right) {
         if (shift) {
-          model.current.position.x -= 0.2;
+          model.current.position.x -= runSpeed;
           model.current.rotation.y = deg2rad(260);
         } else {
-          model.current.position.x -= 0.1;
+          model.current.position.x -= moveSpeed;
           model.current.rotation.y = deg2rad(260);
         }
       } else if (down) {
         if (shift) {
-          model.current.position.z -= 0.2;
+          model.current.position.z -= runSpeed;
           model.current.rotation.y = deg2rad(170);
         } else {
-          model.current.position.z -= 0.1;
+          model.current.position.z -= moveSpeed;
           model.current.rotation.y = deg2rad(170);
         }
       } else if (left) {
         if (shift) {
-          model.current.position.x += 0.2;
+          model.current.position.x += runSpeed;
           model.current.rotation.y = deg2rad(80);
         } else {
-          model.current.position.x += 0.1;
+          model.current.position.x += moveSpeed;
           model.current.rotation.y = deg2rad(80);
         }
       }

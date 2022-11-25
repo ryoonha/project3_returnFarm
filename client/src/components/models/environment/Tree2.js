@@ -24,11 +24,13 @@ export function Tree2({ size }) {
             <group position={[0, 7.92, -0.01]}>
               <mesh
                 castShadow
+                // receiveShadow
                 geometry={nodes.Object_97.geometry}
                 material={materials["green.001"]}
               />
               <mesh
                 castShadow
+                // receiveShadow
                 geometry={nodes.Object_97_1.geometry}
                 material={materials["brown.004"]}
               />

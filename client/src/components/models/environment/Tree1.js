@@ -23,12 +23,14 @@ export function Tree1({ size }) {
           <group rotation={[-Math.PI / 2, 0, 0]} />
           <mesh
             castShadow
+            receiveShadow
             geometry={nodes.Object_198.geometry}
             material={materials["brown.004"]}
             position={[-0.13, 4.46, -0.54]}
           />
           <mesh
             castShadow
+            receiveShadow
             geometry={nodes.Object_199.geometry}
             material={materials["green.001"]}
             position={[-0.13, 4.46, -0.54]}

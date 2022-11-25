@@ -5,6 +5,8 @@ import { useDispatch } from "react-redux";
 import { PointLightHelper, Vector3 } from "three";
 import { weatherChange } from "../../../stores/reducers/stateSlice";
 
+let initLightPos = 50;
+let lightSpeed = 0.01;
 export const Light = () => {
   const dispatch = useDispatch();
   const pointLight = useRef();
@@ -24,19 +26,19 @@ export const Light = () => {
     if (pointLight.current) {
       const { x, y, z } = pointLight.current.position;
       const { dx, dy, dz } = dayOrNight;
-      if (x >= 150 && dx) {
+      if (x >= initLightPos && dx) {
         setDayOrNight({ ...dayOrNight, dx: false });
-      } else if (x <= -150 && !dx) {
+      } else if (x <= -initLightPos && !dx) {
         setDayOrNight({ ...dayOrNight, dx: true });
       }
-      if (y >= 150 && dy) {
+      if (y >= initLightPos && dy) {
         setDayOrNight({ ...dayOrNight, dy: false });
-      } else if (y <= -150 && !dy) {
+      } else if (y <= -initLightPos && !dy) {
         setDayOrNight({ ...dayOrNight, dy: true });
       }
-      if (z >= 150 && dz) {
+      if (z >= initLightPos && dz) {
         setDayOrNight({ ...dayOrNight, dz: false });
-      } else if (z <= -150 && !dz) {
+      } else if (z <= -initLightPos && !dz) {
         setDayOrNight({ ...dayOrNight, dz: true });
       }
       if (y > 0 && weather !== "sun") {
@@ -48,9 +50,9 @@ export const Light = () => {
       }
       pointLight.current.position.lerp(
         new Vector3(
-          dx ? x + 0.01 : x - 0.01,
-          dy ? y + 0.01 : y - 0.01,
-          dz ? z + 0.01 : z - 0.01
+          dx ? x + lightSpeed : x - lightSpeed,
+          dy ? y + lightSpeed : y - lightSpeed,
+          dz ? z + lightSpeed : z - lightSpeed
         ),
         0.2
       );
@@ -71,8 +73,8 @@ export const Light = () => {
         <pointLight
           castShadow
           ref={pointLight}
-          position={[0, 150, 0]}
-          intensity={1.5}
+          position={[0, initLightPos, 0]}
+          intensity={1}
           shadow-mapSize-width={4096}
           shadow-mapSize-height={4096}
           shadow-camera-far={5000}
