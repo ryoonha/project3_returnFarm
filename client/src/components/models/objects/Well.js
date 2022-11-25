@@ -19,13 +19,14 @@ export function Well(props) {
   //   api.position.set(...pos);
   // });
 
-  // useFrame(({ mouse }) => {
-  //   if (ref.current) {
-  //     const { x, y, z } = ref.current.position;
-  //     //console.log(ref.current);
-  //     //console.log(mouse);
-  //   }
-  // });
+  useFrame((e) => {
+    if (ref.current) {
+      // console.log(e);
+      const { x, y, z } = ref.current.position;
+      //console.log(ref.current);
+      //console.log(mouse);
+    }
+  });
 
   return (
     <group ref={ref} dispose={null} scale={0.2}>
