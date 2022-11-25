@@ -9,12 +9,14 @@ const ItemBoxContainer = styled.div`
   align-items: center;
   width: 100%;
   height: 50px;
-  margin-bottom: 1px;
-  background-color: #cfcfcf;
+  /* margin-bottom: 1px; */
+  outline: 1px solid black;
+  background-color: var(--back);
+  color: white;
   cursor: pointer;
 
   :hover {
-    background-color: #cebaba;
+    background-color: rgba(173, 173, 173, 0.493);
   }
 
   .exchangeItemIconBox {
@@ -27,23 +29,37 @@ const ItemBoxContainer = styled.div`
       object-fit: cover;
     }
   }
-  .exchangeItemInfoBox {
+  .itemInfoBox {
     justify-content: space-between;
     width: 600px;
     margin-left: 10px;
-    .exchangeItemName {
-      color: var(--itemName);
-      /* background-color: #0a0a0a; */
+    .info1 {
+      .exchangeItemName {
+        color: var(--itemName);
+        /* background-color: #0a0a0a; */
+      }
+      .exchangeItemCount {
+        color: ${(props) => (props.countColor ? props.countColor : "white")};
+      }
     }
-    .exchangeItemCount {
-      color: ${(props) => (props.countColor ? props.countColor : "black")};
-    }
-    .leafCountBox {
-      .leafImg {
-        img {
-          width: 25px;
-          height: 25px;
-          object-fit: cover;
+    .info2 {
+      justify-content: space-between;
+      width: 200px;
+      /* background-color: #f0f8ff96; */
+      .itemTimeData {
+        text-align: center;
+        .timeDataText {
+          font-size: 12px;
+        }
+      }
+      .leafCountBox {
+        .leafImg {
+          margin-left: 5px;
+          img {
+            width: 25px;
+            height: 25px;
+            object-fit: cover;
+          }
         }
       }
     }
@@ -68,19 +84,22 @@ const ItemBox = ({ data }) => {
       <div className="exchangeItemIconBox cc">
         <img src={itemList[item_name].img} alt="" />
       </div>
-      <div className="exchangeItemInfoBox cc">
-        <div>
+      <div className="itemInfoBox cc">
+        <div className="info1">
           <div className="exchangeItemName">{item_name}</div>
           <div className="exchangeItemCount">{item_count}개</div>
         </div>
-        <div>
+        <div className="info2 cc">
+          <div className="itemTimeData">
+            <div className="timeDataText">등록 날짜</div>
+            <div>{created_at} 2022/11/25</div>
+          </div>
           <div className="leafCountBox cc">
-            <div className="leafCount">{selling_price} 20</div>
-            <div className="leafImg">
-              <img src="/images/tokens/leaf.png" alt="" />
+            <div className="leafCount">{selling_price}</div>
+            <div className="leafImg cc">
+              <img src="/images/tokens/day.png" alt="" />
             </div>
           </div>
-          <div className="exchangeItemTimeData">{created_at} 2011/11/11</div>
         </div>
       </div>
     </ItemBoxContainer>

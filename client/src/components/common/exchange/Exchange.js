@@ -5,7 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useDivMove from "../../../hooks/useDivMove";
 import { BasicBox } from "../../../libs/cssFrame";
 import ItemBox from "./ItemBox";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { handleTopMenu, sellChange } from "../../../stores/reducers/stateSlice";
 
 const ExchangeBox = styled(BasicBox)`
   display: flex;
@@ -24,7 +25,7 @@ const ExchangeBox = styled(BasicBox)`
 
   .listBox {
     height: 100%;
-    background-color: gray;
+    background-color: rgba(77, 77, 77, 0.5);
     overflow: auto;
   }
   .addBox {
@@ -52,9 +53,12 @@ const ExchangeBox = styled(BasicBox)`
 `;
 
 const Exchange = () => {
+  const dispatch = useDispatch();
   const [x, y, bindDivPos] = useDivMove();
   const [open, setOpen] = useState(false);
   const list = useSelector((state) => state.game.marketList);
+  const ipToken = useSelector((state) => state.user.myInfo.ip_amount);
+  const itemData = useSelector((state) => state.game.sellData);
 
   useEffect(() => {
     setOpen(true);
@@ -72,15 +76,17 @@ const Exchange = () => {
           Exchange
         </div>
         <div className="listBox">
-          {[
-            { item_name: "삽", item_count: "10" },
-            { item_name: "물뿌리개", item_count: "100" },
-            { item_name: "옥수수", item_count: "1000" },
-          ].map((item, index) => (
+          {list.map((item, index) => (
             <ItemBox key={index} data={item} />
           ))}
         </div>
-        <div className="addBox cc">
+        <div
+          className="addBox cc"
+          onClick={() => {
+            dispatch(sellChange({ change: true }));
+            dispatch(handleTopMenu({ select: "Inventory" }));
+          }}
+        >
           <div className="buttonBox cc">등록하기</div>
         </div>
       </ExchangeBox>

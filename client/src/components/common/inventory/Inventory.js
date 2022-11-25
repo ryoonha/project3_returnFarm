@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { animated } from "react-spring";
 import useDivMove from "../../../hooks/useDivMove";
-import { BasicBox, DetailBox } from "../../../libs/cssFrame";
+import { BasicBox } from "../../../libs/cssFrame";
 import { itemList } from "../../../data/item";
 import { useDispatch, useSelector } from "react-redux";
 import { dateName } from "../../../data/etc";
 import ItemStatus from "../../modals/statusBox/ItemStatus";
 import { handleItem } from "../../../stores/reducers/stateSlice";
+import { handleSell } from "../../../stores/reducers/gameSlice";
+import ItemSell from "../exchange/ItemSell";
 
 const InventoryBox = styled(BasicBox)`
   transform: translateX(48vw);
@@ -42,10 +44,11 @@ const InventoryBox = styled(BasicBox)`
   }
 `;
 
-const Inventory = () => {
+const Inventory = ({ select }) => {
   const [x, y, bindDivPos] = useDivMove();
   const dispatch = useDispatch();
   const { bag } = useSelector((state) => state.user);
+  const sellToggle = useSelector((state) => state.state.sellToggle);
   const itemData = itemList;
 
   return (
@@ -74,6 +77,11 @@ const Inventory = () => {
               onContextMenu={() => {
                 alert("채팅방을 정말 삭제하시겠어요?");
               }}
+              onClick={() => {
+                if (sellToggle) {
+                  dispatch(handleSell({ itemInfo: item }));
+                }
+              }}
             >
               <img src={itemData[item.item_name].img} alt="" />
               <div className="itemName cc">{item.item_name}</div>
@@ -87,6 +95,7 @@ const Inventory = () => {
             </div>
           ))}
         </div>
+        {sellToggle && select ? <ItemSell dispatch={dispatch} /> : null}
       </InventoryBox>
     </animated.div>
   );
