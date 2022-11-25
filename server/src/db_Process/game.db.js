@@ -29,20 +29,6 @@ exports.bag_list = async (address) => {
   return result;
 };
 
-//put-game/bag
-exports.bag_update = async (address, bag) => {
-  const result = await Bag.findOne({
-    where: {
-      address: address,
-    },
-  })
-    .then((user) => {
-      return user.update({ item: bag });
-    })
-    .then((e) => e.dataValues.item);
-  return result;
-};
-
 //post-game/land
 exports.land_list = async (address) => {
   const array = Array(100).fill({
@@ -75,22 +61,46 @@ exports.land_update = async (address, rand) => {
   return result;
 };
 
-exports.bagObj_remove = async (address, item) => {
+//put-game/bag
+exports.bagObj_remove = async (address, item, count) => {
   const fnSearch = Sequelize.fn(
     "JSON_SEARCH",
     Sequelize.col("item"),
     "one",
     item
   );
-  // const fnRemove = Sequelize.fn(
-  //   "JSON_REMOVE",
-  //   Sequelize.col("item"),
-  //   '경로'
-  // )
+
   const result = await Bag.findOne({
-    where: {address:address},
-    attributes: ["id", "address", "item", [fnSearch, "item_path"]]
+    where: { address: address },
+    attributes: ["id", "address", "item", [fnSearch, "item_path"]],
   }).then((user) => {
-    console.log('😍',user.dataValues)
-  })
+    const idx = user.dataValues.item_path.match(/\d/g)[0];
+    const path_split = user.dataValues.item_path.split(".")[0];
+    const path = path_split + ".item_count";
+    const getNum = user.dataValues.item[idx].item_count;
+    const fnRemove = Sequelize.fn(
+      "JSON_REMOVE",
+      Sequelize.col("item"),
+      path_split
+    );
+    const fnReplace = Sequelize.fn(
+      "JSON_REPLACE",
+      Sequelize.col("item"),
+      path,
+      String(Number(getNum) - Number(count))
+    );
+    if (getNum === count) {
+      return Bag.update({ item: fnRemove }, { where: { address: address } })
+        .then((e) => Bag.findOne({ where: { address: address } }))
+        .then((e) => e.dataValues.item);
+    } else if (getNum > count) {
+      return Bag.update(
+        { item: fnReplace },
+        { where: { address: address } }
+      ).then((e) => {
+        return Bag.findOne({ where: { address: address } });
+      });
+    }
+  });
+  return result;
 };

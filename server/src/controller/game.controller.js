@@ -71,10 +71,13 @@ const updateRand = async (req, res, next) => {
 };
 
 const bagTest = async (req, res, next) => {
-  console.log("왔니🙏");
-  const { address, item } = req.body;
-  const dbResult = await bagObj_remove(address, item);
-  console.log("✅", dbResult);
+  const { address, item, count } = req.body;
+  const dbResult = await bagObj_remove(address, item, count);
+  if (dbResult) {
+    res.status(200).send(dbResult);
+  } else {
+    res.status(400).send({ massage: "다시 시도해 주세요!" });
+  }
 };
 
 export { getBag, updateBag, searchRand, updateRand, bagTest };
