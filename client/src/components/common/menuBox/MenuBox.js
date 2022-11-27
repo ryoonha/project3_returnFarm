@@ -88,7 +88,7 @@ const MenuContainer = styled.div`
 `;
 
 const Menu = styled.div`
-  width: 50px;
+  width: 70px;
   height: 50px;
   background-color: rgba(233, 255, 255, 1);
   border-radius: 10%;
@@ -137,13 +137,13 @@ const MenuBox = ({ dispatch }) => {
   return (
     <MenuContainer className="cc" weather={weather} hide={hide}>
       <Menu
-        text={"info"}
+        text={"정보"}
         onClick={() => dispatch(handleTopMenu({ select: "Status" }))}
       >
         <FontAwesomeIcon icon="fa-solid fa-circle-user" />
       </Menu>
       <Menu
-        text={"inventory"}
+        text={"가방"}
         onClick={() => {
           dispatch(sellChange({ change: false }));
           dispatch(handleTopMenu({ select: "Inventory" }));
@@ -151,10 +151,9 @@ const MenuBox = ({ dispatch }) => {
       >
         <FontAwesomeIcon icon="fa-solid fa-suitcase" />
       </Menu>
-      {/* 여기부터 시작 NFT */}
       <Menu
-        text={"myNFT"}
-        onClick={() => dispatch(handleTopMenu({ select: "Nft" }))}
+        text={"나의 NFT"}
+        onClick={() => dispatch(handleTopMenu({ select: "NftList" }))}
       >
         <FontAwesomeIcon icon="fa-solid fa-cube" />
       </Menu>
@@ -162,20 +161,26 @@ const MenuBox = ({ dispatch }) => {
         <div className="weather">{wData[weather]}</div>
       </div>
       <Menu
-        text={"exchange"}
+        text={"거래소"}
         onClick={() => dispatch(handleTopMenu({ select: "Exchange" }))}
       >
         <FontAwesomeIcon icon="fa-solid fa-arrow-right-arrow-left" />
       </Menu>
       <Menu
-        text={"chatting"}
+        text={"채팅"}
         onClick={() => dispatch(handleTopMenu({ select: "Chatting" }))}
       >
         <FontAwesomeIcon icon="fa-regular fa-comment" />
       </Menu>
-      <Menu text={"maps"}>
-        <FontAwesomeIcon icon="fa-regular fa-map" />
+      <Menu
+        text={"NFT거래소"}
+        onClick={() => dispatch(handleTopMenu({ select: "NftExchange" }))}
+      >
+        <FontAwesomeIcon icon="fa-solid fa-table-cells-large" />
       </Menu>
+      {/* <Menu text={"maps"}>
+        <FontAwesomeIcon icon="fa-regular fa-map" />
+      </Menu> */}
       <div className="streamlineBox cc" onClick={() => setHide(!hide)}>
         <div className="haetsal">{haetsal} 햇살</div>
         <div className="tokenAmount">{ip_amount} IP</div>

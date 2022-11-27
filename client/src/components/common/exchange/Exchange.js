@@ -17,7 +17,6 @@ import { handleMarketList } from "../../../stores/reducers/gameSlice";
 const ExchangeBox = styled(BasicBox)`
   display: flex;
   flex-direction: column;
-  /* justify-content: space-between; */
   left: 50vw;
   transform: translateX(-50%);
   width: 700px;
@@ -120,7 +119,7 @@ const Exchange = () => {
     >
       <ExchangeBox open={open}>
         <div className="header" {...bindDivPos()}>
-          Exchange
+          거래소
         </div>
         <div className="listBox">
           {list.map((item, index) => (
