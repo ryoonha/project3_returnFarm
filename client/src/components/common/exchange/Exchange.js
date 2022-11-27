@@ -10,7 +10,7 @@ import {
   modalChange,
   sellChange,
 } from "../../../stores/reducers/stateSlice";
-import { transactionBuy } from "../../../api/transaction";
+import { transactionBuy, transactionList } from "../../../api/transaction";
 import { bagUpdate, myInfoSave } from "../../../stores/reducers/userSlice";
 import { handleMarketList } from "../../../stores/reducers/gameSlice";
 
@@ -76,18 +76,27 @@ const Exchange = () => {
         address,
         item,
       };
+      // 아이템 구입 요청 보내기
       const { status, data } = await transactionBuy(userAndItem);
       if (status === 200) {
+        // 업데이트 된 거래소리스트, 구입 유저 햇살, 가방을 구조분해
         const { newMarketList, updateHaesSal, updateMyBag } = data;
-        console.log(updateHaesSal);
-        // 여기부터 시작 200 받고 데이터 업데이트 하기
+        // 구입한 아이템이 적용된 가방을 리덕스에 저장
         dispatch(bagUpdate({ bag: updateMyBag }));
+        // 구입한 아이템이 제거된 거래소 리스트를 리덕스에 저장
         dispatch(handleMarketList({ list: newMarketList }));
+
+        // 사용자 정보 업데이트
         dispatch(
           myInfoSave({
             data: { haes_sal_amount: updateHaesSal.haes_sal_amount },
           })
         );
+      } else {
+        // 구입하려는 아이템이 이미 팔렸을 경우
+        const marketList = await transactionList();
+        dispatch(handleMarketList({ list: marketList.data }));
+        dispatch(modalChange({ change: "error/sold" }));
       }
       dispatch(modalChange({ change: "" }));
     } else {
@@ -96,6 +105,9 @@ const Exchange = () => {
   };
 
   useEffect(() => {
+    // 거래소 열 때 리스트 갱신
+    // const marketList = await transactionList();
+    // dispatch(handleMarketList({ list: marketList.data }));
     setOpen(true);
   }, []);
 

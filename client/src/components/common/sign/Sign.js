@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import styled, { css } from "styled-components";
 import { gameBag, gameRandCreate } from "../../../api/game";
 import { signLogin, signRegister } from "../../../api/sign";
 import { transactionList } from "../../../api/transaction";
-import { initSocketConnection, socket } from "../../../libs/socketio";
+import { initSocketConnection } from "../../../libs/socketio";
 import { handleMarketList } from "../../../stores/reducers/gameSlice";
 import { modalChange } from "../../../stores/reducers/stateSlice";
 import {
@@ -17,15 +17,18 @@ const SignContainer = styled.div`
   position: relative;
   width: 100vw;
   height: 100vh;
-
   background-color: rgba(128, 128, 128, 0.178);
 
   .signHeader {
     position: absolute;
-    top: 20%;
+    top: 15%;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 50px;
+    img {
+      width: 400px;
+      height: 130px;
+      object-fit: cover;
+    }
   }
 
   .signBox {
@@ -159,7 +162,6 @@ const Sign = ({ setLoginCheck }) => {
       const { data } = await signLogin({ user_id, user_pwd });
       const { logined, token } = data;
       if (initSocketConnection(data)) {
-        console.log(data);
         localStorage.setItem("token", JSON.stringify(token));
         const bagInfo = await gameBag({ address: logined.address });
         const randInfo = await gameRandCreate({ address: logined.address });
@@ -188,23 +190,6 @@ const Sign = ({ setLoginCheck }) => {
     }
   };
 
-  // const enterDown = (key) => {
-  //   console.log(key);
-  //   if (key === "Enter" && userDateValidation()) {
-  //     if (!toggleRegister) {
-  //       handleLogin();
-  //     } else {
-  //       handleRegister();
-  //     }
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   document
-  //     .getElementById("target")
-  //     .addEventListener("keydown", (e) => enterDown(e.key));
-  // });
-
   return (
     <SignContainer
       errorHandle={errorHandle}
@@ -218,7 +203,10 @@ const Sign = ({ setLoginCheck }) => {
         }
       }}
     >
-      <div className="signHeader">return Farm !</div>
+      <div className="signHeader">
+        <img src="/images/return_Farm_logo.png" alt="" />
+      </div>
+
       <div className="signBox cc">
         <div className="signInput sid cc">
           아이디
