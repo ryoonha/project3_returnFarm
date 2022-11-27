@@ -110,7 +110,7 @@ exports.tokenAmount_update = async (address, haes_sal_amount) => {
 
 exports.marketItem_delete = async (item) => {
   const result = await Market_item.destroy({
-    where: { address: item.address, item_name: item.item_name },
+    where: { id: item.id, address: item.address, item_name: item.item_name },
   }).then(() => Market_item.findAll());
   return result;
 };
