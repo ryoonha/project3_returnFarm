@@ -22,16 +22,11 @@ export function Girl() {
   );
 
   // const [model, api] = useBox(() => ({
-  //   type: "Kinematic",
+  //   type: "Dynamic",
   //   mass: 1,
-  //   // position: [0, 0, 0],
+  //   position: [10, 10, 0],
   // }));
-  // return (
-  //   <mesh ref={ref}>
-  //     <boxGeometry />
-  //     <meshNormalMaterial />
-  //   </mesh>
-  // );
+
   const { actions, names } = useAnimations(animations, model);
   const deg2rad = (degrees) => degrees * (Math.PI / 180);
   const { up, right, down, left, shift } = useSelector(

@@ -1,6 +1,5 @@
 import "@fortawesome/fontawesome-free/js/all.js";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import "./App.css";
 import Index from "./components/canvas/Canvas";
 import Interface from "./components/common/Interface";
