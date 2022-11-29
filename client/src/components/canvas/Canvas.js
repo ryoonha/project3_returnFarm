@@ -12,29 +12,27 @@ import Object from "./object/Object";
 
 const Index = () => {
   return (
-    <>
-      <Canvas
-        shadows
-        camera={{
-          fov: 60,
-          far: 15000,
-          near: 3,
-        }}
-      >
-        <Provider store={store}>
-          <Light />
-          <Camera />
-          <Physics>
-            <Debug color="black" scale={1.5}>
-              <Character />
-              <Ground />
-              <Environment />
-              <Object />
-            </Debug>
-          </Physics>
-        </Provider>
-      </Canvas>
-    </>
+    <Canvas
+      shadows
+      camera={{
+        fov: 60,
+        far: 15000,
+        near: 3,
+      }}
+    >
+      <Provider store={store}>
+        <Light />
+        <Camera />
+        <Physics gravity={[0, -1, 0]}>
+          <Debug color="black" scale={1.5}>
+            <Character />
+            <Ground />
+            <Environment />
+            <Object />
+          </Debug>
+        </Physics>
+      </Provider>
+    </Canvas>
   );
 };
 

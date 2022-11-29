@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { PointLightHelper, Vector3 } from "three";
 import { weatherChange } from "../../../stores/reducers/stateSlice";
 
-let initLightPos = 50;
+let initLightPos = 150;
 let lightSpeed = 0.01;
 export const Light = () => {
   const dispatch = useDispatch();
@@ -75,7 +75,7 @@ export const Light = () => {
           ref={pointLight}
           position={[0, initLightPos, 0]}
           intensity={1}
-          shadow-mapSize-width={4096}
+          shadow-mapSize-width={4096} //4096
           shadow-mapSize-height={4096}
           shadow-camera-far={5000}
           shadow-camera-near={0.5}

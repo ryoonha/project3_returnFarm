@@ -9,7 +9,8 @@ const Ground = () => {
   const Plane = (props) => {
     const [ref] = usePlane(() => ({
       type: "Static",
-      material: "ground",
+      //material: "ground",
+      args: [300, 300],
       ...props,
     }));
 

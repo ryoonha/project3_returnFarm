@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
@@ -41,10 +42,13 @@ const ErrorBox = styled.div`
 
   @keyframes imgRotation {
     0% {
+      transform: rotate(-25deg);
+    }
+    50% {
       transform: rotate(0deg);
     }
     100% {
-      transform: rotate(90deg);
+      transform: rotate(25deg);
     }
   }
 `;
@@ -52,8 +56,9 @@ const ErrorBox = styled.div`
 const Error = ({ type }) => {
   const dispatch = useDispatch();
   const handleType = {
-    haes_sal: { img: "day", desc: "햇살이 부족해요!" },
-    ip: { img: "leaf", desc: "잎 토큰이 부족해요!" },
+    haes_sal: { img: "day", path: "tokens", desc: "햇살이 부족해요!" },
+    ip: { img: "leaf", path: "tokens", desc: "잎 토큰이 부족해요!" },
+    sold: { img: "X", path: "icons", dsec: "없는 아이템 입니다!" },
   };
 
   useEffect(() => {
@@ -67,7 +72,10 @@ const Error = ({ type }) => {
   return (
     <ErrorBox className="cc">
       <div className="errorImg cc">
-        <img src={`images/tokens/${handleType[type].img}.png`} alt="" />
+        <img
+          src={`images/${handleType[type].path}/${handleType[type].img}.png`}
+          alt=""
+        />
       </div>
       <div className="errorText">{`${handleType[type].desc}`}</div>
     </ErrorBox>

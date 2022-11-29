@@ -120,13 +120,15 @@ const ItemSell = ({ dispatch }) => {
       // 최신화된 마켓 리스트를 불러온다
       const marketList = await transactionList();
       // 가방을 업데이트 한다
+      console.log(itemUpdate);
       await dispatch(bagUpdate({ bag: itemUpdate.data }));
       // 클라이언트에 마켓 리스트를 적용한다.
+      console.log(marketList);
       await dispatch(handleMarketList({ list: marketList.data }));
     } else {
       alert("아이템 등록에 실패 했습니다!");
     }
-    dispatch(modalChange({ change: null }));
+    dispatch(modalChange({ change: "" }));
     dispatch(sellChange({ change: false }));
     dispatch(handleTopMenu({ select: "Exchange" }));
   };

@@ -12,7 +12,7 @@ exports.userRegister = async (
     user_pwd,
     user_nick,
     address,
-    privateKey,
+    private_key: privateKey,
   })
     .then((e) => [true, e.dataValues])
     .catch((err) => {

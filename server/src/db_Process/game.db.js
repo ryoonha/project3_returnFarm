@@ -97,9 +97,11 @@ exports.bagObj_remove = async (address, item, count) => {
       return Bag.update(
         { item: fnReplace },
         { where: { address: address } }
-      ).then((e) => {
-        return Bag.findOne({ where: { address: address } });
-      });
+      ).then((e) =>
+        Bag.findOne({ where: { address: address } }).then(
+          (e) => e.dataValues.item
+        )
+      );
     }
   });
   return result;

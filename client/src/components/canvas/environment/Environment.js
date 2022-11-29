@@ -1,3 +1,4 @@
+import { Cloud } from "@react-three/drei";
 import React from "react";
 import {
   rockArr,
@@ -13,6 +14,7 @@ const Environment = () => {
   const rockNumArr = Array(80).fill(false);
   const grassNumArr = Array(500).fill(false);
   const flowreNumArr = Array(300).fill(false);
+  const cloudNumArr = Array(10).fill(false);
   return (
     <group>
       {treeNumArr.map((_, index) => (
@@ -86,6 +88,22 @@ const Environment = () => {
         >
           {flowreArr[index % 2]}
         </group>
+      ))}
+      {cloudNumArr.map((_, index) => (
+        <Cloud
+          // castShadow
+          speed={1}
+          depth={3}
+          width={10}
+          key={index}
+          color="white"
+          position={
+            getdirect() === 1
+              ? [getRandom(-120, 120), 80, getRandom(-120, 120)]
+              : [getRandom(120, -120), 80, getRandom(120, -120)]
+          }
+          scale={2}
+        />
       ))}
     </group>
   );
