@@ -17,6 +17,8 @@ const web3 = new Web3(
 const register = async (req, res, next) => {
   const { user_id, user_pwd, user_nick } = req.body;
   const { address, privateKey } = web3.eth.accounts.create();
+  console.log(address);
+  console.log(privateKey, "🔎");
   const dbResult = await userRegister(
     user_id,
     user_pwd,
