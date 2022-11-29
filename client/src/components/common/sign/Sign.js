@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled, { css } from "styled-components";
 import { gameBag, gameRandCreate } from "../../../api/game";
+import { nftCreate } from "../../../api/nft";
 import { signLogin, signRegister } from "../../../api/sign";
 import { transactionList } from "../../../api/transaction";
 import { initSocketConnection } from "../../../libs/socketio";
@@ -125,6 +126,22 @@ const Sign = ({ setLoginCheck }) => {
     user_pwd: false,
     user_nick: false,
   });
+
+  const [testImg, setTestImg] = useState();
+
+  const testFun = async () => {
+    console.log(testImg);
+
+    const formData = new FormData();
+    formData.append("address", "0x2e11159efC28b251f5c6497FD39d6562731C252e");
+    formData.append("name", "kkm");
+    formData.append("description", "테스트 입니다");
+    formData.append("file", testImg[0]);
+    // formData.append("file", JSON.stringify(testImg));
+
+    const data = await nftCreate(formData);
+    console.log(data);
+  };
 
   const userDateValidation = () => {
     const { user_id, user_pwd, user_nick } = userData;
@@ -277,6 +294,8 @@ const Sign = ({ setLoginCheck }) => {
           >
             {toggleRegister ? "뒤로가기" : "회원가입"}
           </button>
+          <input type="file" onChange={(e) => setTestImg(e.target.files)} />
+          <button onClick={() => testFun()}>테스트</button>
         </div>
       </div>
     </SignContainer>
