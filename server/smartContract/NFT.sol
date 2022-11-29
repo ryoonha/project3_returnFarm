@@ -15,7 +15,7 @@ contract NFTLootBox is ERC721URIStorage, Ownable {
     uint256 nftPrice;
     
 
-   constructor() ERC721("returnFarmNFT", "RFN") {
+    constructor() ERC721("returnFarmNFT", "RFN") {
     }
     
     function mintNFT(address serveraddress, string memory tokenURI, uint256 mintingPrice) public returns (uint256) {
@@ -58,5 +58,3 @@ contract NFTLootBox is ERC721URIStorage, Ownable {
     }
 }
 
-
-  

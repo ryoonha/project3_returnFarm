@@ -3,7 +3,7 @@ const Web3 = require("web3");
 const rpcURL = "https://goerli.infura.io/v3/b03f802e554f441786b51c437837bfe4";
 const web3 = new Web3(rpcURL);
 const ipfs = ipfsHttpClient("/ip4/127.0.0.1/tcp/5001");
-const path = require("path")
+const path = require("path");
 const User = require("../../models/user");
 const fs = require("fs");
 
@@ -42,50 +42,10 @@ const setTimeoutPromise = (ms) => {
   });
 };
 
-function getAllFiles(dirPath, originalPath, arrayOfFiles) {
-	files = fs.readdirSync(dirPath)
-  
-	arrayOfFiles = arrayOfFiles || []
-	originalPath = originalPath || path.resolve(dirPath, "..")
-  
-	folder = path.relative(originalPath, path.join(dirPath, "/"))
-  
-	arrayOfFiles.push({
-		path: folder.replace(/\\/g, "/"),
-		mtime: fs.statSync(folder).mtime
-	})
-  
-	files.forEach(function (file) {
-		if (fs.statSync(dirPath + "/" + file).isDirectory()) {
-			arrayOfFiles = getAllFiles(dirPath + "/" + file, originalPath, arrayOfFiles)
-		} else {
-			file = path.join(dirPath, "/", file)
-  
-			arrayOfFiles.push({
-				path: path.relative(originalPath, file).replace(/\\/g, "/"),
-				content: fs.readFileSync(file),
-				mtime: fs.statSync(file).mtime
-			})
-		}
-	})
-  
-	return arrayOfFiles
-  }
-
-
-function run() {
-	files = getAllFiles('uploads')
-	ipfs = ipfsClient(process.argv[3])
-	rootFolder = "/" + path.relative(path.resolve(process.argv[2], ".."), process.argv[2])
-
-	ipfs.add(files, { pin: true,  })
-	.then(result => {
-	rootItem = "/ipfs/" + result[result.length - 1].hash
-	console.info(result)
-	console.info("Copying from " + rootItem + " to " + rootFolder)
-	ipfs.files.cp(rootItem, rootFolder)
-	})
-	.catch(error => console.error(error))
+async function run() {
+  // const makeDir = await ipfs.files.mkdir(`/${req.files[0].filename}`)
+  // const stats = await ipfs.files.stat(`/${req.files[0].filename}`)
+  // console.log(stats)
 }
 
 const createNFT = async (req, res) => {
@@ -93,133 +53,156 @@ const createNFT = async (req, res) => {
   const address = data.address;
   const name = data.name;
   const description = data.description;
-  
-  console.log(req.files.length)
 
-  if(req.files.length == 1) {
-	let testFile = fs.readFileSync(`uploads/${req.files[0].filename}`, null);
-	let testBuffer = Buffer.from(testFile); //new Buffer -> Buffer.from
-	const ipfsImgUrl = await ipfsUpload(testBuffer);
-	console.log("ipfsImgurl : ", ipfsImgUrl);
-	const metadata = {
-		name: name,
-		description: description,
-		image: ipfsImgUrl,
-	  };
-	
-	  const src = JSON.stringify(metadata);
-	  console.log(src);
-	  const metadataUrl = await ipfsUpload(src);
-	  console.log("metadatUrl : ", metadataUrl);
-	  const tokenURI = metadataUrl;
-	
+  console.log(req.files.length);
+
+  if (req.files.length == 1) {
+    let testFile = fs.readFileSync(`uploads/${req.files[0].filename}`, null);
+    let testBuffer = Buffer.from(testFile); //new Buffer -> Buffer.from
+    const ipfsImgUrl = await ipfsUpload(testBuffer);
+    console.log("ipfsImgurl : ", ipfsImgUrl);
+    const metadata = {
+      name: name,
+      description: description,
+      image: ipfsImgUrl,
+    };
+
+    const src = JSON.stringify(metadata);
+    console.log(src);
+    const metadataUrl = await ipfsUpload(src);
+    console.log("metadatUrl : ", metadataUrl);
+    const tokenURI = metadataUrl;
   } else {
-	run()	
+    await ipfs.files.mkdir("/new");
+    for (let i = 0; i < req.files.length; i++) {
+      const ipfsStats = async (img) => {
+        const file = {
+          path: `new`,
+          content: img,
+        };
+        const addFile = await ipfs.add(file);
+        return addFile;
+      };
+
+      let testFile = fs.readFileSync(`uploads/${req.files[i].filename}`, null);
+      let testBuffer = Buffer.from(testFile); //new Buffer -> Buffer.from
+      const ipfsInfo = await ipfsStats(testBuffer);
+      console.log("ipfsImgurl : ", ipfsInfo);
+      console.log("/" + ipfsInfo.path);
+
+      for await (const file of ipfs.files.ls("/new")) {
+        console.log(file.name);
+      }
+    }
+    const stats = await ipfs.files.stat("/new");
+    console.log(stats);
+    const cid = "QmUhEGMXZa8H3ziEqCHNWGLDAJco6HSAXUVWbKCuWt4TpA";
+
+    for await (const file of ipfs.ls(cid)) {
+      console.log(file.path);
+    }
   }
 
- 
+  //   const callPrivateKey = await User.findOne({ where: { address: address } });
+  //   const userPrivateKey = callPrivateKey.dataValues.private_key;
 
+  //   const ethBalance = await getethBalanceOf(address);
+  //   const tokenBalance = await getTOKENBalanceOf(address);
 
-//   const callPrivateKey = await User.findOne({ where: { address: address } });
-//   const userPrivateKey = callPrivateKey.dataValues.private_key;
+  //   console.log("user eth Balance : " + ethBalance);
+  //   console.log("user token Balance : " + tokenBalance);
 
-//   const ethBalance = await getethBalanceOf(address);
-//   const tokenBalance = await getTOKENBalanceOf(address);
+  //   fs.unlink(`uploads/${req.files.filename}`, (err) => {
+  //     console.log('error : ', err);
+  //   });
 
-//   console.log("user eth Balance : " + ethBalance);
-//   console.log("user token Balance : " + tokenBalance);
+  //   if (ethBalance < 1000000000000000) {
+  //     console.log("Insufficient gas");
+  //     return res.status(400).send("가스비가 부족합니다. Faucet을 이용하세요");
+  //   } else {
+  //     if (tokenBalance <= 1) {
+  //       console.log("Insufficient IP");
+  //       return res.status(400).send("NFT 제작 비용이 부족합니다.");
+  //     } else {
+  //       try {
+  //         const getApproveGasAmount = () => {
+  //           const contract = new web3.eth.Contract(contract20ABI, contract20Address);
+  //           const gasAmount = contract.methods.approve(contract721Address, 1)
+  //             .estimateGas({ from: address });
+  //           return gasAmount;
+  //         };
+  //         const callApproveGas = await getApproveGasAmount();
+  //         const approveGas = Math.round(callApproveGas * 1.3);
+  //         console.log("Gas Estimation for Approve : ", approveGas);
 
-//   fs.unlink(`uploads/${req.files.filename}`, (err) => {
-//     console.log('error : ', err);
-//   });
+  //         //erc20 -> erc721 approve (buyer의 토큰으로 owner의 NFT를 구매할 있게 approve)
+  //         let contract = new web3.eth.Contract(contract20ABI, contract20Address, {
+  //           from: address,
+  //         });
+  //         let contractData = contract.methods
+  //           .approve(contract721Address, 1)
+  //           .encodeABI(); //Create the data for token transaction.
+  //         let rawTransaction = {
+  //           to: contract20Address,
+  //           gas: approveGas,
+  //           data: contractData,
+  //         };
 
-//   if (ethBalance < 1000000000000000) {
-//     console.log("Insufficient gas");
-//     return res.status(400).send("가스비가 부족합니다. Faucet을 이용하세요");
-//   } else {
-//     if (tokenBalance <= 1) {
-//       console.log("Insufficient IP");
-//       return res.status(400).send("NFT 제작 비용이 부족합니다.");
-//     } else {
-//       try {
-//         const getApproveGasAmount = () => {
-//           const contract = new web3.eth.Contract(contract20ABI, contract20Address);
-//           const gasAmount = contract.methods.approve(contract721Address, 1)
-//             .estimateGas({ from: address });
-//           return gasAmount;
-//         };
-//         const callApproveGas = await getApproveGasAmount();
-//         const approveGas = Math.round(callApproveGas * 1.3);
-//         console.log("Gas Estimation for Approve : ", approveGas);
+  //         web3.eth.accounts
+  //           .signTransaction(rawTransaction, userPrivateKey)
+  //           .then((signedTx) =>
+  //             web3.eth.sendSignedTransaction(signedTx.rawTransaction)
+  //           );
 
-//         //erc20 -> erc721 approve (buyer의 토큰으로 owner의 NFT를 구매할 있게 approve)
-//         let contract = new web3.eth.Contract(contract20ABI, contract20Address, {
-//           from: address,
-//         });
-//         let contractData = contract.methods
-//           .approve(contract721Address, 1)
-//           .encodeABI(); //Create the data for token transaction.
-//         let rawTransaction = {
-//           to: contract20Address,
-//           gas: approveGas,
-//           data: contractData,
-//         };
+  //         await setTimeoutPromise(30000);
 
-//         web3.eth.accounts
-//           .signTransaction(rawTransaction, userPrivateKey)
-//           .then((signedTx) =>
-//             web3.eth.sendSignedTransaction(signedTx.rawTransaction)
-//           );
+  //         const getMintGasAmount = () => {
+  //           const contract = new web3.eth.Contract(
+  //             contract721ABI,
+  //             contract721Address
+  //           );
+  //           const gasAmount = contract.methods
+  //             .mintNFT(serverAddress, tokenURI, 1)
+  //             .estimateGas({ from: address });
+  //           return gasAmount;
+  //         };
+  //         const callMintGas = await getMintGasAmount();
+  //         const mintGas = Math.round(callMintGas * 1.3);
+  //         console.log("Gas Estimation for Mint : ", mintGas);
 
-//         await setTimeoutPromise(30000);
-
-//         const getMintGasAmount = () => {
-//           const contract = new web3.eth.Contract(
-//             contract721ABI,
-//             contract721Address
-//           );
-//           const gasAmount = contract.methods
-//             .mintNFT(serverAddress, tokenURI, 1)
-//             .estimateGas({ from: address });
-//           return gasAmount;
-//         };
-//         const callMintGas = await getMintGasAmount();
-//         const mintGas = Math.round(callMintGas * 1.3);
-//         console.log("Gas Estimation for Mint : ", mintGas);
-
-//         let contract721 = new web3.eth.Contract(
-//           contract721ABI,
-//           contract721Address,
-//           { from: address }
-//         );
-//         let data721 = contract721.methods
-//           .mintNFT(serverAddress, tokenURI, 1)
-//           .encodeABI(); //(recipient, tokenuri, 가격)
-//         let rawTransaction721 = {
-//           to: contract721Address,
-//           gas: mintGas,
-//           data: data721,
-//         };
-//         const signedTx = await web3.eth.accounts.signTransaction(
-//           rawTransaction721,
-//           userPrivateKey
-//         );
-//         web3.eth
-//           .sendSignedTransaction(signedTx.rawTransaction)
-//           .then((req) => {
-//             console.log("wow 민트성공");
-//             return res.status(200).send(tokenURI);
-//           })
-//           .catch((err) => {
-//             console.log("민트 실패");
-//             return res.status(400).send("실패. 1분 후에 재시도 하세요");
-//           });
-//       } catch (err) {
-//         console.log("web3에러");
-//         console.log(err);
-//       }
-//     }
-//   }
+  //         let contract721 = new web3.eth.Contract(
+  //           contract721ABI,
+  //           contract721Address,
+  //           { from: address }
+  //         );
+  //         let data721 = contract721.methods
+  //           .mintNFT(serverAddress, tokenURI, 1)
+  //           .encodeABI(); //(recipient, tokenuri, 가격)
+  //         let rawTransaction721 = {
+  //           to: contract721Address,
+  //           gas: mintGas,
+  //           data: data721,
+  //         };
+  //         const signedTx = await web3.eth.accounts.signTransaction(
+  //           rawTransaction721,
+  //           userPrivateKey
+  //         );
+  //         web3.eth
+  //           .sendSignedTransaction(signedTx.rawTransaction)
+  //           .then((req) => {
+  //             console.log("wow 민트성공");
+  //             return res.status(200).send(tokenURI);
+  //           })
+  //           .catch((err) => {
+  //             console.log("민트 실패");
+  //             return res.status(400).send("실패. 1분 후에 재시도 하세요");
+  //           });
+  //       } catch (err) {
+  //         console.log("web3에러");
+  //         console.log(err);
+  //       }
+  //     }
+  //   }
 };
 
 export { createNFT };
