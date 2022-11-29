@@ -105,7 +105,6 @@ const createNFT = async (req, res) => {
     let testFile = fs.readFileSync(`uploads/${req.files[0].filename}`, null);
     let testBuffer = Buffer.from(testFile); //new Buffer -> Buffer.from
     const ipfsImgUrl = await ipfsUpload(testBuffer);
-    console.log(testFile, "✨");
     console.log("ipfsImgurl : ", ipfsImgUrl);
     const metadata = {
       name: name,
@@ -140,8 +139,7 @@ const createNFT = async (req, res) => {
     console.log("Insufficient gas");
     return res.status(400).send("가스비가 부족합니다. Faucet을 이용하세요");
   } else {
-    if (false) {
-      // if (tokenBalance <= 1) {
+    if (tokenBalance <= 1) {
       console.log("Insufficient IP");
       return res.status(400).send("NFT 제작 비용이 부족합니다.");
     } else {
@@ -187,7 +185,6 @@ const createNFT = async (req, res) => {
             contract721Address
           );
           const gasAmount = contract.methods
-            // .mintNFT(serverAddress, tokenURI, 0)
             .mintNFT(serverAddress, tokenURI, 1)
             .estimateGas({ from: address });
           return gasAmount;
@@ -202,20 +199,19 @@ const createNFT = async (req, res) => {
           { from: address }
         );
         let data721 = contract721.methods
-          .mintNFT(serverAddress, tokenURI, 0)
-          //   .mintNFT(serverAddress, tokenURI, 1)
+          .mintNFT(serverAddress, tokenURI, 1)
           .encodeABI(); //(recipient, tokenuri, 가격)
         let rawTransaction721 = {
           to: contract721Address,
           gas: mintGas,
           data: data721,
         };
-        console.log("🔎🔎🔎🔎🔎");
+
         const signedTx = await web3.eth.accounts.signTransaction(
           rawTransaction721,
           userPrivateKey
         );
-        console.log("💨💨💨💨💨");
+
         web3.eth
           .sendSignedTransaction(signedTx.rawTransaction)
           .then((req) => {
