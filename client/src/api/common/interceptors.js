@@ -2,6 +2,7 @@ export function setInterceptors(instance, type) {
   instance.interceptors.request.use(
     function (config) {
       config.headers["Content-Type"] = "application/json; charset=utf-8";
+      // config.headers["Content-Type"] = "multipart/form-data; charset=utf-8";
       // if (type) {
       //   config.headers["Content-Type"] = "multipart/form-data; charset=utf-8";
       // } else {

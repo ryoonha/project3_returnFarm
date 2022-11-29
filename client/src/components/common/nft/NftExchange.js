@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { animated } from "react-spring";
@@ -6,7 +6,8 @@ import useDivMove from "../../../hooks/useDivMove";
 import { BasicBox } from "../../../libs/cssFrame";
 import { nftSell } from "../../../api/nft";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { handleNftList } from "../../../stores/reducers/gameSlice";
+import NftBox from "./NftBox";
+import { modalChange } from "../../../stores/reducers/stateSlice";
 
 const NftExchangeBox = styled(BasicBox)`
   display: flex;
@@ -90,7 +91,7 @@ const NftExchangeBox = styled(BasicBox)`
             width: 100%;
             text-align: center;
             font-size: 16px;
-            color: rgb(17, 37, 0);
+            color: rgb(255, 255, 255);
             background-color: rgba(190, 190, 190, 0.5);
           }
         }
@@ -156,7 +157,7 @@ const NftExchangeBox = styled(BasicBox)`
   img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
 `;
 
@@ -166,32 +167,24 @@ const NftExchange = () => {
   const [sellCheck, setSellCheck] = useState(false);
   const [sellData, setSellData] = useState(false);
   const [sellingPrice, setSellingPrice] = useState(0);
-  //const { address, nickName } = useSelector((state) => state.user.myInfo);
+  const { address } = useSelector((state) => state.user.myInfo);
   const myNftList = useSelector((state) => state.user.nft);
 
   const nftUp = async () => {
+    dispatch(modalChange({ change: "loading" }));
     const nftData = {
       ...sellData,
+      sellingPrice,
     };
-    //   const nftData = {
-    //     tokenID,
-    //     address,
-    //     nftName: nickName,
-    //     sellingPrice,
-    //     metadataUrl,
-    //     imgUrl,
-    //   };
+
     const { status, data } = await nftSell(nftData);
     if (status === 200) {
       alert(data);
     } else {
       alert("등록 실패!");
     }
+    dispatch(modalChange({ change: "" }));
   };
-
-  //   useEffect(() => {
-  //     dispatch(handleNftList({list: }))
-  //   })
 
   return (
     <animated.div
@@ -225,28 +218,27 @@ const NftExchange = () => {
               <div className="nftSellBox cc">
                 <div className="nftItemList cc">
                   {myNftList.map((nft, index) => (
-                    <div
-                      className="nftItem cc"
-                      key={index}
-                      onClick={() => {
-                        setSellData(nft);
-                      }}
-                    >
-                      <img src="" alt="" />
-                      <div className="nftItemName">name</div>
-                    </div>
+                    <NftBox
+                      nft={nft}
+                      index={index}
+                      key={`nft${index}`}
+                      setSellData={setSellData}
+                      address={address}
+                    />
                   ))}
                 </div>
                 <div className="nftSellInfo cc">
                   <div className="nftPreview cc">
                     {sellData ? (
-                      <img src="" alt="" />
+                      <img src={sellData.imgUrl} alt="" />
                     ) : (
                       <FontAwesomeIcon icon="fa-solid fa-question" />
                     )}
                     {sellData ? (
-                      <div className="nftPreviewName">name</div>
-                    ) : null}
+                      <div className="nftPreviewName">{sellData.nftName}</div>
+                    ) : (
+                      <div className="nftPreviewName">NFT를 선택하세요!</div>
+                    )}
                   </div>
                   <div className="nftSellSetting">
                     <div>가격</div>

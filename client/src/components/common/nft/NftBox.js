@@ -1,22 +1,23 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 const NftBoxContainer = styled.div`
-  width: 33.33%;
-  height: 80%;
-  border: 1px solid black;
-  background-color: #91ca91;
+  width: 183px;
+  height: 275px;
+  //border: 1px solid black;
   transition: 0.2s;
   .nft {
     position: relative;
-    width: 90%;
-    height: 90%;
-    background-color: #c6ca91;
+    width: 100%;
+    height: 100%;
     img {
-      width: 90%;
-      height: 90%;
-      object-fit: cover;
-      //z-index: -500;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      /* background-color: #677467; */
+      background: linear-gradient(to bottom, #e2e2b0, #6ca8ca);
+      border: 1px solid rgba(51, 51, 51, 0.726);
     }
     .nftName {
       position: absolute;
@@ -28,33 +29,47 @@ const NftBoxContainer = styled.div`
   }
 `;
 
-const NftBox = ({ nft, index }) => {
-  return (
-    <NftBoxContainer className="cc">
-      <div
-        className="nft cc"
-        // onMouseMove={(e) => {
-        //   console.log("---------------");
-        //   console.log(e.target.offsetHeight);
-        //   console.log(e.target.offsetWidth);
-        //   console.log(e.nativeEvent.offsetX);
-        //   console.log(e.nativeEvent.offsetY);
+const NftBox = ({ nft, index, setSellData, address }) => {
+  const imgRef = useRef();
+  const [nftData, setNftData] = useState(false);
 
-        //   e.target.style.transform = "rotateX(10deg) rotateZ(10deg)";
-        // }}
-        onMouseLeave={(e) => {
-          e.target.style.transform = null;
-        }}
-      >
-        <img
-          src="/images/tokens/day.png"
-          alt=""
-          //   onMouseMove={(e) => {
-          //     e.stopPropagation();
-          //   }}
-        />
-        <div className="nftName">이름</div>
-      </div>
+  useEffect(() => {
+    axios.get(nft[0]).then((data) => {
+      setNftData(data);
+    });
+  }, []);
+
+  return (
+    <NftBoxContainer
+      className="cc"
+      onMouseMove={(e) => {
+        const xCenter = e.target.offsetWidth / 2;
+        const yCenter = e.target.offsetHeight / 2;
+        const targetX = (xCenter - e.nativeEvent.offsetX) / 4;
+        const targetY = (yCenter - e.nativeEvent.offsetY) / 4;
+        imgRef.current.style.transform = `rotateX(${targetY}deg) rotateY(${targetX}deg)`;
+      }}
+    >
+      {nftData ? (
+        <div
+          className="nft cc"
+          onClick={(e) => {
+            if (setSellData) {
+              const obj = {
+                tokenID: nft[1],
+                address,
+                nftName: nftData.data.name,
+                metadataUrl: nft[0],
+                imgUrl: nftData.data.image,
+              };
+              setSellData(obj);
+            }
+          }}
+        >
+          <img ref={imgRef} src={nftData.data.image} alt="" />
+          {/* <div className="nftName">{nftData.data.name}</div> */}
+        </div>
+      ) : null}
     </NftBoxContainer>
   );
 };

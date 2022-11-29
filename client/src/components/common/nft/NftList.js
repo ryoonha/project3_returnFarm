@@ -60,7 +60,6 @@ const NftList = () => {
 
   useEffect(() => {
     if (!nftList) {
-      console.log("들어옴");
       myNftListCall();
     }
   }, [nftList]);
