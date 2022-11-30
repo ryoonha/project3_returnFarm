@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled, { css } from "styled-components";
 import { gameBag, gameRandCreate } from "../../../api/game";
-import { nftCreate } from "../../../api/nft";
+import { nftCreate, nftList } from "../../../api/nft";
 import { signLogin, signRegister } from "../../../api/sign";
 import { transactionList } from "../../../api/transaction";
 import { initSocketConnection } from "../../../libs/socketio";
-import { handleMarketList } from "../../../stores/reducers/gameSlice";
+import {
+  handleMarketList,
+  handleNftList,
+} from "../../../stores/reducers/gameSlice";
 import { modalChange } from "../../../stores/reducers/stateSlice";
 import {
   bagUpdate,
@@ -182,10 +185,13 @@ const Sign = ({ setLoginCheck }) => {
         const bagInfo = await gameBag({ address: logined.address });
         const randInfo = await gameRandCreate({ address: logined.address });
         const marketList = await transactionList();
+        const nftMarketList = await nftList();
+
         await dispatch(myInfoSave({ data: logined, token: token }));
         await dispatch(bagUpdate({ bag: bagInfo.data }));
         await dispatch(tileUpdate({ tile: randInfo.data }));
         await dispatch(handleMarketList({ list: marketList.data }));
+        await dispatch(handleNftList({ list: nftMarketList.data }));
         await setLoginCheck(true);
         await setUseData({
           user_id: "",

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { animated } from "react-spring";
 import useDivMove from "../../../hooks/useDivMove";
 import { BasicBox } from "../../../libs/cssFrame";
-import { nftSell } from "../../../api/nft";
+import { nftBuy, nftSell } from "../../../api/nft";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import NftBox from "./NftBox";
 import { modalChange } from "../../../stores/reducers/stateSlice";
@@ -17,6 +17,14 @@ const NftExchangeBox = styled(BasicBox)`
   width: 700px;
   height: 600px;
   background-color: var(--back);
+
+  .nftMarketItemBox {
+    .nftMarketItem {
+      :hover {
+        background-color: rgba(255, 0, 0, 0.219);
+      }
+    }
+  }
 
   .nftExlistBox {
   }
@@ -169,6 +177,7 @@ const NftExchange = () => {
   const [sellingPrice, setSellingPrice] = useState(0);
   const { address } = useSelector((state) => state.user.myInfo);
   const myNftList = useSelector((state) => state.user.nft);
+  const nftMarketList = useSelector((state) => state.game.nftList);
 
   const nftUp = async () => {
     dispatch(modalChange({ change: "loading" }));
@@ -186,6 +195,20 @@ const NftExchange = () => {
     dispatch(modalChange({ change: "" }));
   };
 
+  const test = async (nft) => {
+    console.log(nft);
+    const obj = {
+      ownerAddress: nft.address,
+      buyerAddress: address,
+      nftId: nft.nft_name,
+
+      tokenId: 11,
+      sellingPrice: nft.selling_price,
+    };
+    const data = await nftBuy(obj);
+    console.log(data);
+  };
+
   return (
     <animated.div
       style={{
@@ -197,6 +220,19 @@ const NftExchange = () => {
         <NftExchangeBox>
           <div className="header" {...bindDivPos()}>
             NFT 거래소
+          </div>
+          <div className="nftMarketItemBox cc">
+            {nftMarketList.map((nftData, index) => (
+              <div
+                className="nftMarketItem"
+                onClick={() => {
+                  test(nftData);
+                }}
+              >
+                <img src={nftData.img_url} alt="" />
+                <div>{nftData.selling_price}</div>
+              </div>
+            ))}
           </div>
           <div className="nftExlistBox">test</div>
           <div

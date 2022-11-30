@@ -1,5 +1,9 @@
 import { nft } from ".";
 
+export const nftList = () => {
+  return nft.get("list");
+};
+
 export const nftCreate = (nftData) => {
   return nft.post("create", nftData);
 };
@@ -12,8 +16,8 @@ export const nftMyList = (address) => {
   return nft.post("myList", address);
 };
 
-export const nftBuy = () => {
-  return nft.post("buy");
+export const nftBuy = (data) => {
+  return nft.post("buy", data);
 };
 
 export const nftSell = (data) => {

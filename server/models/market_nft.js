@@ -9,6 +9,10 @@ module.exports = class Market_nft extends Sequelize.Model {
           type: Sequelize.STRING(30),
           allowNull: false, //NOT NULL
         },
+        // nft_id: {
+        //   type: Sequelize.INTEGER,
+        //   allowNull: false,
+        // },
         selling_price: {
           type: Sequelize.INTEGER,
           allowNull: false,
