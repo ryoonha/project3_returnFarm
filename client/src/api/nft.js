@@ -1,19 +1,19 @@
-import { nft } from ".";
+import { nft, nftMint } from ".";
 
 export const nftList = () => {
   return nft.get("list");
 };
 
+export const nftMyList = (address) => {
+  return nft.post("myList", address);
+};
+
 export const nftCreate = (nftData) => {
-  return nft.post("create", nftData);
+  return nftMint.post("create", nftData);
 };
 
 export const nftTransfer = (data) => {
   return nft.post("transfer", data);
-};
-
-export const nftMyList = (address) => {
-  return nft.post("myList", address);
 };
 
 export const nftBuy = (data) => {
