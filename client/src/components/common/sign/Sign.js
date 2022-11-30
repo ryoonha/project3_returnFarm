@@ -131,7 +131,6 @@ const Sign = ({ setLoginCheck }) => {
 
   const testFun = async () => {
     console.log(testImg);
-
     const formData = new FormData();
     formData.append("address", "0x2e11159efC28b251f5c6497FD39d6562731C252e");
     formData.append("name", "kkm");

@@ -4,8 +4,8 @@ export const nftCreate = (nftData) => {
   return nft.post("create", nftData);
 };
 
-export const nftTransfer = () => {
-  return nft.post("transfer");
+export const nftTransfer = (data) => {
+  return nft.post("transfer", data);
 };
 
 export const nftMyList = (address) => {
@@ -20,10 +20,10 @@ export const nftSell = (data) => {
   return nft.post("sell", data);
 };
 
-export const nftExchange = () => {
-  return nft.post("exchange");
+export const nftExchange = (myData) => {
+  return nft.post("exchange", myData);
 };
 
-export const nftIpExchange = () => {
-  return nft.post("ipExchange");
+export const nftIpExchange = (myData) => {
+  return nft.post("ipExchange", myData);
 };

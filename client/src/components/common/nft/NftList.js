@@ -4,7 +4,12 @@ import useDivMove from "../../../hooks/useDivMove";
 import { animated } from "react-spring";
 import { BasicBox } from "../../../libs/cssFrame";
 import NftBox from "./NftBox";
-import { nftMyList } from "../../../api/nft";
+import {
+  nftExchange,
+  nftIpExchange,
+  nftMyList,
+  nftTransfer,
+} from "../../../api/nft";
 import { useDispatch, useSelector } from "react-redux";
 import { nftUpdate } from "../../../stores/reducers/userSlice";
 
@@ -64,6 +69,32 @@ const NftList = () => {
     }
   }, [nftList]);
 
+  //POST nft/transfer test!
+  const testFun = async () => {
+    const obj = {
+      // 주는 사람
+      fromAddress: "0x2e11159efC28b251f5c6497FD39d6562731C252e",
+      // 받는 사람
+      toAddress: "0xdA001aBfbDBda64ceb98608586EAFDB2A2094736",
+      // nft id
+      tokenId: nftList[0][1],
+    };
+    const data = await nftTransfer(obj);
+    console.log(data);
+  };
+
+  //nftExchange test
+  //nftIpExchange test
+  const testFun2 = async () => {
+    console.log("실행");
+    const obj = {
+      address: myAddress,
+      amount: 1,
+    };
+    const data = await nftIpExchange(obj);
+    console.log(data);
+  };
+
   return (
     <animated.div
       style={{
@@ -85,6 +116,13 @@ const NftList = () => {
           <div className="nullText cc">소유한 NFT가 없습니다!</div>
         )}
       </NftListBox>
+      <div
+        onClick={() => {
+          testFun2();
+        }}
+      >
+        test!!
+      </div>
     </animated.div>
   );
 };
