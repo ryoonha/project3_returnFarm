@@ -32,11 +32,11 @@ const Interface = () => {
     >
       {select === "Status" ? <Status /> : null}
       {select === "Inventory" ? <Inventory select={select} /> : null}
-      <MenuBox dispatch={dispatch} />
       {select === "NftList" ? <NftList /> : null}
       {select === "Exchange" ? <Exchange /> : null}
       {select === "Chatting" ? <Chatting /> : null}
       {select === "NftExchange" ? <NftExchange /> : null}
+      <MenuBox dispatch={dispatch} />
       <HotkeyBox />
     </InterfaceBox>
   );
