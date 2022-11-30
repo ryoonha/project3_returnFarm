@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { handleMouse } from "../../../stores/reducers/stateSlice";
 
 const NftBoxContainer = styled.div`
   width: 183px;

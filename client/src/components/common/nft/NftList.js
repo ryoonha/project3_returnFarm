@@ -4,14 +4,11 @@ import useDivMove from "../../../hooks/useDivMove";
 import { animated } from "react-spring";
 import { BasicBox } from "../../../libs/cssFrame";
 import NftBox from "./NftBox";
-import {
-  nftExchange,
-  nftIpExchange,
-  nftMyList,
-  nftTransfer,
-} from "../../../api/nft";
+import { nftMyList, nftTransfer } from "../../../api/nft";
 import { useDispatch, useSelector } from "react-redux";
 import { nftUpdate } from "../../../stores/reducers/userSlice";
+import RightBox from "../../modals/rightBox/RightBox";
+import { handleMouse } from "../../../stores/reducers/stateSlice";
 
 const NftListBox = styled(BasicBox)`
   left: 50vw;
@@ -53,7 +50,7 @@ const NftListBox = styled(BasicBox)`
 const NftList = () => {
   const dispatch = useDispatch();
   const [x, y, bindDivPos] = useDivMove();
-  const nftList = useSelector((state) => state.user.nft);
+  const myNftList = useSelector((state) => state.user.nft);
   const myAddress = useSelector((state) => state.user.myInfo.address);
 
   const myNftListCall = async () => {
@@ -63,37 +60,26 @@ const NftList = () => {
     }
   };
 
-  useEffect(() => {
-    if (!nftList) {
-      myNftListCall();
-    }
-  }, [nftList]);
-
+  // 선물하기 기능 여기서부터 시작
   //POST nft/transfer test!
-  const testFun = async () => {
+  const handleTransfer = async () => {
     const obj = {
       // 주는 사람
       fromAddress: "0x2e11159efC28b251f5c6497FD39d6562731C252e",
       // 받는 사람
       toAddress: "0xdA001aBfbDBda64ceb98608586EAFDB2A2094736",
       // nft id
-      tokenId: nftList[0][1],
+      tokenId: myNftList[0][1],
     };
     const data = await nftTransfer(obj);
     console.log(data);
   };
 
-  //nftExchange test
-  //nftIpExchange test
-  const testFun2 = async () => {
-    console.log("실행");
-    const obj = {
-      address: myAddress,
-      amount: 1,
-    };
-    const data = await nftIpExchange(obj);
-    console.log(data);
-  };
+  useEffect(() => {
+    if (!myNftList) {
+      myNftListCall();
+    }
+  }, [myNftList]);
 
   return (
     <animated.div
@@ -106,10 +92,16 @@ const NftList = () => {
         <div className="header" {...bindDivPos()}>
           나의 NFT 목록
         </div>
-        {nftList.length > 0 ? (
+        {myNftList.length > 0 ? (
           <div className="nfts">
-            {nftList.map((nft, index) => (
+            {myNftList.map((nft, index) => (
               <NftBox nft={nft} index={index} key={`nft${index}`} />
+              // <RightBox
+              //   nft={nft}
+              //   index={index}
+              //   dispatch={dispatch}
+              //   handleTransfer={handleTransfer}
+              // />
             ))}
           </div>
         ) : (

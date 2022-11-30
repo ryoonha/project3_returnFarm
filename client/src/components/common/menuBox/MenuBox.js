@@ -172,9 +172,6 @@ const MenuBox = ({ dispatch }) => {
       >
         <FontAwesomeIcon icon="fa-regular fa-comment" />
       </Menu>
-      <Menu text={"건물 건설"} onClick={() => alert("구현 중입니다..")}>
-        <FontAwesomeIcon icon="fa-solid fa-hammer" />
-      </Menu>
       <Menu
         text={"거래소"}
         onClick={() => dispatch(handleTopMenu({ select: "Exchange" }))}
@@ -186,6 +183,12 @@ const MenuBox = ({ dispatch }) => {
         onClick={() => dispatch(handleTopMenu({ select: "NftExchange" }))}
       >
         <FontAwesomeIcon icon="fa-solid fa-table-cells-large" />
+      </Menu>
+      <Menu
+        text={"토큰 교환"}
+        onClick={() => dispatch(handleTopMenu({ select: "TokenExchange" }))}
+      >
+        <FontAwesomeIcon icon="fa-solid fa-coins" />
       </Menu>
       {/* <Menu text={"maps"}>
         <FontAwesomeIcon icon="fa-regular fa-map" />

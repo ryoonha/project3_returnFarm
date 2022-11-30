@@ -19,6 +19,8 @@ const NftExchangeBox = styled(BasicBox)`
   background-color: var(--back);
 
   .nftMarketItemBox {
+    width: 100%;
+    height: 100%;
     .nftMarketItem {
       :hover {
         background-color: rgba(255, 0, 0, 0.219);
@@ -26,12 +28,19 @@ const NftExchangeBox = styled(BasicBox)`
     }
   }
 
-  .nftExlistBox {
-  }
   .addBox {
+    flex-direction: column;
     color: white;
-    background-color: rgba(39, 39, 39, 0.616);
     cursor: pointer;
+    div {
+      width: 100%;
+      height: 40px;
+      border-top: 1px solid rgb(206, 206, 206);
+      background-color: rgba(37, 37, 37, 0.8);
+      :hover {
+        background-color: rgb(99, 99, 99);
+      }
+    }
   }
 
   .myList {
@@ -123,19 +132,18 @@ const NftExchangeBox = styled(BasicBox)`
         }
       }
     }
-
-    .nullList {
-      font-size: 32px;
-      text-align: center;
-      margin-top: 50px;
-      .nullText {
-        color: rgb(231, 56, 56);
-      }
-      .nullIcon {
-        font-size: 250px;
-        color: rgb(255, 255, 255);
-        opacity: 0.2;
-      }
+  }
+  .nullList {
+    font-size: 32px;
+    text-align: center;
+    margin-top: 50px;
+    .nullText {
+      color: rgb(231, 56, 56);
+    }
+    .nullIcon {
+      font-size: 250px;
+      color: rgb(255, 255, 255);
+      opacity: 0.2;
     }
   }
 
@@ -195,6 +203,7 @@ const NftExchange = () => {
     dispatch(modalChange({ change: "" }));
   };
 
+  // 구입 테스트
   const test = async (nft) => {
     console.log(nft);
     const obj = {
@@ -222,26 +231,34 @@ const NftExchange = () => {
             NFT 거래소
           </div>
           <div className="nftMarketItemBox cc">
-            {nftMarketList.map((nftData, index) => (
-              <div
-                className="nftMarketItem"
-                onClick={() => {
-                  test(nftData);
-                }}
-              >
-                <img src={nftData.img_url} alt="" />
-                <div>{nftData.selling_price}</div>
+            {nftMarketList.length ? (
+              nftMarketList.map((nftData, index) => (
+                <div
+                  className="nftMarketItem"
+                  onClick={() => {
+                    test(nftData);
+                  }}
+                >
+                  <img src={nftData.img_url} alt="" />
+                  <div>{nftData.selling_price}</div>
+                </div>
+              ))
+            ) : (
+              <div className="nullList">
+                <div className="nullText">거래할 수 있는 NFT가 없어요</div>
+                <div className="nullIcon">
+                  <FontAwesomeIcon icon="fa-regular fa-face-frown" />
+                </div>
               </div>
-            ))}
+            )}
           </div>
-          <div className="nftExlistBox">test</div>
           <div
             className="addBox cc"
             onClick={() => {
               setSellCheck(true);
             }}
           >
-            <div className="buttonBox cc">등록하기</div>
+            <div className="buttonBox1 cc">등록하기</div>
           </div>
         </NftExchangeBox>
       ) : (

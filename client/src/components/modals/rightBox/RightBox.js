@@ -12,10 +12,10 @@ const RightBoxContainer = styled.div`
   position: absolute;
   justify-content: flex-start;
   background-color: #858585;
-  top: 50%;
-  left: 50%;
+  top: ${(props) => (props.nft ? "50px" : "50%")};
+  left: ${(props) => (props.nft ? "50px" : "50%")};
   width: 150px;
-  height: 100%;
+  height: ${(props) => (props.nft ? "50px" : "100%")};
   color: white;
   z-index: 2000;
   cursor: pointer;
@@ -37,14 +37,18 @@ const RightBoxContainer = styled.div`
   }
 `;
 
-const RightBox = ({ item, index, dispatch }) => {
+const RightBox = ({ item, nft, index, dispatch, handleTransfer }) => {
   const rightClick = useSelector((state) => state.state.rightClick);
   if (rightClick[0] === `right${index}`) {
     return (
       <RightBoxContainer
+        nft={nft}
         className="cc"
         onMouseEnter={() => {
-          dispatch(handleItem({ itemNum: null }));
+          if (item) {
+            dispatch(handleItem({ itemNum: null }));
+          } else if (nft) {
+          }
         }}
         onMouseLeave={() => {
           dispatch(handleMouse({ on: [false, false, false] }));
@@ -54,12 +58,17 @@ const RightBox = ({ item, index, dispatch }) => {
         <div className="option">
           <div
             onClick={() => {
-              dispatch(sellChange({ change: true }));
-              dispatch(handleSell({ itemInfo: item }));
-              dispatch(handleMouse({ on: [false, false, false] }));
+              if (item) {
+                dispatch(sellChange({ change: true }));
+                dispatch(handleSell({ itemInfo: item }));
+                dispatch(handleMouse({ on: [false, false, false] }));
+              } else if (nft) {
+                handleTransfer();
+              }
             }}
           >
-            거래소 등록
+            {item ? "거래소 등록" : null}
+            {nft ? "선물하기" : null}
           </div>
           <div>버리기</div>
         </div>
