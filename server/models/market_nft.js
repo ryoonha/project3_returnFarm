@@ -5,6 +5,10 @@ module.exports = class Market_nft extends Sequelize.Model {
     return super.init(
       {
         // 시퀄라이즈는 id 자동 생성 (auto_increament)
+        nft_id: {
+          type: Sequelize.INTEGER,
+          allowNull: false, //NOT NULL
+        },
         nft_name: {
           type: Sequelize.STRING(30),
           allowNull: false, //NOT NULL
