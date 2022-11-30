@@ -116,13 +116,6 @@ const NftList = () => {
           <div className="nullText cc">소유한 NFT가 없습니다!</div>
         )}
       </NftListBox>
-      {/* <div
-        onClick={() => {
-          testFun2();
-        }}
-      >
-        test!!
-      </div> */}
     </animated.div>
   );
 };

@@ -157,7 +157,10 @@ const MenuBox = ({ dispatch }) => {
       >
         <FontAwesomeIcon icon="fa-solid fa-cube" />
       </Menu>
-      <Menu text={"NFT 생성"} onClick={() => alert("구현 중입니다..")}>
+      <Menu
+        text={"NFT 생성"}
+        onClick={() => dispatch(handleTopMenu({ select: "NftCreate" }))}
+      >
         <FontAwesomeIcon icon="fa-solid fa-square-plus" />
       </Menu>
       <div className="weatherBox">
