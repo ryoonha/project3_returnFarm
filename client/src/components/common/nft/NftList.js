@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import useDivMove from "../../../hooks/useDivMove";
 import { animated } from "react-spring";
@@ -7,8 +7,7 @@ import NftBox from "./NftBox";
 import { nftMyList, nftTransfer } from "../../../api/nft";
 import { useDispatch, useSelector } from "react-redux";
 import { nftUpdate } from "../../../stores/reducers/userSlice";
-import RightBox from "../../modals/rightBox/RightBox";
-import { handleMouse } from "../../../stores/reducers/stateSlice";
+import { modalChange } from "../../../stores/reducers/stateSlice";
 
 const NftListBox = styled(BasicBox)`
   left: 50vw;
@@ -16,8 +15,6 @@ const NftListBox = styled(BasicBox)`
   width: 80vw;
   height: 350px;
   transform: translateX(-50%);
-  overflow-x: hidden;
-  overflow-y: auto;
 
   ::-webkit-scrollbar {
     width: 8px;
@@ -36,20 +33,64 @@ const NftListBox = styled(BasicBox)`
   .nfts {
     display: flex;
     flex-wrap: wrap;
-    /* justify-content: space-between; */
     width: 100%;
     height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
   .nullText {
     width: 100%;
     height: 80%;
     font-size: 30px;
   }
+  .transfer {
+    position: absolute;
+    bottom: -10px;
+    width: 100%;
+    color: white;
+    background-color: rgb(48, 48, 48);
+    :hover {
+      background-color: rgb(19, 19, 19);
+    }
+  }
+  .transferBox {
+    flex-direction: column;
+    position: absolute;
+    transform: translateY(100px);
+    width: 100%;
+    height: auto;
+    border: 1px solid black;
+    color: white;
+    background-color: var(--back);
+    .title {
+      color: var(--title);
+    }
+    .toAddress {
+      width: 400px;
+      text-align: center;
+      :focus {
+        outline: 0px;
+      }
+    }
+    .transferButton {
+      width: 100px;
+      height: 50px;
+      margin: 5px 0px;
+      background-color: rgb(59, 84, 139);
+      cursor: pointer;
+      :hover {
+        background-color: rgb(32, 67, 141);
+      }
+    }
+  }
 `;
 
 const NftList = () => {
   const dispatch = useDispatch();
   const [x, y, bindDivPos] = useDivMove();
+  const [trnasSwich, setTransSwich] = useState();
+  const [nftId, setNftId] = useState();
+  const [toAddress, setToAddress] = useState();
   const myNftList = useSelector((state) => state.user.nft);
   const myAddress = useSelector((state) => state.user.myInfo.address);
 
@@ -60,19 +101,23 @@ const NftList = () => {
     }
   };
 
-  // 선물하기 기능 여기서부터 시작
-  //POST nft/transfer test!
   const handleTransfer = async () => {
+    dispatch(modalChange({ change: "loading" }));
     const obj = {
       // 주는 사람
-      fromAddress: "0x2e11159efC28b251f5c6497FD39d6562731C252e",
+      fromAddress: myAddress,
       // 받는 사람
-      toAddress: "0xdA001aBfbDBda64ceb98608586EAFDB2A2094736",
+      toAddress,
       // nft id
-      tokenId: myNftList[0][1],
+      tokenId: nftId,
     };
-    const data = await nftTransfer(obj);
-    console.log(data);
+    const { status } = await nftTransfer(obj);
+    if (status === 200) {
+      alert("정상적으로 NFT를 전송했습니다!");
+    } else {
+      alert("오류가 발생했습니다!");
+    }
+    dispatch(modalChange({ change: "" }));
   };
 
   useEffect(() => {
@@ -92,21 +137,45 @@ const NftList = () => {
         <div className="header" {...bindDivPos()}>
           나의 NFT 목록
         </div>
-        {myNftList.length > 0 ? (
-          <div className="nfts">
-            {myNftList.map((nft, index) => (
-              <NftBox nft={nft} index={index} key={`nft${index}`} />
-              // <RightBox
-              //   nft={nft}
-              //   index={index}
-              //   dispatch={dispatch}
-              //   handleTransfer={handleTransfer}
-              // />
-            ))}
-          </div>
-        ) : (
-          <div className="nullText cc">소유한 NFT가 없습니다!</div>
-        )}
+        <div className="nfts">
+          {myNftList.length > 0 ? (
+            myNftList.map((nft, index) => (
+              <NftBox
+                nft={nft}
+                index={index}
+                key={`nft${index}`}
+                setNftId={setNftId}
+              />
+            ))
+          ) : (
+            <div className="nullText cc">소유한 NFT가 없습니다!</div>
+          )}
+        </div>
+        <div className="transfer cc" onClick={() => setTransSwich(!trnasSwich)}>
+          전송하기
+        </div>
+        <div className="cc">
+          {trnasSwich ? null : (
+            <div className="transferBox cc">
+              <div className="title">선택한 NFT id</div>
+              <div>{nftId ? nftId : "전송할 NFT를 선택하세요"}</div>
+              <div className="title">내 지갑 주소</div>
+              <div>{myAddress}</div>
+              <div className="title">상대 지갑 주소</div>
+              <input
+                className="toAddress"
+                placeholder="보낼 지갑 주소를 입력하세요!"
+                onChange={(e) => setToAddress(e.target.value)}
+              />
+              <div
+                className="transferButton cc"
+                onClick={() => handleTransfer()}
+              >
+                NFT 전송
+              </div>
+            </div>
+          )}
+        </div>
       </NftListBox>
     </animated.div>
   );
