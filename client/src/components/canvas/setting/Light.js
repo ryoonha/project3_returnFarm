@@ -1,12 +1,12 @@
-import { Sky, useHelper } from "@react-three/drei";
+import { Sky, softShadows, useHelper } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { PointLightHelper, Vector3 } from "three";
 import { weatherChange } from "../../../stores/reducers/stateSlice";
-
-let initLightPos = 150;
-let lightSpeed = 0.01;
+softShadows();
+let initLightPos = 300;
+let lightSpeed = 0.02;
 export const Light = () => {
   const dispatch = useDispatch();
   const pointLight = useRef();
