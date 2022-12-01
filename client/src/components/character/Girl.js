@@ -1,11 +1,16 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useGLTF, useAnimations, Html } from "@react-three/drei";
+import {
+  useGLTF,
+  useAnimations,
+  Html,
+  PerspectiveCamera,
+} from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useDispatch, useSelector } from "react-redux";
 import Control from "./Control";
 import { Vector3 } from "three";
 import { handleTile } from "../../stores/reducers/stateSlice";
-import { useBox } from "@react-three/cannon";
+import { Physics, useBox } from "@react-three/cannon";
 
 const moveSpeed = 0.08;
 const runSpeed = 0.2;
@@ -13,7 +18,7 @@ export function Girl() {
   const dispatch = useDispatch();
   const tilePos = useSelector((state) => state.state.tileSelect);
   const [vec] = useState(() => new Vector3());
-  const model = useRef();
+  //const model = useRef();
   const group = useRef();
   const nameRef = useRef();
   const { camera } = useThree();
@@ -21,12 +26,13 @@ export function Girl() {
     "/models/character/girl.gltf"
   );
 
-  // const [model, api] = useBox(() => ({
-  //   type: "Dynamic",
-  //   mass: 1,
-  //   position: [10, 10, 0],
-  // }));
-
+  const [model, api] = useBox(() => ({
+    type: "Kinematic",
+    mass: 10,
+    args: [1, 1, 1],
+    position: [0, 0.5, -100],
+  }));
+  // console.log(api);
   const { actions, names } = useAnimations(animations, model);
   const deg2rad = (degrees) => degrees * (Math.PI / 180);
   const { up, right, down, left, shift } = useSelector(
@@ -41,8 +47,9 @@ export function Girl() {
       // const { nx, ny, nz } = nick.current.position;
       // nick.current.position.lerp(x, y, z, 0.1);
       // console.log(nick.current.position);
+
       camera.lookAt(x, y, z + 5);
-      camera.position.lerp(vec.set(x, y + 10, z - 15), 0.1);
+      //camera.position.lerp(vec.set(x, y + 20, z - 25), 0.1);
 
       if (
         tilePos.x &&
@@ -56,6 +63,8 @@ export function Girl() {
       }
     }
     if (model.current && (up || right || down || left)) {
+      const { x, y, z } = model.current.position;
+      const { _x, _y, _z } = model.current.rotation;
       if (up && left) {
         if (shift) {
           model.current.position.z += runSpeed;
@@ -129,6 +138,8 @@ export function Girl() {
           model.current.rotation.y = deg2rad(80);
         }
       }
+      api.position.set(x, y, z);
+      api.rotation.set(_x, _y, _z);
     }
   });
 
@@ -149,154 +160,166 @@ export function Girl() {
   }, [up, right, down, left, shift]);
 
   return (
-    <group ref={model} dispose={null} rotation={[deg2rad(5), deg2rad(-10), 0]}>
-      <Control />
-      <group name="Scene">
-        <group
-          name="metarig"
-          position={[0, -0.19, -0.03]}
-          rotation={[0, -0.48, -0.02]}
-        >
-          <primitive object={nodes.spine} />
-          <skinnedMesh
-            castShadow
-            name="bows"
-            geometry={nodes.bows.geometry}
-            material={materials.glasses}
-            skeleton={nodes.bows.skeleton}
-          />
-          <group name="Cube001">
+    <Physics>
+      <group
+        ref={model}
+        // position={[0, 0, -100]}
+        dispose={null}
+        rotation={[deg2rad(5), deg2rad(-10), 0]}
+      >
+        {/* <PerspectiveCamera
+          makeDefault
+          position={[0, 30, -30]}
+          rotation={[0.25, 3.15, 0]}
+        /> */}
+        <Control />
+        <group name="Scene">
+          <group
+            name="metarig"
+            position={[0, -0.19, -0.03]}
+            rotation={[0, -0.48, -0.02]}
+          >
+            <primitive object={nodes.spine} />
             <skinnedMesh
               castShadow
-              name="Cube001_1"
-              geometry={nodes.Cube001_1.geometry}
-              material={materials.skin}
-              skeleton={nodes.Cube001_1.skeleton}
-            />
-            <skinnedMesh
-              castShadow
-              name="Cube001_2"
-              geometry={nodes.Cube001_2.geometry}
-              material={materials.shorts}
-              skeleton={nodes.Cube001_2.skeleton}
-            />
-            <skinnedMesh
-              castShadow
-              name="Cube001_3"
-              geometry={nodes.Cube001_3.geometry}
-              material={materials.Tshirt}
-              skeleton={nodes.Cube001_3.skeleton}
-            />
-            <skinnedMesh
-              castShadow
-              name="Cube001_4"
-              geometry={nodes.Cube001_4.geometry}
+              name="bows"
+              geometry={nodes.bows.geometry}
               material={materials.glasses}
-              skeleton={nodes.Cube001_4.skeleton}
+              skeleton={nodes.bows.skeleton}
             />
+            <group name="Cube001">
+              <skinnedMesh
+                castShadow
+                name="Cube001_1"
+                geometry={nodes.Cube001_1.geometry}
+                material={materials.skin}
+                skeleton={nodes.Cube001_1.skeleton}
+              />
+              <skinnedMesh
+                castShadow
+                name="Cube001_2"
+                geometry={nodes.Cube001_2.geometry}
+                material={materials.shorts}
+                skeleton={nodes.Cube001_2.skeleton}
+              />
+              <skinnedMesh
+                castShadow
+                name="Cube001_3"
+                geometry={nodes.Cube001_3.geometry}
+                material={materials.Tshirt}
+                skeleton={nodes.Cube001_3.skeleton}
+              />
+              <skinnedMesh
+                castShadow
+                name="Cube001_4"
+                geometry={nodes.Cube001_4.geometry}
+                material={materials.glasses}
+                skeleton={nodes.Cube001_4.skeleton}
+              />
+              <skinnedMesh
+                castShadow
+                name="Cube001_5"
+                geometry={nodes.Cube001_5.geometry}
+                material={materials.lens}
+                skeleton={nodes.Cube001_5.skeleton}
+              />
+              <skinnedMesh
+                castShadow
+                name="Cube001_6"
+                geometry={nodes.Cube001_6.geometry}
+                material={materials.brows}
+                skeleton={nodes.Cube001_6.skeleton}
+              />
+              <skinnedMesh
+                castShadow
+                name="Cube001_7"
+                geometry={nodes.Cube001_7.geometry}
+                material={materials["skin.001"]}
+                skeleton={nodes.Cube001_7.skeleton}
+              />
+              <skinnedMesh
+                castShadow
+                name="Cube001_8"
+                geometry={nodes.Cube001_8.geometry}
+                material={materials.eyes}
+                skeleton={nodes.Cube001_8.skeleton}
+              />
+            </group>
             <skinnedMesh
               castShadow
-              name="Cube001_5"
-              geometry={nodes.Cube001_5.geometry}
-              material={materials.lens}
-              skeleton={nodes.Cube001_5.skeleton}
+              name="Cube002"
+              geometry={nodes.Cube002.geometry}
+              material={materials.sandals}
+              skeleton={nodes.Cube002.skeleton}
             />
-            <skinnedMesh
-              castShadow
-              name="Cube001_6"
-              geometry={nodes.Cube001_6.geometry}
-              material={materials.brows}
-              skeleton={nodes.Cube001_6.skeleton}
-            />
-            <skinnedMesh
-              castShadow
-              name="Cube001_7"
-              geometry={nodes.Cube001_7.geometry}
-              material={materials["skin.001"]}
-              skeleton={nodes.Cube001_7.skeleton}
-            />
-            <skinnedMesh
-              castShadow
-              name="Cube001_8"
-              geometry={nodes.Cube001_8.geometry}
-              material={materials.eyes}
-              skeleton={nodes.Cube001_8.skeleton}
-            />
-          </group>
-          <skinnedMesh
-            castShadow
-            name="Cube002"
-            geometry={nodes.Cube002.geometry}
-            material={materials.sandals}
-            skeleton={nodes.Cube002.skeleton}
-          />
-          <group name="hair">
-            <skinnedMesh
-              castShadow
-              name="Plane007"
-              geometry={nodes.Plane007.geometry}
-              material={materials.brows}
-              skeleton={nodes.Plane007.skeleton}
-            />
-            <skinnedMesh
-              castShadow
-              name="Plane007_1"
-              geometry={nodes.Plane007_1.geometry}
-              material={materials["brows.001"]}
-              skeleton={nodes.Plane007_1.skeleton}
-            />
-          </group>
-          <group name="hair2">
-            <skinnedMesh
-              castShadow
-              name="Plane004"
-              geometry={nodes.Plane004.geometry}
-              material={materials.brows}
-              skeleton={nodes.Plane004.skeleton}
-            />
-            <skinnedMesh
-              castShadow
-              name="Plane004_1"
-              geometry={nodes.Plane004_1.geometry}
-              material={materials["brows.001"]}
-              skeleton={nodes.Plane004_1.skeleton}
-            />
-          </group>
-          <group name="hat">
-            <skinnedMesh
-              castShadow
-              name="Circle"
-              geometry={nodes.Circle.geometry}
-              material={materials.hat}
-              skeleton={nodes.Circle.skeleton}
-            />
-            <skinnedMesh
-              castShadow
-              name="Circle_1"
-              geometry={nodes.Circle_1.geometry}
-              material={materials.ribbon}
-              skeleton={nodes.Circle_1.skeleton}
-            />
-          </group>
-          <group name="ponytails">
-            <skinnedMesh
-              castShadow
-              name="BezierCurve"
-              geometry={nodes.BezierCurve.geometry}
-              material={materials.brows}
-              skeleton={nodes.BezierCurve.skeleton}
-            />
-            <skinnedMesh
-              castShadow
-              name="BezierCurve_1"
-              geometry={nodes.BezierCurve_1.geometry}
-              material={materials["brows.001"]}
-              skeleton={nodes.BezierCurve_1.skeleton}
-            />
+            <group name="hair">
+              <skinnedMesh
+                castShadow
+                name="Plane007"
+                geometry={nodes.Plane007.geometry}
+                material={materials.brows}
+                skeleton={nodes.Plane007.skeleton}
+              />
+              <skinnedMesh
+                castShadow
+                name="Plane007_1"
+                geometry={nodes.Plane007_1.geometry}
+                material={materials["brows.001"]}
+                skeleton={nodes.Plane007_1.skeleton}
+              />
+            </group>
+            <group name="hair2">
+              <skinnedMesh
+                castShadow
+                name="Plane004"
+                geometry={nodes.Plane004.geometry}
+                material={materials.brows}
+                skeleton={nodes.Plane004.skeleton}
+              />
+              <skinnedMesh
+                castShadow
+                name="Plane004_1"
+                geometry={nodes.Plane004_1.geometry}
+                material={materials["brows.001"]}
+                skeleton={nodes.Plane004_1.skeleton}
+              />
+            </group>
+            <group name="hat">
+              <skinnedMesh
+                castShadow
+                name="Circle"
+                geometry={nodes.Circle.geometry}
+                material={materials.hat}
+                skeleton={nodes.Circle.skeleton}
+              />
+              <skinnedMesh
+                castShadow
+                name="Circle_1"
+                geometry={nodes.Circle_1.geometry}
+                material={materials.ribbon}
+                skeleton={nodes.Circle_1.skeleton}
+              />
+            </group>
+            <group name="ponytails">
+              <skinnedMesh
+                castShadow
+                name="BezierCurve"
+                geometry={nodes.BezierCurve.geometry}
+                material={materials.brows}
+                skeleton={nodes.BezierCurve.skeleton}
+              />
+              <skinnedMesh
+                castShadow
+                name="BezierCurve_1"
+                geometry={nodes.BezierCurve_1.geometry}
+                material={materials["brows.001"]}
+                skeleton={nodes.BezierCurve_1.skeleton}
+              />
+            </group>
           </group>
         </group>
       </group>
-    </group>
+    </Physics>
   );
 }
 
