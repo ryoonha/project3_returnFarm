@@ -31,11 +31,60 @@ exports.bag_list = async (address) => {
 
 //post-game/land
 exports.land_list = async (address) => {
-  const array = Array(100).fill({
+  // 땅 생성 배열 부분 나중에 수정하기
+  // 신규 사용자, 기존 사용자 모두 땅 배열을 만들기 때문에
+  // 로딩시간이 길어짐
+  // 방법 1 findOrCreate를 분리
+  const arrayinit = Array(900).fill({
     status: null,
     add: [],
     estimated_time: null,
   });
+
+  const limit = {
+    tree: 0,
+    rock: 0,
+    grass: 0,
+    flowre: 0,
+  };
+  const array = arrayinit.map((data, index) => {
+    const objSelect = Math.floor(Math.random() * 5 + 1);
+    if (objSelect === 1 && limit.tree <= 150) {
+      limit.tree += 1;
+      return {
+        status: `나무_${Math.floor(Math.random() * 8 + 1)}`,
+        add: [],
+        estimated_time: null,
+      };
+    } else if (objSelect === 2 && limit.rock <= 80) {
+      limit.rock += 1;
+      return {
+        status: `돌_${Math.floor(Math.random() * 5 + 1)}`,
+        add: [],
+        estimated_time: null,
+      };
+    } else if (objSelect === 3 && limit.grass <= 300) {
+      limit.grass += 1;
+      return {
+        status: `잡초_${Math.floor(Math.random() * 3 + 1)}`,
+        add: [],
+        estimated_time: null,
+      };
+    } else if (objSelect === 4 && limit.flowre <= 100) {
+      limit.flowre += 1;
+      return {
+        status: `꽃_${Math.floor(Math.random() * 2 + 1)}`,
+        add: [],
+        estimated_time: null,
+      };
+    }
+    return {
+      status: null,
+      add: [],
+      estimated_time: null,
+    };
+  });
+
   const result = await Rand.findOrCreate({
     where: { address: address },
     defaults: {
