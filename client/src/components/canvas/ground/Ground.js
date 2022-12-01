@@ -5,19 +5,20 @@ import Tile from "./Tile";
 
 const Ground = () => {
   const tileArr = useSelector((state) => state.user.tile);
+  const num = Math.sqrt(tileArr.length);
 
   const Plane = (props) => {
     const [ref] = usePlane(() => ({
       type: "Static",
       //material: "ground",
-      args: [300, 300],
+      args: [500, 500],
       ...props,
     }));
 
     return (
       <group ref={ref}>
         <mesh receiveShadow>
-          <planeGeometry args={[300, 300]} />
+          <planeGeometry args={[250, 250]} />
           <meshStandardMaterial color={props.bgColor} />
         </mesh>
       </group>
@@ -30,8 +31,8 @@ const Ground = () => {
         <Tile
           key={index}
           tileData={tileData}
-          numX={index % 10}
-          numZ={Math.floor(index / 10)}
+          numX={index % num}
+          numZ={Math.floor(index / num)}
         />
       ))}
       <Plane

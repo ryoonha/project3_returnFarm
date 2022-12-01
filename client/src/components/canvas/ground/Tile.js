@@ -3,6 +3,13 @@ import { useDispatch } from "react-redux";
 import * as THREE from "three";
 import { Color, TextureLoader } from "three";
 import { handleTile } from "../../../stores/reducers/stateSlice";
+import {
+  flowreArr,
+  grassArr,
+  rockArr,
+  treeArr,
+} from "../../models/environment";
+import Rand from "../../models/land/Rand";
 
 const Tile = ({ tileData, numX, numZ }) => {
   const dispatch = useDispatch();
@@ -15,6 +22,25 @@ const Tile = ({ tileData, numX, numZ }) => {
     []
   );
 
+  let type = null;
+  let scale = null;
+  if (tileData.status) {
+    const [name, num] = tileData.status.split(/_/g);
+    if (name === "나무") {
+      type = treeArr[num - 1];
+      scale = 10;
+    } else if (name === "돌") {
+      type = rockArr[num - 1];
+      scale = 2;
+    } else if (name === "잡초") {
+      type = grassArr[num - 1];
+      scale = 0.05;
+    } else if (name === "꽃") {
+      type = flowreArr[num - 1];
+      scale = 5;
+    }
+  }
+
   // textureStarField1.repeat.set(2, 2);
   textureStarField1.repeat.x = 2;
   textureStarField1.repeat.y = 2;
@@ -26,7 +52,7 @@ const Tile = ({ tileData, numX, numZ }) => {
     <mesh
       receiveShadow
       rotation={[-Math.PI / 2, 0, 0]}
-      position={[24 - numX * 5.1, 0, 24 - numZ * 5.1]}
+      position={[72 - numX * 5.1, 0, 72 - numZ * 5.1]}
       onPointerOver={(e) => {
         setSelect(new Color(2, 2, 2));
       }}
@@ -35,7 +61,6 @@ const Tile = ({ tileData, numX, numZ }) => {
       }}
       onClick={(e) => {
         const { x, y, z } = e.object.position;
-        console.log(e.object.position);
         dispatch(
           handleTile({
             x: Math.floor(x * 100) / 100,
@@ -45,10 +70,21 @@ const Tile = ({ tileData, numX, numZ }) => {
         );
       }}
     >
+      {type ? (
+        <group rotation={[Math.PI / 2, 0, 0]} scale={scale}>
+          {type}
+        </group>
+      ) : null}
+      {/* <Rand
+        scale={0.2}
+        position={[0, 0, -0.4]}
+        rotation={[Math.PI / 2, 0, 0]}
+      />
+      <SandLand position={[-100, 0, -120]} /> */}
       <planeGeometry attach="geometry" args={[5, 5]} />
-      <meshPhysicalMaterial
-        map={textureStarField1}
-        opacity={1}
+      <meshBasicMaterial
+        //map={textureStarField1}
+        opacity={0.3}
         attach="material"
         color={select}
         transparent
