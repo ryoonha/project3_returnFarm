@@ -10,6 +10,8 @@ import Status from "./status/Status";
 import useKeyEvents from "../../hooks/useKeyEvents";
 import NftList from "./nft/NftList";
 import NftExchange from "./nft/NftExchange";
+import NftCreate from "./nft/NftCreate";
+import TokenExchange from "./nft/TokenExchange";
 
 // <FontAwesomeIcon icon="fa-solid fa-circle-xmark" /> 닫기 버튼
 // <FontAwesomeIcon icon="fa-solid fa-circle-question" /> 도움말 버튼
@@ -32,11 +34,13 @@ const Interface = () => {
     >
       {select === "Status" ? <Status /> : null}
       {select === "Inventory" ? <Inventory select={select} /> : null}
-      <MenuBox dispatch={dispatch} />
       {select === "NftList" ? <NftList /> : null}
       {select === "Exchange" ? <Exchange /> : null}
       {select === "Chatting" ? <Chatting /> : null}
       {select === "NftExchange" ? <NftExchange /> : null}
+      {select === "NftCreate" ? <NftCreate /> : null}
+      {select === "TokenExchange" ? <TokenExchange /> : null}
+      <MenuBox dispatch={dispatch} />
       <HotkeyBox />
     </InterfaceBox>
   );

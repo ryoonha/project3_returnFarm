@@ -3,16 +3,16 @@ import { createSlice, current } from "@reduxjs/toolkit";
 const gameSlice = createSlice({
   name: "gameSlice",
   initialState: {
-    //nftList: [],
+    nftList: [],
     marketList: [],
     userList: [],
     chatList: [],
     sellData: null,
   },
   reducers: {
-    // handleNftList: (state, action) => {
-    //   state.nftList = action.payload.list;
-    // },
+    handleNftList: (state, action) => {
+      state.nftList = action.payload.list;
+    },
     handleMarketList: (state, action) => {
       state.marketList = action.payload.list;
     },
@@ -29,5 +29,10 @@ const gameSlice = createSlice({
 });
 
 export default gameSlice;
-export const { handleMarketList, handleUser, handleChat, handleSell } =
-  gameSlice.actions;
+export const {
+  handleNftList,
+  handleMarketList,
+  handleUser,
+  handleChat,
+  handleSell,
+} = gameSlice.actions;

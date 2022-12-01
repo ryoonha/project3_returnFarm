@@ -9,7 +9,7 @@ const MenuContainer = styled.div`
   position: fixed;
   width: 100vw;
   height: 70px;
-  border-radius: 0px 0px 20% 20%;
+  border-radius: 0px 0px 10% 10%;
   background-color: rgba(133, 133, 133, 0.4);
   transform: ${(props) =>
     props.hide ? "translateY(-70px)" : "translateY(0px)"};
@@ -157,15 +157,15 @@ const MenuBox = ({ dispatch }) => {
       >
         <FontAwesomeIcon icon="fa-solid fa-cube" />
       </Menu>
+      <Menu
+        text={"NFT 생성"}
+        onClick={() => dispatch(handleTopMenu({ select: "NftCreate" }))}
+      >
+        <FontAwesomeIcon icon="fa-solid fa-square-plus" />
+      </Menu>
       <div className="weatherBox">
         <div className="weather">{wData[weather]}</div>
       </div>
-      <Menu
-        text={"거래소"}
-        onClick={() => dispatch(handleTopMenu({ select: "Exchange" }))}
-      >
-        <FontAwesomeIcon icon="fa-solid fa-arrow-right-arrow-left" />
-      </Menu>
       <Menu
         text={"채팅"}
         onClick={() => dispatch(handleTopMenu({ select: "Chatting" }))}
@@ -173,10 +173,22 @@ const MenuBox = ({ dispatch }) => {
         <FontAwesomeIcon icon="fa-regular fa-comment" />
       </Menu>
       <Menu
+        text={"거래소"}
+        onClick={() => dispatch(handleTopMenu({ select: "Exchange" }))}
+      >
+        <FontAwesomeIcon icon="fa-solid fa-arrow-right-arrow-left" />
+      </Menu>
+      <Menu
         text={"NFT거래소"}
         onClick={() => dispatch(handleTopMenu({ select: "NftExchange" }))}
       >
         <FontAwesomeIcon icon="fa-solid fa-table-cells-large" />
+      </Menu>
+      <Menu
+        text={"토큰 교환"}
+        onClick={() => dispatch(handleTopMenu({ select: "TokenExchange" }))}
+      >
+        <FontAwesomeIcon icon="fa-solid fa-coins" />
       </Menu>
       {/* <Menu text={"maps"}>
         <FontAwesomeIcon icon="fa-regular fa-map" />

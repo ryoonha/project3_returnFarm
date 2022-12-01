@@ -35,7 +35,7 @@ const StatusBox = styled(BasicBox)`
       }
     }
     .statusUserEtc {
-      width: 330px;
+      width: 320px;
       height: 220px;
       margin: auto;
     }
