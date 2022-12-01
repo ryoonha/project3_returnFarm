@@ -1,0 +1,11 @@
+Model Information:
+* title:	Farmland (LowPoly)
+* source:	https://sketchfab.com/3d-models/farmland-lowpoly-e0b2b8107ba5450298811782f875ee25
+* author:	MrRiskris (https://sketchfab.com/MrRiskris)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Farmland (LowPoly)" (https://sketchfab.com/3d-models/farmland-lowpoly-e0b2b8107ba5450298811782f875ee25) by MrRiskris (https://sketchfab.com/MrRiskris) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
