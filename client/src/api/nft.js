@@ -1,21 +1,33 @@
-import { nft } from ".";
+import { nft, nftMint } from ".";
+
+export const nftList = () => {
+  return nft.get("list");
+};
+
+export const nftMyList = (address) => {
+  return nft.post("myList", address);
+};
 
 export const nftCreate = (nftData) => {
-  return nft.post("create", nftData);
+  return nftMint.post("create", nftData);
 };
 
-export const nftExchange = () => {
-  return nft.post("exchange");
+export const nftTransfer = (data) => {
+  return nft.post("transfer", data);
 };
 
-export const nftMyList = () => {
-  return nft.post("myList");
+export const nftBuy = (data) => {
+  return nft.post("buy", data);
 };
 
-export const nftBuy = () => {
-  return nft.post("buy");
+export const nftSell = (data) => {
+  return nft.post("sell", data);
 };
 
-export const nftSell = () => {
-  return nft.post("sell");
+export const nftExchange = (myData) => {
+  return nft.post("exchange", myData);
+};
+
+export const nftIpExchange = (myData) => {
+  return nft.post("ipExchange", myData);
 };

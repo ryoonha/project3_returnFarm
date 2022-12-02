@@ -20,6 +20,12 @@ module.exports = class Market_item extends Sequelize.Model {
         address: {
           type: Sequelize.STRING(100),
         },
+        time: {
+          type: Sequelize.STRING(20),
+        },
+        quality: {
+          type: Sequelize.STRING(10),
+        },
         createdAt: {
           type: "TIMESTAMP",
           defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),

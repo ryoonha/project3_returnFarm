@@ -1,9 +1,8 @@
-import { tokenValidation } from "../middleware/validation";
 import {
   bag_list,
-  bag_update,
   land_list,
   land_update,
+  bagObj_remove,
 } from "../db_Process/game.db";
 
 const getBag = async (req, res, next) => {
@@ -18,18 +17,13 @@ const getBag = async (req, res, next) => {
 };
 
 const updateBag = async (req, res, next) => {
-  // bag은 배열로 들어옴
-  const { address, bag } = req.body;
-  // bag이 없다면
-  if (!bag) {
-    res.status(400).send({ message: "다시 시도해 주세요!" });
+  const { address, itemName, count } = req.body;
+  const dbResult = await bagObj_remove(address, itemName, count);
+  console.log(dbResult);
+  if (dbResult) {
+    res.status(200).send(dbResult);
   } else {
-    const dbResult = await bag_update(address, bag); //토큰에서 address+bag배열 2개를 받음
-    if (dbResult) {
-      res.status(200).send({ message: dbResult });
-    } else {
-      res.status(400).send({ message: "다시 시도해 주세요!" });
-    }
+    res.status(400).send({ massage: "다시 시도해 주세요!" });
   }
 };
 
@@ -58,7 +52,7 @@ const updateRand = async (req, res, next) => {
   if (!rand) {
     res.status(400).send({ message: "다시 시도해 주세요!" });
   } else {
-    const dbResult = await db.land_update(address, rand);
+    const dbResult = await land_update(address, rand);
 
     if (dbResult) {
       // db 작업이 성공적이라면

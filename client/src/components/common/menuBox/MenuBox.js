@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { handleTopMenu } from "../../../stores/reducers/stateSlice";
+import { handleTopMenu, sellChange } from "../../../stores/reducers/stateSlice";
 import { useSelector } from "react-redux";
-import { weatherData } from "../../../data/weather";
+import { weatherData } from "../../../data/etc";
 
 const MenuContainer = styled.div`
   position: fixed;
   width: 100vw;
   height: 70px;
-  border-radius: 0px 0px 20% 20%;
+  border-radius: 0px 0px 10% 10%;
   background-color: rgba(133, 133, 133, 0.4);
   transform: ${(props) =>
     props.hide ? "translateY(-70px)" : "translateY(0px)"};
@@ -88,7 +88,7 @@ const MenuContainer = styled.div`
 `;
 
 const Menu = styled.div`
-  width: 50px;
+  width: 70px;
   height: 50px;
   background-color: rgba(233, 255, 255, 1);
   border-radius: 10%;
@@ -128,62 +128,73 @@ const Menu = styled.div`
 `;
 
 const MenuBox = ({ dispatch }) => {
-  const [time, setTime] = useState(null);
   const [hide, setHide] = useState(false);
-  const { weather } = useSelector((state) => state.state);
-  const { haetsal, ip_amount } = useSelector((state) => state.user.myInfo);
+  const weather = useSelector((state) => state.state.weather);
+  const haetsal = useSelector((state) => state.user.myInfo.haetsal);
+  const ip_amount = useSelector((state) => state.user.myInfo.ip_amount);
   const wData = weatherData;
-
-  useEffect(() => {
-    const dataUpdate = setInterval(() => {
-      const today = new Date();
-      const hours = today.getHours(); // 시
-      const minutes = today.getMinutes(); // 분
-      const seconds = today.getSeconds(); // 초
-
-      setTime(`${hours === 0 ? 12 : hours}:${minutes}:${seconds}`);
-    }, 1000);
-    return () => clearInterval(dataUpdate);
-  }, []);
 
   return (
     <MenuContainer className="cc" weather={weather} hide={hide}>
       <Menu
-        text={"info"}
+        text={"정보"}
         onClick={() => dispatch(handleTopMenu({ select: "Status" }))}
       >
         <FontAwesomeIcon icon="fa-solid fa-circle-user" />
       </Menu>
       <Menu
-        text={"inventory"}
-        onClick={() => dispatch(handleTopMenu({ select: "Inventory" }))}
+        text={"가방"}
+        onClick={() => {
+          dispatch(sellChange({ change: false }));
+          dispatch(handleTopMenu({ select: "Inventory" }));
+        }}
       >
         <FontAwesomeIcon icon="fa-solid fa-suitcase" />
       </Menu>
-      <Menu text={"myNFT"}>
+      <Menu
+        text={"나의 NFT"}
+        onClick={() => dispatch(handleTopMenu({ select: "NftList" }))}
+      >
         <FontAwesomeIcon icon="fa-solid fa-cube" />
+      </Menu>
+      <Menu
+        text={"NFT 생성"}
+        onClick={() => dispatch(handleTopMenu({ select: "NftCreate" }))}
+      >
+        <FontAwesomeIcon icon="fa-solid fa-square-plus" />
       </Menu>
       <div className="weatherBox">
         <div className="weather">{wData[weather]}</div>
       </div>
       <Menu
-        text={"exchange"}
+        text={"채팅"}
+        onClick={() => dispatch(handleTopMenu({ select: "Chatting" }))}
+      >
+        <FontAwesomeIcon icon="fa-regular fa-comment" />
+      </Menu>
+      <Menu
+        text={"거래소"}
         onClick={() => dispatch(handleTopMenu({ select: "Exchange" }))}
       >
         <FontAwesomeIcon icon="fa-solid fa-arrow-right-arrow-left" />
       </Menu>
       <Menu
-        text={"chatting"}
-        onClick={() => dispatch(handleTopMenu({ select: "Chatting" }))}
+        text={"NFT거래소"}
+        onClick={() => dispatch(handleTopMenu({ select: "NftExchange" }))}
       >
-        <FontAwesomeIcon icon="fa-regular fa-comment" />
+        <FontAwesomeIcon icon="fa-solid fa-table-cells-large" />
       </Menu>
-      <Menu text={"maps"}>
+      <Menu
+        text={"토큰 교환"}
+        onClick={() => dispatch(handleTopMenu({ select: "TokenExchange" }))}
+      >
+        <FontAwesomeIcon icon="fa-solid fa-coins" />
+      </Menu>
+      {/* <Menu text={"maps"}>
         <FontAwesomeIcon icon="fa-regular fa-map" />
-      </Menu>
+      </Menu> */}
       <div className="streamlineBox cc" onClick={() => setHide(!hide)}>
         <div className="haetsal">{haetsal} 햇살</div>
-        <div className="time">{time}</div>
         <div className="tokenAmount">{ip_amount} IP</div>
       </div>
     </MenuContainer>

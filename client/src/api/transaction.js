@@ -9,5 +9,9 @@ export const transactionSell = (itemData) => {
 };
 
 export const transactionExchange = (itemData) => {
-  return transaction.post("exchange", itemData);
+  return transaction.put("exchange", itemData);
+};
+
+export const transactionBuy = (data) => {
+  return transaction.post("buy", data);
 };

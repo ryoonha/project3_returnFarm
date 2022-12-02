@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { animated } from "react-spring";
 import useDivMove from "../../../hooks/useDivMove";
-import { BasicBox, DetailBox } from "../../../libs/cssFrame";
+import { BasicBox } from "../../../libs/cssFrame";
 import { itemList } from "../../../data/item";
 import { useDispatch, useSelector } from "react-redux";
-import { dateName } from "../../../data/weather";
 import ItemStatus from "../../modals/statusBox/ItemStatus";
-import { handleItem } from "../../../stores/reducers/stateSlice";
+import { handleItem, handleMouse } from "../../../stores/reducers/stateSlice";
+import { handleSell } from "../../../stores/reducers/gameSlice";
+import ItemSell from "../exchange/ItemSell";
+import RightBox from "../../modals/rightBox/RightBox";
 
 const InventoryBox = styled(BasicBox)`
   transform: translateX(48vw);
@@ -42,10 +44,11 @@ const InventoryBox = styled(BasicBox)`
   }
 `;
 
-const Inventory = () => {
+const Inventory = ({ select }) => {
   const [x, y, bindDivPos] = useDivMove();
   const dispatch = useDispatch();
   const { bag } = useSelector((state) => state.user);
+  const sellToggle = useSelector((state) => state.state.sellToggle);
   const itemData = itemList;
 
   return (
@@ -59,7 +62,12 @@ const Inventory = () => {
         <div className="header" {...bindDivPos()}>
           Inventory
         </div>
-        <div className="boxBody cc">
+        <div
+          className="boxBody cc"
+          onMouseEnter={() => {
+            dispatch(handleItem({ itemNum: null }));
+          }}
+        >
           {bag.map((item, index) => (
             <div
               className="itemBox cc"
@@ -70,9 +78,17 @@ const Inventory = () => {
               }}
               onMouseLeave={() => {
                 dispatch(handleItem({ itemNum: `item${index}` }));
+                dispatch(handleMouse({ on: [false, false, false] }));
               }}
-              onContextMenu={() => {
-                alert("채팅방을 정말 삭제하시겠어요?");
+              onContextMenu={(e) => {
+                dispatch(
+                  handleMouse({ on: [`right${index}`, e.clientX, e.clientY] })
+                );
+              }}
+              onClick={() => {
+                if (sellToggle) {
+                  dispatch(handleSell({ itemInfo: item }));
+                }
               }}
             >
               <img src={itemData[item.item_name].img} alt="" />
@@ -84,9 +100,11 @@ const Inventory = () => {
                 dispatch={dispatch}
                 handleItem={handleItem}
               />
+              <RightBox item={item} index={index} dispatch={dispatch} />
             </div>
           ))}
         </div>
+        {sellToggle && select ? <ItemSell dispatch={dispatch} /> : null}
       </InventoryBox>
     </animated.div>
   );

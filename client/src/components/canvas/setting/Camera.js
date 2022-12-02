@@ -7,7 +7,7 @@ const Camera = ({ ttt, canvas }) => {
 
   camera.position.set(0, 100, 0);
   // autoRotate
-  return <OrbitControls enablePan={false} />;
+  return <OrbitControls enablePan={true} />;
 };
 
 export default memo(Camera);

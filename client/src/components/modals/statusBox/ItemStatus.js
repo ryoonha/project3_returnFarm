@@ -1,11 +1,9 @@
 import React from "react";
 import { DetailBox } from "../../../libs/cssFrame";
-import { dateName } from "../../../data/weather";
 import { useSelector } from "react-redux";
 
 const ItemStatus = ({ item, index, itemData, dispatch, handleItem }) => {
   const itemNum = useSelector((state) => state.state.itemSelect);
-
   if (itemNum === `item${index}`) {
     return (
       <DetailBox
@@ -21,14 +19,7 @@ const ItemStatus = ({ item, index, itemData, dispatch, handleItem }) => {
         </div>
         <div className="timeBox">
           <div className="title">획득시간</div>
-          <div>
-            {item.time.split("/").map((data, index) => (
-              <span
-                key={index}
-                className={`time${index}`}
-              >{`${data}${dateName[index]} `}</span>
-            ))}
-          </div>
+          <div>{item.time}</div>
         </div>
       </DetailBox>
     );

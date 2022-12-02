@@ -1,34 +1,13 @@
 import React, { useRef, useState } from "react";
 import { useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { useBox } from "@react-three/cannon";
 
 export function Well(props) {
   const { nodes, materials } = useGLTF("/models/objects/well/scene.gltf");
   //const [pos, setPos] = useState([0, -5000000, 0]);
 
-  const [ref, api] = useBox(() => ({
-    type: "Static",
-    mass: 1,
-    position: [10, 0.3, 0],
-    aegs: [1, 1, 1],
-    ...props,
-  }));
-
-  // useFrame(() => {
-  //   api.position.set(...pos);
-  // });
-
-  // useFrame(({ mouse }) => {
-  //   if (ref.current) {
-  //     const { x, y, z } = ref.current.position;
-  //     //console.log(ref.current);
-  //     //console.log(mouse);
-  //   }
-  // });
-
   return (
-    <group ref={ref} dispose={null} scale={0.2}>
+    <group dispose={null} scale={0.2}>
       <boxGeometry args={[1, 1, 1]} />
       <meshNormalMaterial />
       <group rotation={[-Math.PI / 2, 0, 0]}>

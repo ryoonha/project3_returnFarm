@@ -4,8 +4,6 @@
 .pnp.js
 .DS_Store
 node_modules
-package.json
-package-lock.json
 
 # testing
 /coverage
@@ -17,7 +15,6 @@ package-lock.json
 .env
 .vscode
 .DS_Store
-
 
 npm-debug.log*
 yarn-debug.log*

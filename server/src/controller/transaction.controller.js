@@ -3,6 +3,7 @@ import {
   marketItem_create,
   bag_update,
   tokenAmount_update,
+  marketItem_delete,
 } from "../db_Process/transaction.db";
 import { userInfo } from "../db_Process/user.db";
 
@@ -17,13 +18,15 @@ const list = async (req, res, next) => {
 };
 
 const sell = async (req, res, next) => {
-  // const tokenData = tokenValidation();
-  const { item_name, item_count, selling_price, address } = req.body;
+  const { item_name, item_count, selling_price, address, time, quality } =
+    req.body;
   const dbResult = await marketItem_create(
     item_name,
     item_count,
     selling_price,
-    address
+    address,
+    time,
+    quality
   );
   //
   if (dbResult) {
@@ -36,15 +39,8 @@ const sell = async (req, res, next) => {
 
 const exchange = async (req, res, next) => {
   // const tokenData = tokenValidation();
-  // const { address } = req.body;
-  // const address = "0xDf2DddDb52904F1Ce173786222eebC8Dd326f2yf";
-  // const nBag = {
-  //   time: "2022/12/23/08/30",
-  //   quality: "2",
-  //   item_name: "숟가락",
-  //   item_count: "-5",
-  // };
-  const dbResult = await bag_update(address, nBag);
+  const { address, nItem } = req.body;
+  const dbResult = await bag_update(address, nItem);
   if (dbResult) {
     // && tokenData
     res.status(200).send(dbResult);
@@ -54,24 +50,33 @@ const exchange = async (req, res, next) => {
 };
 
 const buy = async (req, res, next) => {
-  const { user_id, address, ip_amount, item } = req.body;
-  const dbUserInfon = await userInfo(user_id, address);
-  const haes_sal = dbUserInfon.ip_amount;
-  // console.log(haes_sal, "🌞");
-  const totalPrice = item[0].price; // 임시로 price
-  // console.log(price, "💎");
+  const { address, item } = req.body;
+  const dbUserInfo_buyer = await userInfo(address);
+  const haes_sal_B = dbUserInfo_buyer.haes_sal_amount;
+  const dbUserInfo_seller = await userInfo(item.address);
+  const haes_sal_S = dbUserInfo_seller.haes_sal_amount;
 
-  if (!haes_sal >= totalPrice) {
+  if (!haes_sal_B > item.selling_price) {
     // && tokenData
     res.status(400).send({ message: "구매 실패 😑" });
   } else {
+    const newMarketList = await marketItem_delete(item);
     const updateMyBag = await bag_update(address, item);
-    const updateHaesSal = await tokenAmount_update(address, ip_amount);
-    res
-      .status(200)
-      .send({ message: "구매 성공", data: updateHaesSal, updateMyBag });
+    const updateHaesSal_buyer = await tokenAmount_update(
+      address,
+      haes_sal_B - item.selling_price
+    );
+    const updateHaesSal_seller = await tokenAmount_update(
+      item.address,
+      haes_sal_S + item.selling_price
+    );
+    res.status(200).send({
+      updateHaesSal_buyer,
+      updateHaesSal_seller,
+      updateMyBag,
+      newMarketList,
+    });
   }
-  return updateMyBag, updateHaesSal;
 };
 
 export { list, sell, exchange, buy };

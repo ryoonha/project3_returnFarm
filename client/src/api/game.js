@@ -4,8 +4,8 @@ export const gameBag = (address) => {
   return game.post("bag", address);
 };
 
-export const gameBagUpdate = (userData) => {
-  return game.put("bag", userData);
+export const gameBagUpdate = (itemData) => {
+  return game.put("bag", itemData);
 };
 
 export const gameRandCreate = (address) => {

@@ -12,7 +12,7 @@ exports.userRegister = async (
     user_pwd,
     user_nick,
     address,
-    privateKey,
+    private_key: privateKey,
   })
     .then((e) => [true, e.dataValues])
     .catch((err) => {
@@ -22,7 +22,6 @@ exports.userRegister = async (
 };
 
 exports.userLogin = async (user_id, user_pwd) => {
-  console.log(user_id, user_pwd, "🌟");
   const result = await User.findOne({
     where: {
       user_id: user_id,
@@ -33,11 +32,11 @@ exports.userLogin = async (user_id, user_pwd) => {
       "user_nick",
       "user_pfp",
       "address",
+      "haes_sal_amount",
       "ip_amount",
       "created_at",
       "crop_count",
       "crop_per",
-      "play_time",
     ],
   })
     .then((e) => e.dataValues)

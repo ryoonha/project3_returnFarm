@@ -1,6 +1,6 @@
 import { Canvas } from "@react-three/fiber";
-import { Debug, Physics } from "@react-three/cannon";
-import React from "react";
+import React, { Suspense } from "react";
+import { Physics, RigidBody, Debug } from "@react-three/rapier";
 import Ground from "./ground/Ground";
 import Camera from "./setting/Camera";
 import { Provider } from "react-redux";
@@ -9,32 +9,34 @@ import Character from "../character/Character";
 import { Light } from "./setting/Light";
 import Environment from "./environment/Environment";
 import Object from "./object/Object";
+import useKeyEvents from "../../hooks/useKeyEvents";
 
 const Index = () => {
+  // 단축키 활성화 함수
+  useKeyEvents();
   return (
-    <>
-      <Canvas
-        shadows
-        camera={{
-          fov: 60,
-          far: 15000,
-          near: 3,
-        }}
-      >
-        <Provider store={store}>
+    <Canvas
+      shadows
+      camera={{
+        fov: 60,
+        far: 15000,
+        near: 3,
+      }}
+    >
+      <Provider store={store}>
+        <Suspense fallback={null}>
           <Light />
           <Camera />
           <Physics>
-            <Debug color="black" scale={1.5}>
-              <Character />
-              <Ground />
-              <Environment />
-              <Object />
-            </Debug>
+            <Debug />
+            <Character />
+            <Ground />
+            <Environment />
+            <Object />
           </Physics>
-        </Provider>
-      </Canvas>
-    </>
+        </Suspense>
+      </Provider>
+    </Canvas>
   );
 };
 

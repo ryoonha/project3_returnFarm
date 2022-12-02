@@ -18,6 +18,7 @@ const userSlice = createSlice({
     },
     bag: [],
     tile: [],
+    nft: false,
   },
   reducers: {
     myInfoSave: (state, action) => {
@@ -51,8 +52,12 @@ const userSlice = createSlice({
     tileUpdate: (state, action) => {
       state.tile = action.payload.tile;
     },
+    nftUpdate: (state, action) => {
+      state.nft = action.payload.nft;
+    },
   },
 });
 
 export default userSlice;
-export const { myInfoSave, bagUpdate, tileUpdate } = userSlice.actions;
+export const { myInfoSave, bagUpdate, tileUpdate, nftUpdate } =
+  userSlice.actions;

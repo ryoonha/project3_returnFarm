@@ -1,11 +1,16 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled, { css } from "styled-components";
 import { gameBag, gameRandCreate } from "../../../api/game";
+import { nftCreate, nftList } from "../../../api/nft";
 import { signLogin, signRegister } from "../../../api/sign";
 import { transactionList } from "../../../api/transaction";
-import { initSocketConnection, socket } from "../../../libs/socketio";
-import { handleMarketList } from "../../../stores/reducers/gameSlice";
+import { initSocketConnection } from "../../../libs/socketio";
+import {
+  handleItem,
+  handleMarketList,
+  handleNftList,
+} from "../../../stores/reducers/gameSlice";
 import { modalChange } from "../../../stores/reducers/stateSlice";
 import {
   bagUpdate,
@@ -17,15 +22,18 @@ const SignContainer = styled.div`
   position: relative;
   width: 100vw;
   height: 100vh;
-
   background-color: rgba(128, 128, 128, 0.178);
 
   .signHeader {
     position: absolute;
-    top: 20%;
+    top: 15%;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 50px;
+    img {
+      width: 400px;
+      height: 130px;
+      object-fit: cover;
+    }
   }
 
   .signBox {
@@ -140,7 +148,6 @@ const Sign = ({ setLoginCheck }) => {
   const handleRegister = async () => {
     try {
       const { status } = await signRegister(userData);
-      console.log(status);
       if (status === 201) {
         setToggleRegister(false);
         setUseData({
@@ -156,7 +163,6 @@ const Sign = ({ setLoginCheck }) => {
   const handleLogin = async () => {
     const { user_id, user_pwd } = userData;
     dispatch(modalChange({ change: "loading" }));
-    console.log(user_id, user_pwd);
     try {
       const { data } = await signLogin({ user_id, user_pwd });
       const { logined, token } = data;
@@ -165,10 +171,14 @@ const Sign = ({ setLoginCheck }) => {
         const bagInfo = await gameBag({ address: logined.address });
         const randInfo = await gameRandCreate({ address: logined.address });
         const marketList = await transactionList();
+        const nftMarketList = await nftList();
+
         await dispatch(myInfoSave({ data: logined, token: token }));
         await dispatch(bagUpdate({ bag: bagInfo.data }));
         await dispatch(tileUpdate({ tile: randInfo.data }));
         await dispatch(handleMarketList({ list: marketList.data }));
+        await dispatch(handleNftList({ list: nftMarketList.data }));
+        await dispatch(handleItem({ item: [0, bagInfo.data[0].item_name] }));
         await setLoginCheck(true);
         await setUseData({
           user_id: "",
@@ -176,17 +186,36 @@ const Sign = ({ setLoginCheck }) => {
           user_nick: "",
         });
       }
-      dispatch(modalChange({ change: null }));
+      dispatch(modalChange({ change: "" }));
     } catch (e) {
       localStorage.clear();
-      dispatch(modalChange({ change: null }));
+      dispatch(modalChange({ change: "" }));
+      setUseData({
+        user_id: "",
+        user_pwd: "",
+        user_nick: "",
+      });
       alert(e.response.data.message);
     }
   };
 
   return (
-    <SignContainer errorHandle={errorHandle}>
-      <div className="signHeader">return Farm !</div>
+    <SignContainer
+      errorHandle={errorHandle}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" && userDateValidation()) {
+          if (!toggleRegister) {
+            handleLogin();
+          } else {
+            handleRegister();
+          }
+        }
+      }}
+    >
+      <div className="signHeader">
+        <img src="/images/return_Farm_logo.png" alt="" />
+      </div>
+
       <div className="signBox cc">
         <div className="signInput sid cc">
           아이디

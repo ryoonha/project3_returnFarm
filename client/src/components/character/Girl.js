@@ -1,12 +1,19 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useGLTF, useAnimations, Html } from "@react-three/drei";
+import {
+  useGLTF,
+  useAnimations,
+  Html,
+  PerspectiveCamera,
+} from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useDispatch, useSelector } from "react-redux";
 import Control from "./Control";
 import { Vector3 } from "three";
 import { handleTile } from "../../stores/reducers/stateSlice";
-import { useBox } from "@react-three/cannon";
+import { RigidBody } from "@react-three/rapier";
 
+const moveSpeed = 0.08;
+const runSpeed = 0.2;
 export function Girl() {
   const dispatch = useDispatch();
   const tilePos = useSelector((state) => state.state.tileSelect);
@@ -19,17 +26,7 @@ export function Girl() {
     "/models/character/girl.gltf"
   );
 
-  // const [model, api] = useBox(() => ({
-  //   type: "Kinematic",
-  //   mass: 1,
-  //   // position: [0, 0, 0],
-  // }));
-  // return (
-  //   <mesh ref={ref}>
-  //     <boxGeometry />
-  //     <meshNormalMaterial />
-  //   </mesh>
-  // );
+  // console.log(api);
   const { actions, names } = useAnimations(animations, model);
   const deg2rad = (degrees) => degrees * (Math.PI / 180);
   const { up, right, down, left, shift } = useSelector(
@@ -39,13 +36,16 @@ export function Girl() {
   useFrame(() => {
     if (model.current) {
       const { x, y, z } = model.current.position;
+      // console.log(group);
+      // group.current.position.set(x, y, z);
       // console.log(nameRef);
       // console.log(nameRef.current.position);
       // const { nx, ny, nz } = nick.current.position;
       // nick.current.position.lerp(x, y, z, 0.1);
       // console.log(nick.current.position);
+
       camera.lookAt(x, y, z + 5);
-      camera.position.lerp(vec.set(x, y + 10, z - 15), 0.1);
+      camera.position.lerp(vec.set(x, y + 20, z - 25), 0.1);
 
       if (
         tilePos.x &&
@@ -61,79 +61,83 @@ export function Girl() {
     if (model.current && (up || right || down || left)) {
       if (up && left) {
         if (shift) {
-          model.current.position.z += 0.2;
-          model.current.position.x += 0.2;
+          model.current.position.z += runSpeed;
+          model.current.position.x += runSpeed;
           model.current.rotation.y = deg2rad(35);
         } else {
-          model.current.position.z += 0.1;
-          model.current.position.x += 0.1;
+          model.current.position.z += moveSpeed;
+          model.current.position.x += moveSpeed;
           model.current.rotation.y = deg2rad(35);
         }
       } else if (up && right) {
         if (shift) {
-          model.current.position.z += 0.2;
-          model.current.position.x -= 0.2;
+          model.current.position.z += runSpeed;
+          model.current.position.x -= runSpeed;
           model.current.rotation.y = deg2rad(305);
         } else {
-          model.current.position.z += 0.1;
-          model.current.position.x -= 0.1;
+          model.current.position.z += moveSpeed;
+          model.current.position.x -= moveSpeed;
           model.current.rotation.y = deg2rad(305);
         }
       } else if (down && left) {
         if (shift) {
-          model.current.position.z -= 0.2;
-          model.current.position.x += 0.2;
+          model.current.position.z -= runSpeed;
+          model.current.position.x += runSpeed;
           model.current.rotation.y = deg2rad(125);
         } else {
-          model.current.position.z -= 0.1;
-          model.current.position.x += 0.1;
+          model.current.position.z -= moveSpeed;
+          model.current.position.x += moveSpeed;
           model.current.rotation.y = deg2rad(125);
         }
       } else if (down && right) {
         if (shift) {
-          model.current.position.z -= 0.2;
-          model.current.position.x -= 0.2;
+          model.current.position.z -= runSpeed;
+          model.current.position.x -= runSpeed;
           model.current.rotation.y = deg2rad(215);
         } else {
-          model.current.position.z -= 0.1;
-          model.current.position.x -= 0.1;
+          model.current.position.z -= moveSpeed;
+          model.current.position.x -= moveSpeed;
           model.current.rotation.y = deg2rad(215);
         }
       } else if (up) {
         if (shift) {
-          model.current.position.z += 0.2;
+          model.current.position.z += runSpeed;
           model.current.rotation.y = deg2rad(-10);
         } else {
-          model.current.position.z += 0.1;
+          model.current.position.z += moveSpeed;
           model.current.rotation.y = deg2rad(-10);
         }
       } else if (right) {
         if (shift) {
-          model.current.position.x -= 0.2;
+          model.current.position.x -= runSpeed;
           model.current.rotation.y = deg2rad(260);
         } else {
-          model.current.position.x -= 0.1;
+          model.current.position.x -= moveSpeed;
           model.current.rotation.y = deg2rad(260);
         }
       } else if (down) {
         if (shift) {
-          model.current.position.z -= 0.2;
+          model.current.position.z -= runSpeed;
           model.current.rotation.y = deg2rad(170);
         } else {
-          model.current.position.z -= 0.1;
+          model.current.position.z -= moveSpeed;
           model.current.rotation.y = deg2rad(170);
         }
       } else if (left) {
         if (shift) {
-          model.current.position.x += 0.2;
+          model.current.position.x += runSpeed;
           model.current.rotation.y = deg2rad(80);
         } else {
-          model.current.position.x += 0.1;
+          model.current.position.x += moveSpeed;
           model.current.rotation.y = deg2rad(80);
         }
       }
     }
   });
+  // useEffect(() => {
+  //   api.velocity.subscribe((v) => (velocity.current = v));
+  //   api.angularVelocity.subscribe((av) => (angularVelocity.current = av));
+  // }, []);
 
   useEffect(() => {
     if ((up || right || down || left) && shift) {
@@ -152,9 +156,9 @@ export function Girl() {
   }, [up, right, down, left, shift]);
 
   return (
-    <group ref={model} dispose={null} rotation={[deg2rad(5), deg2rad(-10), 0]}>
+    <group dispose={null}>
       <Control />
-      <group name="Scene">
+      <group ref={model} name="Scene" position={[0, 0, -80]}>
         <group
           name="metarig"
           position={[0, -0.19, -0.03]}
