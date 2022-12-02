@@ -1,20 +1,14 @@
 import React, { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
-import { useCylinder } from "@react-three/cannon";
+import { RigidBody } from "@react-three/rapier";
 
 export function SmallMountain2(props) {
   const { nodes, materials } = useGLTF(
     "/models/objects/forestSet/smallMountain2.gltf"
   );
 
-  const [cylinderRef, cylinderApi] = useCylinder(() => ({
-    type: "Static",
-    args: [20, 20, 50],
-    ...props,
-  }));
-
   return (
-    <group dispose={null} ref={cylinderRef} scale={props.scale}>
+    <group dispose={null} {...props}>
       <group rotation={[-Math.PI / 2, 0, 0]}>
         <group rotation={[Math.PI / 2, 0, 0]} scale={0.01}>
           <group rotation={[-Math.PI / 2, 0, 0]} scale={100}>

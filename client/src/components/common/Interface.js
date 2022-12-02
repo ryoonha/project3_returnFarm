@@ -25,7 +25,7 @@ const InterfaceBox = styled.div`
 const Interface = () => {
   const dispatch = useDispatch();
   const select = useSelector((state) => state.state.topMenuSelect);
-  useKeyEvents();
+
   return (
     <InterfaceBox
       onContextMenu={(e) => {

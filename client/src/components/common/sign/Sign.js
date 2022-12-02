@@ -7,6 +7,7 @@ import { signLogin, signRegister } from "../../../api/sign";
 import { transactionList } from "../../../api/transaction";
 import { initSocketConnection } from "../../../libs/socketio";
 import {
+  handleItem,
   handleMarketList,
   handleNftList,
 } from "../../../stores/reducers/gameSlice";
@@ -177,6 +178,7 @@ const Sign = ({ setLoginCheck }) => {
         await dispatch(tileUpdate({ tile: randInfo.data }));
         await dispatch(handleMarketList({ list: marketList.data }));
         await dispatch(handleNftList({ list: nftMarketList.data }));
+        await dispatch(handleItem({ item: [0, bagInfo.data[0].item_name] }));
         await setLoginCheck(true);
         await setUseData({
           user_id: "",

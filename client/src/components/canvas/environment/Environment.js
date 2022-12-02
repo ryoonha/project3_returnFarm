@@ -4,7 +4,6 @@ import { Cloud } from "../../models/environment/Cloud";
 import { SmallMountain2 } from "../../models/environment/SmallMountain2";
 import { SmallMountain } from "../../models/environment/SmallMountain";
 import { useFrame } from "@react-three/fiber";
-import { useBox } from "@react-three/cannon";
 
 const Environment = () => {
   const cloudRef = useRef();
@@ -12,20 +11,6 @@ const Environment = () => {
   const getRandom = (min, max) => Math.floor(Math.random() * (max - min) + min);
   const cloudNumArr = Array(30).fill(false);
   const deg2rad = (degrees) => degrees * (Math.PI / 180);
-
-  const Line = (props) => {
-    const [boxRef, boxApi] = useBox(() => ({
-      type: "Static",
-      mass: 1,
-      ...props,
-    }));
-
-    return (
-      <mesh ref={boxRef}>
-        <boxGeometry />
-      </mesh>
-    );
-  };
 
   useFrame(() => {
     if (cloudRef.current) {
@@ -114,65 +99,6 @@ const Environment = () => {
           scale={2.5}
           rotation={[0, -1.8, 0]}
         />
-      </group>
-      <group name="테두리 충돌 박스">
-        <Line
-          position={[100, 5, 40]}
-          rotation={[0, deg2rad(90), 0]}
-          args={[100, 10, 2]}
-        />
-        <Line
-          position={[20, 5, 110]}
-          rotation={[0, deg2rad(90), 0]}
-          args={[1, 10, 100]}
-        />
-        <Line
-          position={[-82, 5, 83]}
-          rotation={[0, deg2rad(45), 0]}
-          args={[1, 10, 50]}
-        />
-        <Line
-          position={[-100, 5, -10]}
-          rotation={[0, deg2rad(90), 0]}
-          args={[110, 10, 1]}
-        />
-        <Line
-          position={[-20, 5, -110]}
-          rotation={[0, deg2rad(90), 0]}
-          args={[1, 10, 100]}
-        />
-        <Line
-          position={[82, 5, -83]}
-          rotation={[0, deg2rad(45), 0]}
-          args={[1, 10, 50]}
-        />
-        <group name="낚시터">
-          <Line
-            position={[148, 5, -39]}
-            rotation={[0, 0, 0]}
-            args={[1, 10, 10]}
-          />
-          <Line
-            position={[148, 5, -54.5]}
-            rotation={[0, 0, 0]}
-            args={[1, 10, 5]}
-          />
-          <Line
-            position={[153, 5, -45.5]}
-            rotation={[0, deg2rad(90), 0]}
-            args={[1, 10, 7]}
-          />
-          <Line
-            position={[153, 5, -52]}
-            rotation={[0, deg2rad(90), 0]}
-            args={[1, 10, 7]}
-          />
-          <Line
-            position={[158, 5, -49]}
-            rotation={[0, 0, 0]}
-            args={[1, 10, 5]}
-          />
-        </group>
       </group>
     </group>
   );
