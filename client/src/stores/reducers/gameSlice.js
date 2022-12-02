@@ -8,6 +8,8 @@ const gameSlice = createSlice({
     userList: [],
     chatList: [],
     sellData: null,
+    selectItem: [null, null],
+    selectScroll: 0,
   },
   reducers: {
     handleNftList: (state, action) => {
@@ -25,6 +27,12 @@ const gameSlice = createSlice({
     handleSell: (state, action) => {
       state.sellData = action.payload.itemInfo;
     },
+    handleItem: (state, action) => {
+      state.selectItem = action.payload.item;
+    },
+    handleScroll: (state, action) => {
+      state.selectScroll = action.payload.num;
+    },
   },
 });
 
@@ -35,4 +43,6 @@ export const {
   handleUser,
   handleChat,
   handleSell,
+  handleItem,
+  handleScroll,
 } = gameSlice.actions;
