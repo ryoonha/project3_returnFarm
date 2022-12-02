@@ -9,11 +9,8 @@ import Character from "../character/Character";
 import { Light } from "./setting/Light";
 import Environment from "./environment/Environment";
 import Object from "./object/Object";
-import useKeyEvents from "../../hooks/useKeyEvents";
 
 const Index = () => {
-  // 단축키 활성화 함수
-  useKeyEvents();
   return (
     <Canvas
       shadows

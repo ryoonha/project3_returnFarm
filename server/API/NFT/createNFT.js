@@ -1,6 +1,6 @@
 import { globSource, create as ipfsHttpClient } from "ipfs-http-client";
-const projectId = '2GMcgAqKYocbbvkZ4aE4taG8S17';
-const projectSecret = 'd60b8dd34063ab6ed9f3d0f7db1791eb';
+const projectId = "2GMcgAqKYocbbvkZ4aE4taG8S17";
+const projectSecret = "d60b8dd34063ab6ed9f3d0f7db1791eb";
 
 const Web3 = require("web3");
 const rpcURL = "https://goerli.infura.io/v3/b03f802e554f441786b51c437837bfe4";
@@ -17,24 +17,28 @@ const ipfsUpload = async (img) => {
   return mkUrl;
 };
 
-async function addFolder(){
-	const auth =
-	  'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64')
-	  const client =  ipfsHttpClient({
-  
-		  host: 'ipfs.infura.io',
-		  port: 5001,
-		  protocol: 'https',
-		  headers: {
-			authorization: auth
-		  }
-		})
-	let list = []
-	  for await (const file of client.addAll(globSource('/Users/sukminkang/BEB-06-returnFarm/server/uploads', '**/*'))) {
-		  console.log(file)
-		  list.push(file)
-		}
-	return list
+async function addFolder() {
+  const auth =
+    "Basic " + Buffer.from(projectId + ":" + projectSecret).toString("base64");
+  const client = ipfsHttpClient({
+    host: "ipfs.infura.io",
+    port: 5001,
+    protocol: "https",
+    headers: {
+      authorization: auth,
+    },
+  });
+  let list = [];
+  for await (const file of client.addAll(
+    globSource("/coding/projects/BEB-06-returnFarm/server/uploads", "**/*")
+  )) {
+    console.log(file);
+    list.push(file);
+    if (list.length === 3) {
+      break;
+    }
+  }
+  return list;
 }
 
 const serverAddress = "0xA90dB6734F77B38cccf7346419491d8a2A0Babee";
@@ -70,66 +74,15 @@ const createNFT = async (req, res) => {
   const address = data.address;
   const name = data.name;
   const description = data.description;
-  
-  console.log(req.files.length)
-///0번은 썸네일 나머지는 파일들.
-  if(req.files.length == 1) {
-	let testFile = fs.readFileSync(`uploads/test/${req.files[0].filename}`, null);
-	let testBuffer = Buffer.from(testFile); //new Buffer -> Buffer.from
-	const ipfsImgUrl = await ipfsUpload(testBuffer);
-	console.log("ipfsImgurl : ", ipfsImgUrl);
-	const metadata = {
-		name: name,
-		description: description,
-		image: ipfsImgUrl,
-	};
-	
-	const src = JSON.stringify(metadata);
-	console.log(src);
-	const metadataUrl = await ipfsUpload(src);
-	console.log("metadatUrl : ", metadataUrl);
-	const tokenURI = metadataUrl;
 
-	fs.unlink(`uploads/test/${req.files[0].filename}`, (err) => {
-    console.log('error : ', err);
-  	});
-	
-  } else {
-	const initUri = "https://ipfs.io/ipfs/"
-	const multiUri = await addFolder()
-	const multiCid = multiUri[multiUri.length-1].cid
-	const imageUri = multiUri[0].cid
-	
-	console.log(multiCid)
-	console.log(String(multiCid))
-	
-	const metadata = {
-		name: name,
-		description: description,
-		file : initUri + String(multiCid),
-		image : initUri + String(imageUri)
-	};
-	
-	const src = JSON.stringify(metadata);
-	console.log(src);
-	const metadataUrl = await ipfsUpload(src);
-	console.log("metadatUrl : ", metadataUrl);
-	const tokenURI = metadataUrl;
-
-	
-	for (let i = 0; i < req.files.length; i++ ) {
-		fs.unlink(`uploads/test/${req.files[i].filename}`, (err) => {
-			console.log('error : ', err);
-			  });
-		 
-	}	
-  }
- 
-  const file = data.file;
-
+  console.log(req.files.length);
+  ///0번은 썸네일 나머지는 파일들.
   let tokenURI;
   if (req.files.length == 1) {
-    let testFile = fs.readFileSync(`uploads/${req.files[0].filename}`, null);
+    let testFile = fs.readFileSync(
+      `uploads/test/${req.files[0].filename}`,
+      null
+    );
     let testBuffer = Buffer.from(testFile); //new Buffer -> Buffer.from
     const ipfsImgUrl = await ipfsUpload(testBuffer);
     console.log("ipfsImgurl : ", ipfsImgUrl);
@@ -144,9 +97,37 @@ const createNFT = async (req, res) => {
     const metadataUrl = await ipfsUpload(src);
     console.log("metadatUrl : ", metadataUrl);
     tokenURI = metadataUrl;
-    // const tokenURI = metadataUrl;
+
+    fs.unlink(`uploads/test/${req.files[0].filename}`, (err) => {
+      console.log("error : ", err);
+    });
   } else {
-    run();
+    const initUri = "https://ipfs.io/ipfs/";
+    const multiUri = await addFolder();
+    const multiCid = multiUri[multiUri.length - 1].cid;
+    const imageUri = multiUri[0].cid;
+
+    console.log(multiCid);
+    console.log(String(multiCid));
+
+    const metadata = {
+      name: name,
+      description: description,
+      file: initUri + String(multiCid),
+      image: initUri + String(imageUri),
+    };
+
+    const src = JSON.stringify(metadata);
+    console.log(src);
+    const metadataUrl = await ipfsUpload(src);
+    console.log("metadatUrl : ", metadataUrl);
+    tokenURI = metadataUrl;
+
+    for (let i = 0; i < req.files.length; i++) {
+      fs.unlink(`uploads/test/${req.files[i].filename}`, (err) => {
+        console.log("error : ", err);
+      });
+    }
   }
 
   const callPrivateKey = await User.findOne({ where: { address: address } });
@@ -157,10 +138,6 @@ const createNFT = async (req, res) => {
 
   console.log("user eth Balance : " + ethBalance);
   console.log("user token Balance : " + tokenBalance);
-
-  fs.unlink(`uploads/${req.files[0].filename}`, (err) => {
-    console.log("error : ", err);
-  });
 
   if (ethBalance < 1000000000000000) {
     console.log("Insufficient gas");
@@ -206,6 +183,7 @@ const createNFT = async (req, res) => {
 
         await setTimeoutPromise(30000);
         console.log("✨✨✨✨✨");
+        console.log(tokenURI);
         const getMintGasAmount = () => {
           const contract = new web3.eth.Contract(
             contract721ABI,

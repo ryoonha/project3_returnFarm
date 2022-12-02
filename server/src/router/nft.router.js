@@ -6,12 +6,12 @@ import { transferNFT } from "../../API/NFT/transferNFT";
 import { NFTList } from "../../API/NFT/NFTList";
 import { tokenExchange } from "../../API/NFT/tokenExchange.js";
 import { ipExchange } from "../../API/NFT/IpExchange.js";
-import { list } from "../controller/nft.controller"
+import { list } from "../controller/nft.controller";
 import multer from "multer"; // express에 multer모듈 적용 (for 파일업로드)
 
 let _storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/");
+    cb(null, "uploads/test");
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
@@ -44,7 +44,5 @@ router.post("/buy", buyNFT);
 
 // NFT 판매 등록
 router.post("/sell", sellNFT);
-
-
 
 export default router;

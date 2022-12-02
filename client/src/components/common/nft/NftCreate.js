@@ -85,6 +85,7 @@ const NftCreateBox = styled(BasicBox)`
 const NftCreate = () => {
   const dispatch = useDispatch();
   const [x, y, bindDivPos] = useDivMove();
+  const [imgArr, setImgArr] = useState([]);
   const [img, setImg] = useState({
     preview: false,
     imgData: false,
@@ -95,12 +96,16 @@ const NftCreate = () => {
   );
 
   const handleCreate = async () => {
+    console.log(imgArr[0][0]);
+    console.log(imgArr[1][0]);
     dispatch(modalChange({ change: "loading" }));
     const formData = new FormData();
     formData.append("address", address);
     formData.append("name", nickName);
     formData.append("description", desc);
-    formData.append("file", img.imgData);
+    formData.append("file", imgArr[0][0]);
+    formData.append("file", imgArr[1][0]);
+    // formData.append("file", img.imgData);
 
     const data = await nftCreate(formData);
     if (data.status === 200) {
@@ -108,6 +113,7 @@ const NftCreate = () => {
       if (myNftList.status === 200) {
         dispatch(nftUpdate({ nft: myNftList.data }));
       }
+      dispatch(modalChange({ change: "" }));
     }
     dispatch(modalChange({ change: "" }));
   };
@@ -137,7 +143,8 @@ const NftCreate = () => {
           NFT 생성
         </div>
         <div className="imgBox cc">
-          {img.preview ? (
+          {/* {img.preview ? ( */}
+          {imgArr.length > 1 ? (
             <img
               src={img.preview}
               alt=""
@@ -149,7 +156,13 @@ const NftCreate = () => {
               <input
                 type="file"
                 id="file"
-                onChange={(e) => previewImg(e.target.files)}
+                multiple={true}
+                // webkitdirectory
+                // directory={true}
+                onChange={(e) => {
+                  setImgArr([...imgArr, e.target.files]);
+                  previewImg(e.target.files);
+                }}
               />
             </div>
           )}

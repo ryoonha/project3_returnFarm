@@ -5,6 +5,7 @@ import Index from "./components/canvas/Canvas";
 import Interface from "./components/common/Interface";
 import Sign from "./components/common/sign/Sign";
 import Modal from "./components/modals/Modal";
+import UseKeyEvents from "./hooks/useKeyEvents";
 import { disconnectSocket, SocketIo } from "./libs/socketio";
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
         <>
           <Interface />
           <Index />
+          <UseKeyEvents />
         </>
       ) : (
         <Sign setLoginCheck={setLoginCheck} />

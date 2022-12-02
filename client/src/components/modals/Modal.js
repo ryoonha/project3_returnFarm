@@ -10,7 +10,7 @@ const ModalBox = styled.div`
   width: 100vw;
   height: 100vh;
   background-color: rgba(209, 209, 209, 0.5);
-  z-index: ${(props) => (props.check ? "50000000" : "-50000")};
+  z-index: ${(props) => (props.check ? "90000000000" : "-50000")};
   button {
     width: 500px;
     height: 500px;
@@ -21,6 +21,7 @@ const ModalBox = styled.div`
 const Modal = () => {
   const modalCheck = useSelector((state) => state.state.modalCheck);
   const tileSelect = useSelector((state) => state.state.tileSelect);
+
   return (
     <ModalBox check={modalCheck}>
       {modalCheck === "loading" ? <Loading /> : null}

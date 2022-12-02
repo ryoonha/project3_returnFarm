@@ -7,15 +7,11 @@ import HotkeyBox from "./hotkeyBox/HotkeyBox";
 import Inventory from "./inventory/Inventory";
 import MenuBox from "./menuBox/MenuBox";
 import Status from "./status/Status";
-import useKeyEvents from "../../hooks/useKeyEvents";
+import UseKeyEvents from "../../hooks/useKeyEvents";
 import NftList from "./nft/NftList";
 import NftExchange from "./nft/NftExchange";
 import NftCreate from "./nft/NftCreate";
 import TokenExchange from "./nft/TokenExchange";
-
-// <FontAwesomeIcon icon="fa-solid fa-circle-xmark" /> 닫기 버튼
-// <FontAwesomeIcon icon="fa-solid fa-circle-question" /> 도움말 버튼
-// <FontAwesomeIcon icon="fa-solid fa-circle-check" /> 확인 버튼
 
 const InterfaceBox = styled.div`
   position: absolute;

@@ -10,6 +10,7 @@ const LoadingBox = styled.div`
   height: 200px;
   background-color: rgba(240, 248, 255, 0.8);
   border-radius: 50%;
+  z-index: 500000000000;
 
   img {
     width: 100px;
