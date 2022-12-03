@@ -5,7 +5,7 @@ import { OrbitControls } from "@react-three/drei";
 const Camera = ({ ttt, canvas }) => {
   const { camera } = useThree();
 
-  camera.position.set(0, 100, 0);
+  camera.position.set(0, 200, 0);
   // autoRotate
   return <OrbitControls enablePan={true} />;
 };

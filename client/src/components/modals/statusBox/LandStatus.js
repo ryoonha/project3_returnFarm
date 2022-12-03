@@ -72,7 +72,6 @@ const LandStatus = ({ tileData }) => {
   const dispatch = useDispatch();
   const { x, z, data } = tileData;
   const [statusCheck, setStatusCheck] = useState(false);
-  console.log(data);
 
   // else {
   //   if (name === "나무") {
