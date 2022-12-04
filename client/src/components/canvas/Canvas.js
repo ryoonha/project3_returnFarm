@@ -36,5 +36,4 @@ const Index = () => {
     </Canvas>
   );
 };
-
 export default Index;

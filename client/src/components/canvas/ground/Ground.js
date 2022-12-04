@@ -15,6 +15,7 @@ const Ground = () => {
           tileData={tileData}
           numX={index % num}
           numZ={Math.floor(index / num)}
+          index={index}
         />
       ))}
       <group position={[0, -0.1, 0]} rotation={[-Math.PI / 2, 0, 0]}>

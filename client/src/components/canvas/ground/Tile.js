@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as THREE from "three";
 import { Color, TextureLoader } from "three";
+import useItemCheck from "../../../hooks/useItemCheck";
 import { handleTile } from "../../../stores/reducers/stateSlice";
 import {
   flowreArr,
@@ -9,9 +10,8 @@ import {
   rockArr,
   treeArr,
 } from "../../models/environment";
-import Rand from "../../models/land/Rand";
 
-const Tile = ({ tileData, numX, numZ }) => {
+const Tile = ({ tileData, numX, numZ, index }) => {
   const dispatch = useDispatch();
   const [select, setSelect] = useState(false);
   const textureStarField1 = useMemo(
@@ -50,6 +50,7 @@ const Tile = ({ tileData, numX, numZ }) => {
   // console.log(tileData);
   return (
     <mesh
+      index={index}
       receiveShadow
       rotation={[-Math.PI / 2, 0, 0]}
       position={[72 - numX * 5.1, 0, 72 - numZ * 5.1]}
@@ -60,6 +61,7 @@ const Tile = ({ tileData, numX, numZ }) => {
         setSelect(new Color(1, 1, 1));
       }}
       onClick={(e) => {
+        // console.log(e);
         const { x, y, z } = e.object.position;
         dispatch(
           handleTile({
