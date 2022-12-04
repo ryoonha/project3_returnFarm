@@ -50,7 +50,13 @@ const userSlice = createSlice({
       state.bag = action.payload.bag;
     },
     tileUpdate: (state, action) => {
-      state.tile = action.payload.tile;
+      if (Array.isArray(action.payload.tile)) {
+        state.tile = action.payload.tile;
+      } else {
+        const { newData, index, timeDate } = action.payload.tile;
+        state.tile[index].status = newData;
+        state.tile[index].estimated_time = timeDate;
+      }
     },
     nftUpdate: (state, action) => {
       state.nft = action.payload.nft;

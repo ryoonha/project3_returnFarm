@@ -3,7 +3,7 @@ import { createSlice, current } from "@reduxjs/toolkit";
 const stateSlice = createSlice({
   name: "stateSlice",
   initialState: {
-    tileSelect: { x: null, z: null, data: null },
+    tileSelect: { x: null, z: null, data: null, seed: false },
     itemSelect: null,
     topMenuSelect: null,
     sellToggle: false,
@@ -13,11 +13,11 @@ const stateSlice = createSlice({
   },
   reducers: {
     handleTile: (state, action) => {
-      const { x, z, data } = action.payload;
+      const { x, z, data, seed } = action.payload;
       if (state.tileSelect.x === x && state.tileSelect.z === z) {
-        state.tileSelect = { x: null, z: null, data: null };
+        state.tileSelect = { x: null, z: null, data: null, seed: false };
       } else {
-        state.tileSelect = { x: x, z: z, data: data };
+        state.tileSelect = { x: x, z: z, data: data, seed: seed };
       }
     },
     handleItem: (state, action) => {

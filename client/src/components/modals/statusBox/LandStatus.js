@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { dateName } from "../../../data/etc";
@@ -61,6 +61,23 @@ const LandStatusBox = styled.div`
         }
       }
     }
+    .buttonBox {
+      margin: 15px 0px;
+      .button {
+        width: 70px;
+        height: 30px;
+        margin: 0px auto;
+        background-color: #3a3c3d;
+        transition: 0.2s;
+
+        :first-child:hover {
+          background-color: rgb(60, 123, 148);
+        }
+        :last-child:hover {
+          background-color: rgb(121, 62, 62);
+        }
+      }
+    }
   }
   .title {
     margin-top: 5px;
@@ -70,33 +87,17 @@ const LandStatusBox = styled.div`
 
 const LandStatus = ({ tileData }) => {
   const dispatch = useDispatch();
-  const { x, z, data } = tileData;
-  const [statusCheck, setStatusCheck] = useState(false);
-
-  // else {
-  //   if (name === "나무") {
-  //     obj = <FontAwesomeIcon icon="fa-solid fa-tree" />;
-  //   } else if (name === "돌") {
-  //     obj =
-  //   } else if (name === "잡초") {
-  //     obj =
-  //   } else if (name === "꽃") {
-  //     obj =
-  //   }
-  // }
-
-  useEffect(() => {
-    if (data.status) {
-      const [name, num] = data.status.split("_");
-      if (name === "작물") {
-        setStatusCheck(!statusCheck);
-      }
-    }
-  }, []);
-
+  const { x, z, data, seed } = tileData;
+  // console.log(tileData);
+  const expectationTime = () => {
+    const [year, month, day] = data.estimated_time.split(".");
+    let exTime = new Date(year, month - 1, day);
+    exTime.setDate(exTime.getDate() + 30);
+    return exTime.toLocaleDateString().slice(0, -1);
+  };
   return (
     <LandStatusBox
-      statusCheck={statusCheck}
+      statusCheck={seed}
       className="cc"
       onClick={() => {
         dispatch(handleTile({ x: null, z: null, data: null }));
@@ -110,7 +111,7 @@ const LandStatus = ({ tileData }) => {
         <div className="x">x: {x}</div>
         <div className="z">z: {z}</div>
       </div>
-      {statusCheck ? (
+      {seed ? (
         <div className="randStatuBox">
           <div className="statusBox cc">
             <div className="title">상태</div>
@@ -142,13 +143,6 @@ const LandStatus = ({ tileData }) => {
             <div className="plantedTime">
               {data.estimated_time
                 ? data.estimated_time
-                    .split("/")
-                    .map((data, index) => (
-                      <span
-                        key={index}
-                        className={`time${index}`}
-                      >{`${data}${dateName[index]} `}</span>
-                    ))
                 : "심은 씨앗이 없습니다!"}
             </div>
           </div>
@@ -156,15 +150,22 @@ const LandStatus = ({ tileData }) => {
             <div className="title">수확 예상 시간</div>
             <div className="estimatedTime">
               {data.estimated_time
-                ? data.estimated_time
-                    .split("/")
-                    .map((data, index) => (
-                      <span
-                        key={index}
-                        className={`time${index}`}
-                      >{`${data}${dateName[index]} `}</span>
-                    ))
+                ? expectationTime()
                 : "심은 씨앗이 없습니다!"}
+            </div>
+          </div>
+          <div className="buttonBox cc">
+            <div
+              className="button cc"
+              onClick={() => alert("아직 수확할 수 없습니다!")}
+            >
+              수확
+            </div>
+            <div
+              className="button cc"
+              onClick={() => alert("미구현 기능입니다!")}
+            >
+              제거
             </div>
           </div>
         </div>
