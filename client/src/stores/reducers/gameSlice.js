@@ -10,6 +10,7 @@ const gameSlice = createSlice({
     sellData: null,
     selectItem: [null, null],
     selectScroll: 0,
+    backgroundSound: false,
   },
   reducers: {
     handleNftList: (state, action) => {
@@ -33,6 +34,9 @@ const gameSlice = createSlice({
     handleScroll: (state, action) => {
       state.selectScroll = action.payload.num;
     },
+    handleBackgroundSound: (state, action) => {
+      state.backgroundSound = !state.backgroundSound;
+    },
   },
 });
 
@@ -45,4 +49,5 @@ export const {
   handleSell,
   handleItem,
   handleScroll,
+  handleBackgroundSound,
 } = gameSlice.actions;
