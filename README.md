@@ -1,7 +1,6 @@
 ![Untitled](README/Untitled.png)
 
 ## “**나만의 농장을 가꾸고 NFT로 마이홈을 꾸며보세요.”**
-
 *친구와 함께 웹에서 즐기는 힐링 농장 게임, **리턴팜**.*  
 
 > **리턴팜 비전**
@@ -21,7 +20,7 @@
 
 ![Untitled](README/Untitled.jpeg)
 
-## How To Play  ****
+## How To Play  
 
 > git clone
 > 
