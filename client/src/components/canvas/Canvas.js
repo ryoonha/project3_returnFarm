@@ -9,6 +9,8 @@ import Character from "../character/Character";
 import { Light } from "./setting/Light";
 import Environment from "./environment/Environment";
 import Object from "./object/Object";
+import { PositionalAudio } from "@react-three/drei";
+import { soundData } from "../../data/sounds/sound";
 
 const Index = () => {
   return (
@@ -24,14 +26,15 @@ const Index = () => {
         <Suspense fallback={null}>
           <Light />
           <Camera />
-          <Physics>
-            <Debug />
+          <Physics colliders={false}>
+            {/* <Debug /> */}
             <Character />
             <Ground />
             <Environment />
             <Object />
           </Physics>
         </Suspense>
+        <PositionalAudio url={soundData["background"]} />
       </Provider>
     </Canvas>
   );

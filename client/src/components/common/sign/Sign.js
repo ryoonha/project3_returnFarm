@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import styled, { css } from "styled-components";
 import { gameBag, gameRandCreate } from "../../../api/game";
-import { nftCreate, nftList } from "../../../api/nft";
+import { nftList } from "../../../api/nft";
 import { signLogin, signRegister } from "../../../api/sign";
 import { transactionList } from "../../../api/transaction";
 import { initSocketConnection } from "../../../libs/socketio";
 import {
+  handleBackgroundSound,
   handleItem,
   handleMarketList,
   handleNftList,
@@ -179,6 +180,7 @@ const Sign = ({ setLoginCheck }) => {
         await dispatch(handleMarketList({ list: marketList.data }));
         await dispatch(handleNftList({ list: nftMarketList.data }));
         await dispatch(handleItem({ item: [0, bagInfo.data[0].item_name] }));
+        await dispatch(handleBackgroundSound());
         await setLoginCheck(true);
         await setUseData({
           user_id: "",
