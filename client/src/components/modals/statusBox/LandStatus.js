@@ -1,9 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { dateName } from "../../../data/etc";
 import { handleTile } from "../../../stores/reducers/stateSlice";
+import { bagUpdate, tileUpdate } from "../../../stores/reducers/userSlice";
 
 const LandStatusBox = styled.div`
   flex-direction: column;
@@ -87,14 +88,32 @@ const LandStatusBox = styled.div`
 
 const LandStatus = ({ tileData }) => {
   const dispatch = useDispatch();
-  const { x, z, data, seed } = tileData;
-  // console.log(tileData);
+  const myBag = useSelector((state) => state.user.bag);
+  const { x, z, data, seed, index } = tileData;
+
   const expectationTime = () => {
     const [year, month, day] = data.estimated_time.split(".");
     let exTime = new Date(year, month - 1, day);
     exTime.setDate(exTime.getDate() + 30);
     return exTime.toLocaleDateString().slice(0, -1);
   };
+
+  const itemBagPush = (addItem) => {
+    dispatch(
+      bagUpdate({
+        bag: [
+          ...myBag,
+          {
+            item_count: 1,
+            item_name: addItem,
+            quality: 1,
+            time: new Date().toLocaleDateString().slice(0, -1),
+          },
+        ],
+      })
+    );
+  };
+
   return (
     <LandStatusBox
       statusCheck={seed}
@@ -134,7 +153,7 @@ const LandStatus = ({ tileData }) => {
                     icon="fa-solid fa-heart"
                   />
                 </div>
-                <div className="percent">0%</div>
+                <div className="percent">100%</div>
               </div>
             </div>
           </div>
@@ -157,7 +176,15 @@ const LandStatus = ({ tileData }) => {
           <div className="buttonBox cc">
             <div
               className="button cc"
-              onClick={() => alert("아직 수확할 수 없습니다!")}
+              onClick={() => {
+                itemBagPush(data.status.split("씨앗")[0]);
+                // itemBagPush(data.status.split("씨앗")[0]);
+                dispatch(
+                  tileUpdate({
+                    tile: { newData: null, index: index, timeDate: null },
+                  })
+                );
+              }}
             >
               수확
             </div>

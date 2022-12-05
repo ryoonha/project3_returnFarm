@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useGLTF, useAnimations, Text } from "@react-three/drei";
+import { useGLTF, useAnimations, Text, Sphere } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useDispatch, useSelector } from "react-redux";
 import Control from "./Control";
-import { Quaternion, Vector3 } from "three";
+import { MeshPhysicalMaterial, Vector3 } from "three";
 import { handleTile } from "../../stores/reducers/stateSlice";
 import { RigidBody } from "@react-three/rapier";
 
@@ -27,28 +27,23 @@ export function Girl({ nickName }) {
   const { up, right, down, left, shift } = useSelector(
     (state) => state.character
   );
-  const getDirectionOffset = (w, s, d, a) => {
-    let directionOffset = 0; // w
-
-    if (w) {
-      // plm
-    } else if (s) {
-      directionOffset = Math.PI; // s
-    } else if (a) {
-      directionOffset = Math.PI / 2; // a
-    } else if (d) {
-      directionOffset = -Math.PI / 2; // d
-    }
-    return directionOffset;
-  };
 
   useFrame(({ camera }) => {
     if (modelPos.current) {
       const { x, y, z } = modelPos.current.position;
-      // console.log(camera);
       camera.lookAt(x, y, z + 5);
       camera.position.lerp(vec.set(x, y + 20, z - 25), 0.1);
       text.current.quaternion.copy(camera.quaternion);
+      // console.log(test.current);
+      test.current?.setTranslation({ x, y, z });
+      // test.current?.setLinvel({ x: 0, y: 10, z: 0.00003 });
+
+      // console.log(test.current);
+      // test.current.setTranslation(x, y, z);
+      //console.log(test);
+      // test.current.addForce({ x: 0.0, y: 0.01, z: 0.1 }, true);
+      // test.current.applyImpulse({ x: 0.0, y: 0.0, z: 0.0 }, true);
+      // test.current.resetForces(true)
 
       if (
         tilePos.x &&
@@ -61,6 +56,7 @@ export function Girl({ nickName }) {
         dispatch(handleTile({ x: null, z: null, data: null }));
       }
     }
+    test.current?.setLinvel({ x: 0, y: 0, z: 0 });
     if (modelPos.current && (up || right || down || left)) {
       if (up && left) {
         if (shift) {
@@ -104,6 +100,7 @@ export function Girl({ nickName }) {
         }
       } else if (up) {
         if (shift) {
+          // test.current?.setLinvel({ x: 0, y: 0, z: 9 });
           modelPos.current.position.z += runSpeed;
           model.current.rotation.y = deg2rad(-10);
         } else {
@@ -112,9 +109,11 @@ export function Girl({ nickName }) {
         }
       } else if (right) {
         if (shift) {
+          // test.current?.setLinvel({ x: -9, y: 0, z: 0 });
           modelPos.current.position.x -= runSpeed;
           model.current.rotation.y = deg2rad(260);
         } else {
+          // test.current?.setLinvel({ x: -3, y: 0, z: 0 });
           modelPos.current.position.x -= moveSpeed;
           model.current.rotation.y = deg2rad(260);
         }
@@ -136,25 +135,7 @@ export function Girl({ nickName }) {
         }
       }
     }
-    //model.current.rotation.copy(camera.rotation);
-    // model.current.rotation.set(0, -camera.rotation._y, 0);
-    // let { _x, _y, _z, _w } = camera.quaternion;
-    // let directionOffset = getDirectionOffset(false, true, false, false);
-
-    // const rotateAngleFrontAxis = new Vector3(0, 1, 0);
-    // let rotateQuarternion = new Quaternion();
-    // rotateQuarternion.setFromAxisAngle(rotateAngleFrontAxis, directionOffset);
-    // model.current.quaternion.rotateTowards(rotateQuarternion, 0.2);
-    //  model.current.quaternion.copy(new Quaternion(_x, _y, _z, _w));
-    // console.log(camera.quaternion);
-
-    //console.log(model.current.quaternion);
-    // console.log(camera.quaternion);
   });
-  // useEffect(() => {
-  //   api.velocity.subscribe((v) => (velocity.current = v));
-  //   api.angularVelocity.subscribe((av) => (angularVelocity.current = av));
-  // }, []);
 
   useEffect(() => {
     if ((up || right || down || left) && shift) {
@@ -173,8 +154,7 @@ export function Girl({ nickName }) {
   }, [up, right, down, left, shift]);
 
   return (
-    // <RigidBody ref={test} type={"fixed"}>
-    <group ref={modelPos} dispose={null} position={[0, 0, -80]}>
+    <group ref={modelPos} dispose={null} position={[-80, 0, -80]}>
       <Control />
       <Text
         ref={text}
@@ -190,6 +170,7 @@ export function Girl({ nickName }) {
         {nickName}
       </Text>
       <group ref={model} name="Scene">
+        {/* <Shovel position={[0.7, 1, 1]} /> */}
         <group
           name="metarig"
           position={[0, -0.19, -0.03]}
@@ -211,6 +192,7 @@ export function Girl({ nickName }) {
               material={materials.skin}
               skeleton={nodes.Cube001_1.skeleton}
             />
+
             <skinnedMesh
               castShadow
               name="Cube001_2"
@@ -261,13 +243,23 @@ export function Girl({ nickName }) {
               skeleton={nodes.Cube001_8.skeleton}
             />
           </group>
-          <skinnedMesh
-            castShadow
-            name="Cube002"
-            geometry={nodes.Cube002.geometry}
-            material={materials.sandals}
-            skeleton={nodes.Cube002.skeleton}
-          />
+
+          <RigidBody
+            ref={test}
+            type="dynamic"
+            colliders="ball"
+            // onContactForce={(e) => {
+            //    console.log(e);
+            // }}
+          >
+            <skinnedMesh
+              castShadow
+              name="Cube002"
+              geometry={nodes.Cube002.geometry}
+              material={materials.sandals}
+              skeleton={nodes.Cube002.skeleton}
+            />
+          </RigidBody>
           <group name="hair">
             <skinnedMesh
               castShadow
@@ -335,7 +327,6 @@ export function Girl({ nickName }) {
         </group>
       </group>
     </group>
-    // </RigidBody>
   );
 }
 

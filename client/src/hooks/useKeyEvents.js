@@ -51,7 +51,7 @@ const UseKeyEvents = () => {
   useEffect(() => {
     document.addEventListener("keydown", (e) => event(e));
     return () => document.removeEventListener("keydown", (e) => event(e));
-  }, []);
+  }, [bag]);
 
   // useEffect(() => {
   //   document.addEventListener("click", (e) => MouseEvent(e));

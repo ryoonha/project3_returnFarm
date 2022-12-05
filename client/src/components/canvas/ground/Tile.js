@@ -1,6 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import * as THREE from "three";
 import { Color, TextureLoader } from "three";
 import { handleTile } from "../../../stores/reducers/stateSlice";
 import {
@@ -10,8 +9,9 @@ import {
   treeArr,
 } from "../../models/environment";
 import { Seed } from "../../models/plant/Seed";
+import Tomato from "../../models/plant/Tomato";
 
-const Tile = ({ tileData, numX, numZ, index, handleSeed }) => {
+const Tile = ({ tileData, numX, numZ, index, handleClick }) => {
   const dispatch = useDispatch();
   const [select, setSelect] = useState(false);
   const [{ type, scale, seed }, setData] = useState({
@@ -39,8 +39,15 @@ const Tile = ({ tileData, numX, numZ, index, handleSeed }) => {
       } else if (name === "꽃") {
         setData({ type: flowreArr[num - 1], scale: 5, seed: false });
       } else if (check) {
-        setData({ type: <Seed />, scale: 0.02, seed: true });
+        // 테스트 조건
+        if (tileData.estimated_time === "2022. 12. 5") {
+          setData({ type: <Tomato />, scale: 0.5, seed: true });
+        } else {
+          setData({ type: <Seed />, scale: 0.02, seed: true });
+        }
       }
+    } else {
+      setData({ type: null, scale: null, seed: false });
     }
   }, [tileData]);
 
@@ -56,13 +63,13 @@ const Tile = ({ tileData, numX, numZ, index, handleSeed }) => {
       rotation={[-Math.PI / 2, 0, 0]}
       position={[72 - numX * 5.1, 0, 72 - numZ * 5.1]}
       onPointerOver={(e) => {
-        setSelect(new Color(2, 2, 2));
+        setSelect(new Color(255, 255, 255));
       }}
       onPointerOut={(e) => {
         setSelect(new Color(1, 1, 1));
       }}
       onClick={() => {
-        handleSeed(tileData, index);
+        handleClick(tileData, index);
       }}
       onContextMenu={(e) => {
         const { x, y, z } = e.object.position;
@@ -72,6 +79,7 @@ const Tile = ({ tileData, numX, numZ, index, handleSeed }) => {
             z: Math.floor(z * 100) / 100,
             data: tileData,
             seed,
+            index,
           })
         );
       }}
