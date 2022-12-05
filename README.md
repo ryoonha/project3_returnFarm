@@ -14,10 +14,8 @@
 > 
   
 [returnFarm_whitePaper.pdf](README/1205_returnFarm_whitePaper_v1.pdf)  
+<br/>
 
-<br/>
-<br/>
-<br/>
 > **기술 스택**
 > 
 
