@@ -1,4 +1,4 @@
-![Untitled](%E1%84%8C%E1%85%A6%E1%84%86%E1%85%A9%E1%86%A8%20%E1%84%8B%E1%85%A5%E1%86%B9%E1%84%8B%E1%85%B3%E1%86%B7%207e7749947cc24ab0a740000c72e06387/Untitled.png)
+![Untitled](README/Untitled.png)
 
 ## “**나만의 농장을 가꾸고 NFT로 마이홈을 꾸며보세요.”**
 
@@ -14,12 +14,12 @@
 > **리턴팜 백서**
 > 
 
-[returnFarm_whitePaper.pdf](%E1%84%8C%E1%85%A6%E1%84%86%E1%85%A9%E1%86%A8%20%E1%84%8B%E1%85%A5%E1%86%B9%E1%84%8B%E1%85%B3%E1%86%B7%207e7749947cc24ab0a740000c72e06387/1205_returnFarm_whitePaper_v1.pdf)
+[returnFarm_whitePaper.pdf](README/1205_returnFarm_whitePaper_v1.pdf)
 
 > **기술 스택**
 > 
 
-![Untitled](%E1%84%8C%E1%85%A6%E1%84%86%E1%85%A9%E1%86%A8%20%E1%84%8B%E1%85%A5%E1%86%B9%E1%84%8B%E1%85%B3%E1%86%B7%207e7749947cc24ab0a740000c72e06387/Untitled.jpeg)
+![Untitled](README/Untitled.jpeg)
 
 ## How To Play  ****
 
@@ -98,14 +98,14 @@ $ npm start
 > **햇살 토큰, 잎 토큰**
 > 
 
-![Untitled](%E1%84%8C%E1%85%A6%E1%84%86%E1%85%A9%E1%86%A8%20%E1%84%8B%E1%85%A5%E1%86%B9%E1%84%8B%E1%85%B3%E1%86%B7%207e7749947cc24ab0a740000c72e06387/Untitled%201.png)
+![Untitled](README/Untitled%201.png)
 
 : 리턴팜은 햇살 토큰과 잎 토큰으로 토큰 이코노미를 구성한다. 햇살 토큰과 잎 토큰은 상호 보완적인 토큰으로 일정 비율로 교환이 가능하다. 햇살(Haessal) 토큰은 ‘해에서 나오는 빛의 줄기’라는 뜻의 ‘햇살’의 의미를 가지고 있고, 잎(IP) 토큰은 식물에서 광합성을 비롯한 다양한 생명 활동을 하는 기관인 ‘잎'으로 이름 지었다. 햇살 토큰은 NFT 활동을 제외한 게임 속에서 이루어지는 모든 거래 수단으로 사용된다. 잎 토큰은 NFT 민팅과 거래에 사용된다. 유저는 햇살 토큰을 통해 안정적인 수익을 얻을 수 있고 잎 토큰으로 교환을 해 NFT를 거래하거나 암호화폐 거래소에서 사고 팔기가 가능하다.
 
 > **토큰 배분**
 > 
 
-![Untitled](%E1%84%8C%E1%85%A6%E1%84%86%E1%85%A9%E1%86%A8%20%E1%84%8B%E1%85%A5%E1%86%B9%E1%84%8B%E1%85%B3%E1%86%B7%207e7749947cc24ab0a740000c72e06387/Untitled%202.png)
+![Untitled](README/Untitled%202.png)
 
 ## 관련 기술
 
