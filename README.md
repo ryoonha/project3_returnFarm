@@ -11,10 +11,12 @@
 - 국내 게임 유저들을 블록체인에 유입시키는 것
 - 주로 수집 용도로 사용되는 NFT의 적극적인 활용
 
+
 > **리턴팜 백서**
 > 
 
 [returnFarm_whitePaper.pdf](README/1205_returnFarm_whitePaper_v1.pdf)
+
 
 > **기술 스택**
 > 
