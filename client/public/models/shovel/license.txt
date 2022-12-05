@@ -1,0 +1,11 @@
+Model Information:
+* title:	Low poly pirate shovel
+* source:	https://sketchfab.com/3d-models/low-poly-pirate-shovel-fbcef55c06c24cc2920b024af9f69b40
+* author:	Anna Vidal (Milaein) (https://sketchfab.com/milaein)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Low poly pirate shovel" (https://sketchfab.com/3d-models/low-poly-pirate-shovel-fbcef55c06c24cc2920b024af9f69b40) by Anna Vidal (Milaein) (https://sketchfab.com/milaein) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
