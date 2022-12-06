@@ -29,9 +29,7 @@ async function addFolder() {
     },
   });
   let list = [];
-  for await (const file of client.addAll(
-    globSource("/coding/projects/BEB-06-returnFarm/server/uploads", "**/*")
-  )) {
+  for await (const file of client.addAll(globSource("/uploads", "**/*"))) {
     console.log(file);
     list.push(file);
     if (list.length === 3) {

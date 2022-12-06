@@ -157,6 +157,8 @@ const NftCreate = () => {
                 type="file"
                 id="file"
                 multiple={true}
+                // webkitdirectory={true}
+                // mozdirectory={true}
                 // webkitdirectory
                 // directory={true}
                 onChange={(e) => {
