@@ -3,21 +3,28 @@ import { createSlice, current } from "@reduxjs/toolkit";
 const stateSlice = createSlice({
   name: "stateSlice",
   initialState: {
-    tileSelect: { x: null, z: null, data: null },
+    tileSelect: { x: null, z: null, data: null, seed: false, index: false },
     itemSelect: null,
     topMenuSelect: null,
     sellToggle: false,
     weather: "sun",
     modalCheck: "",
     rightClick: [false, false, false],
+    eventLock: false,
   },
   reducers: {
     handleTile: (state, action) => {
-      const { x, z, data } = action.payload;
+      const { x, z, data, seed, index } = action.payload;
       if (state.tileSelect.x === x && state.tileSelect.z === z) {
-        state.tileSelect = { x: null, z: null, data: null };
+        state.tileSelect = {
+          x: null,
+          z: null,
+          data: null,
+          seed: false,
+          index: false,
+        };
       } else {
-        state.tileSelect = { x: x, z: z, data: data };
+        state.tileSelect = { x: x, z: z, data: data, seed: seed, index: index };
       }
     },
     handleItem: (state, action) => {
@@ -50,6 +57,9 @@ const stateSlice = createSlice({
     handleMouse: (state, action) => {
       state.rightClick = action.payload.on;
     },
+    handleEventLock: (state, action) => {
+      state.eventLock = action.payload.lock;
+    },
   },
 });
 
@@ -62,4 +72,5 @@ export const {
   modalChange,
   sellChange,
   handleMouse,
+  handleEventLock,
 } = stateSlice.actions;

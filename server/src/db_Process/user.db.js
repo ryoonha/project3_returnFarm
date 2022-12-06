@@ -1,9 +1,8 @@
 import User from "../../models/user";
 
-exports.userInfo = async (user_nick, address) => {
+exports.userInfo = async (address) => {
   const result = await User.findOne({
     where: {
-      user_nick: user_nick,
       address: address,
     },
     attributes: [

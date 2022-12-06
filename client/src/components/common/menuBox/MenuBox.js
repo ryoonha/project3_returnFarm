@@ -4,12 +4,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { handleTopMenu, sellChange } from "../../../stores/reducers/stateSlice";
 import { useSelector } from "react-redux";
 import { weatherData } from "../../../data/etc";
+import handleSound, { soundData } from "../../../data/sounds/sound";
 
 const MenuContainer = styled.div`
   position: fixed;
   width: 100vw;
   height: 70px;
-  border-radius: 0px 0px 20% 20%;
+  border-radius: 0px 0px 10% 10%;
   background-color: rgba(133, 133, 133, 0.4);
   transform: ${(props) =>
     props.hide ? "translateY(-70px)" : "translateY(0px)"};
@@ -138,13 +139,17 @@ const MenuBox = ({ dispatch }) => {
     <MenuContainer className="cc" weather={weather} hide={hide}>
       <Menu
         text={"정보"}
-        onClick={() => dispatch(handleTopMenu({ select: "Status" }))}
+        onClick={() => {
+          handleSound("click");
+          dispatch(handleTopMenu({ select: "Status" }));
+        }}
       >
         <FontAwesomeIcon icon="fa-solid fa-circle-user" />
       </Menu>
       <Menu
         text={"가방"}
         onClick={() => {
+          handleSound("click");
           dispatch(sellChange({ change: false }));
           dispatch(handleTopMenu({ select: "Inventory" }));
         }}
@@ -153,30 +158,60 @@ const MenuBox = ({ dispatch }) => {
       </Menu>
       <Menu
         text={"나의 NFT"}
-        onClick={() => dispatch(handleTopMenu({ select: "NftList" }))}
+        onClick={() => {
+          handleSound("click");
+          dispatch(handleTopMenu({ select: "NftList" }));
+        }}
       >
         <FontAwesomeIcon icon="fa-solid fa-cube" />
+      </Menu>
+      <Menu
+        text={"NFT 생성"}
+        onClick={() => {
+          handleSound("click");
+          dispatch(handleTopMenu({ select: "NftCreate" }));
+        }}
+      >
+        <FontAwesomeIcon icon="fa-solid fa-square-plus" />
       </Menu>
       <div className="weatherBox">
         <div className="weather">{wData[weather]}</div>
       </div>
       <Menu
-        text={"거래소"}
-        onClick={() => dispatch(handleTopMenu({ select: "Exchange" }))}
-      >
-        <FontAwesomeIcon icon="fa-solid fa-arrow-right-arrow-left" />
-      </Menu>
-      <Menu
         text={"채팅"}
-        onClick={() => dispatch(handleTopMenu({ select: "Chatting" }))}
+        onClick={() => {
+          handleSound("click");
+          dispatch(handleTopMenu({ select: "Chatting" }));
+        }}
       >
         <FontAwesomeIcon icon="fa-regular fa-comment" />
       </Menu>
       <Menu
+        text={"거래소"}
+        onClick={() => {
+          handleSound("click");
+          dispatch(handleTopMenu({ select: "Exchange" }));
+        }}
+      >
+        <FontAwesomeIcon icon="fa-solid fa-arrow-right-arrow-left" />
+      </Menu>
+      <Menu
         text={"NFT거래소"}
-        onClick={() => dispatch(handleTopMenu({ select: "NftExchange" }))}
+        onClick={() => {
+          handleSound("click");
+          dispatch(handleTopMenu({ select: "NftExchange" }));
+        }}
       >
         <FontAwesomeIcon icon="fa-solid fa-table-cells-large" />
+      </Menu>
+      <Menu
+        text={"토큰 교환"}
+        onClick={() => {
+          handleSound("click");
+          dispatch(handleTopMenu({ select: "TokenExchange" }));
+        }}
+      >
+        <FontAwesomeIcon icon="fa-solid fa-coins" />
       </Menu>
       {/* <Menu text={"maps"}>
         <FontAwesomeIcon icon="fa-regular fa-map" />

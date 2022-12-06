@@ -1,6 +1,6 @@
 import { Canvas } from "@react-three/fiber";
-import { Debug, Physics } from "@react-three/cannon";
-import React from "react";
+import React, { Suspense } from "react";
+import { Physics, RigidBody, Debug } from "@react-three/rapier";
 import Ground from "./ground/Ground";
 import Camera from "./setting/Camera";
 import { Provider } from "react-redux";
@@ -9,6 +9,8 @@ import Character from "../character/Character";
 import { Light } from "./setting/Light";
 import Environment from "./environment/Environment";
 import Object from "./object/Object";
+import { PositionalAudio } from "@react-three/drei";
+import { soundData } from "../../data/sounds/sound";
 
 const Index = () => {
   return (
@@ -21,19 +23,20 @@ const Index = () => {
       }}
     >
       <Provider store={store}>
-        <Light />
-        <Camera />
-        <Physics gravity={[0, -1, 0]}>
-          <Debug color="black" scale={1.5}>
+        <Suspense fallback={null}>
+          <Light />
+          <Camera />
+          <Physics colliders={false}>
+            {/* <Debug /> */}
             <Character />
             <Ground />
             <Environment />
             <Object />
-          </Debug>
-        </Physics>
+          </Physics>
+        </Suspense>
+        <PositionalAudio url={soundData["background"]} />
       </Provider>
     </Canvas>
   );
 };
-
 export default Index;

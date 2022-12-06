@@ -108,7 +108,7 @@ const ItemSell = ({ dispatch }) => {
       address,
     };
     const { data } = await transactionSell(sellData);
-    console.log(data);
+
     if (data) {
       const updateData = {
         address,

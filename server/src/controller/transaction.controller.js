@@ -50,21 +50,32 @@ const exchange = async (req, res, next) => {
 };
 
 const buy = async (req, res, next) => {
-  const { user_nick, address, item } = req.body;
-  const dbUserInfon = await userInfo(user_nick, address);
-  const haes_sal = dbUserInfon.haes_sal_amount;
+  const { address, item } = req.body;
+  const dbUserInfo_buyer = await userInfo(address);
+  const haes_sal_B = dbUserInfo_buyer.haes_sal_amount;
+  const dbUserInfo_seller = await userInfo(item.address);
+  const haes_sal_S = dbUserInfo_seller.haes_sal_amount;
 
-  if (!haes_sal > item.selling_price) {
+  if (!haes_sal_B > item.selling_price) {
     // && tokenData
     res.status(400).send({ message: "구매 실패 😑" });
   } else {
     const newMarketList = await marketItem_delete(item);
     const updateMyBag = await bag_update(address, item);
-    const updateHaesSal = await tokenAmount_update(
+    const updateHaesSal_buyer = await tokenAmount_update(
       address,
-      haes_sal - item.selling_price
+      haes_sal_B - item.selling_price
     );
-    res.status(200).send({ updateHaesSal, updateMyBag, newMarketList });
+    const updateHaesSal_seller = await tokenAmount_update(
+      item.address,
+      haes_sal_S + item.selling_price
+    );
+    res.status(200).send({
+      updateHaesSal_buyer,
+      updateHaesSal_seller,
+      updateMyBag,
+      newMarketList,
+    });
   }
 };
 

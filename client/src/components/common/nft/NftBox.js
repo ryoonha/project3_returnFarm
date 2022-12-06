@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { handleMouse } from "../../../stores/reducers/stateSlice";
 
 const NftBoxContainer = styled.div`
   width: 183px;
@@ -29,7 +30,7 @@ const NftBoxContainer = styled.div`
   }
 `;
 
-const NftBox = ({ nft, index, setSellData, address }) => {
+const NftBox = ({ nft, index, setSellData, address, setNftId }) => {
   const imgRef = useRef();
   const [nftData, setNftData] = useState(false);
 
@@ -49,6 +50,7 @@ const NftBox = ({ nft, index, setSellData, address }) => {
         const targetY = (yCenter - e.nativeEvent.offsetY) / 4;
         imgRef.current.style.transform = `rotateX(${targetY}deg) rotateY(${targetX}deg)`;
       }}
+      onClick={() => setNftId(nft[1])}
     >
       {nftData ? (
         <div

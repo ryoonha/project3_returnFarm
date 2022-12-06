@@ -1,44 +1,56 @@
-import { usePlane } from "@react-three/cannon";
+import { RigidBody } from "@react-three/rapier";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import handleSound from "../../../data/sounds/sound";
+import { tileUpdate } from "../../../stores/reducers/userSlice";
 import Tile from "./Tile";
 
 const Ground = () => {
+  const dispatch = useDispatch();
   const tileArr = useSelector((state) => state.user.tile);
+  const num = Math.sqrt(tileArr.length);
+  const [itemNum, itemName] = useSelector((state) => state.game.selectItem);
+  const eventLock = useSelector((state) => state.state.eventLock);
 
-  const Plane = (props) => {
-    const [ref] = usePlane(() => ({
-      type: "Static",
-      //material: "ground",
-      args: [300, 300],
-      ...props,
-    }));
-
-    return (
-      <group ref={ref}>
-        <mesh receiveShadow>
-          <planeGeometry args={[300, 300]} />
-          <meshStandardMaterial color={props.bgColor} />
-        </mesh>
-      </group>
-    );
+  const handleClick = (data, tileIndex) => {
+    if (!eventLock) {
+      handleSound("action");
+      if (data.status === null && itemName.includes("씨앗")) {
+        const timeDate = new Date().toLocaleDateString().slice(0, -1);
+        dispatch(
+          tileUpdate({
+            tile: { newData: itemName, index: tileIndex, timeDate },
+          })
+        );
+      } else if (itemName === "삽") {
+        dispatch(
+          tileUpdate({
+            tile: { newData: null, index: tileIndex, timeDate: null },
+          })
+        );
+      }
+    }
   };
-
   return (
     <group position={[0, 0, 0]}>
       {tileArr.map((tileData, index) => (
         <Tile
           key={index}
           tileData={tileData}
-          numX={index % 10}
-          numZ={Math.floor(index / 10)}
+          numX={index % num}
+          numZ={Math.floor(index / num)}
+          index={index}
+          handleClick={handleClick}
         />
       ))}
-      <Plane
-        position={[0, -0.1, 0]}
-        rotation={[-Math.PI / 2, 0, 0]}
-        bgColor={"#90c57c"}
-      />
+      <RigidBody colliders="hull" type="fixed">
+        <group position={[0, -0.1, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+          <mesh receiveShadow>
+            <planeGeometry args={[250, 250]} />
+            <meshStandardMaterial color={"#90c57c"} />
+          </mesh>
+        </group>
+      </RigidBody>
     </group>
   );
 };

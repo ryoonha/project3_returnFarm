@@ -18,23 +18,17 @@ import { Flowre1 } from "./Flowre1";
 import { Flowre2 } from "./Flowre2";
 
 export const treeArr = [
-  <Tree1 size={[0.2, 2, 0.2]} />,
-  <Tree2 size={[0.2, 2, 0.2]} />,
-  <Tree3 size={[0.2, 2, 0.2]} />,
-  <Tree4 size={[0.2, 2, 0.2]} />,
-  <Tree5 size={[0.2, 2, 0.2]} />,
-  <Tree6 size={[0.2, 2, 0.2]} />,
-  <Tree7 size={[0.2, 2, 0.2]} />,
-  <Tree8 size={[0.2, 2, 0.2]} />,
+  <Tree1 />,
+  <Tree2 />,
+  <Tree3 />,
+  <Tree4 />,
+  <Tree5 />,
+  <Tree6 />,
+  <Tree7 />,
+  <Tree8 />,
 ];
 
-export const rockArr = [
-  <Rock1 size={[1.2, 2, 1.2]} />,
-  <Rock2 size={[1.2, 2, 1.2]} />,
-  <Rock3 size={[1.2, 2, 1.2]} />,
-  <Rock4 size={[0.4, 0.9, 0.4]} />,
-  <Rock5 size={[0.4, 1, 0.4]} />,
-];
+export const rockArr = [<Rock1 />, <Rock2 />, <Rock3 />, <Rock4 />, <Rock5 />];
 
 export const grassArr = [<Grass1 />, <Grass2 />, <Grass3 />];
 

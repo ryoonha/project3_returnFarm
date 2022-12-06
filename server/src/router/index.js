@@ -6,7 +6,7 @@ import sign from "./sign.router";
 import user from "./user.router";
 import transaction from "./transaction.router";
 import game from "./game.router";
-import nft from "./nft";
+import nft from "./nft.router";
 
 router.use("/sign", sign);
 router.use("/user", user);

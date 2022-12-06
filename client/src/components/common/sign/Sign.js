@@ -1,12 +1,17 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import styled, { css } from "styled-components";
 import { gameBag, gameRandCreate } from "../../../api/game";
-import { nftCreate } from "../../../api/nft";
+import { nftList } from "../../../api/nft";
 import { signLogin, signRegister } from "../../../api/sign";
 import { transactionList } from "../../../api/transaction";
 import { initSocketConnection } from "../../../libs/socketio";
-import { handleMarketList } from "../../../stores/reducers/gameSlice";
+import {
+  handleBackgroundSound,
+  handleItem,
+  handleMarketList,
+  handleNftList,
+} from "../../../stores/reducers/gameSlice";
 import { modalChange } from "../../../stores/reducers/stateSlice";
 import {
   bagUpdate,
@@ -127,22 +132,6 @@ const Sign = ({ setLoginCheck }) => {
     user_nick: false,
   });
 
-  const [testImg, setTestImg] = useState();
-
-  const testFun = async () => {
-    console.log(testImg);
-
-    const formData = new FormData();
-    formData.append("address", "0x2e11159efC28b251f5c6497FD39d6562731C252e");
-    formData.append("name", "kkm");
-    formData.append("description", "테스트 입니다");
-    formData.append("file", testImg[0]);
-    // formData.append("file", JSON.stringify(testImg));
-
-    const data = await nftCreate(formData);
-    console.log(data);
-  };
-
   const userDateValidation = () => {
     const { user_id, user_pwd, user_nick } = userData;
     if (!user_id || !user_pwd || (!user_nick && toggleRegister)) {
@@ -183,10 +172,15 @@ const Sign = ({ setLoginCheck }) => {
         const bagInfo = await gameBag({ address: logined.address });
         const randInfo = await gameRandCreate({ address: logined.address });
         const marketList = await transactionList();
+        const nftMarketList = await nftList();
+
         await dispatch(myInfoSave({ data: logined, token: token }));
         await dispatch(bagUpdate({ bag: bagInfo.data }));
         await dispatch(tileUpdate({ tile: randInfo.data }));
         await dispatch(handleMarketList({ list: marketList.data }));
+        await dispatch(handleNftList({ list: nftMarketList.data }));
+        await dispatch(handleItem({ item: [0, bagInfo.data[0].item_name] }));
+        await dispatch(handleBackgroundSound());
         await setLoginCheck(true);
         await setUseData({
           user_id: "",
@@ -294,8 +288,6 @@ const Sign = ({ setLoginCheck }) => {
           >
             {toggleRegister ? "뒤로가기" : "회원가입"}
           </button>
-          <input type="file" onChange={(e) => setTestImg(e.target.files)} />
-          <button onClick={() => testFun()}>테스트</button>
         </div>
       </div>
     </SignContainer>
